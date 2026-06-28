@@ -245,12 +245,12 @@ Full-colour printing, foil stamping, and matte or gloss lamination all change th
 
 Match your bag to your tags, tissue and boxes so the whole retail experience feels like one brand.
 
-[See custom paper bags](/custom-paper-bags) or [request a quote](/get-quote).`,
+[See custom bags](/custom-paper-bags) or [request a quote](/get-quote).`,
     seo: {
       seoTitle: "Paper Bag Customization Options for Retail Brands",
       metaDescription:
         "Handles, paper, printing and finishes for custom retail paper bags. Turn a plain bag into branded packaging customers keep. From Pack4U.",
-      keywords: ["custom paper bags", "branded paper bags", "retail packaging Pakistan"],
+      keywords: ["custom bags", "branded paper bags", "retail packaging Pakistan"],
     },
   },
   {

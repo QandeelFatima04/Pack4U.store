@@ -15,6 +15,7 @@ export function ProductGallery({
   aspect = "aspect-[4/3]",
   sizes = "(max-width: 768px) 100vw, 33vw",
   priority = false,
+  fit = "cover",
   className,
 }: {
   images: string[];
@@ -22,6 +23,7 @@ export function ProductGallery({
   aspect?: string;
   sizes?: string;
   priority?: boolean;
+  fit?: "cover" | "contain";
   className?: string;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -70,7 +72,7 @@ export function ProductGallery({
               alt={`${alt} — image ${i + 1} of ${valid.length}`}
               fill
               priority={priority && i === 0}
-              className="object-cover"
+              className={fit === "contain" ? "object-contain" : "object-cover"}
               sizes={sizes}
             />
           </div>

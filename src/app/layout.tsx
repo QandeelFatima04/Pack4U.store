@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   keywords: [
     "custom packaging Pakistan",
     "custom boxes Pakistan",
-    "custom paper bags Pakistan",
+    "custom bags Pakistan",
     "product packaging Pakistan",
     "branded packaging Pakistan",
     "food packaging Pakistan",
