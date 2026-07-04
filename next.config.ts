@@ -6,12 +6,6 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve("."),
   },
-  images: {
-    remotePatterns: [
-      { protocol: "https", hostname: "images.unsplash.com" },
-      { protocol: "https", hostname: "cdn.sanity.io" },
-    ],
-  },
   async redirects() {
     return [
       // Short / alternate slugs → canonical blueprint slugs

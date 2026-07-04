@@ -6,6 +6,9 @@ import { cn } from "@/lib/utils"
 
 function Label({ className, ...props }: React.ComponentProps<"label">) {
   return (
+    // Reusable primitive: the control association (htmlFor) is supplied at each
+    // call site, so the rule can't see it here.
+    // eslint-disable-next-line jsx-a11y/label-has-associated-control
     <label
       data-slot="label"
       className={cn(

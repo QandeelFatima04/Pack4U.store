@@ -71,13 +71,15 @@ export function IndustryTile({ industry }: { industry: IndustryPage }) {
             variants={{ rest: { scale: 1 }, hover: { scale: 1.07 } }}
             transition={{ duration: 0.4, ease }}
           >
-            <Image
-              src={industry.heroImage}
-              alt={industry.label}
-              fill
-              sizes="120px"
-              className="object-cover transition-transform duration-500 group-hover:scale-110"
-            />
+            {industry.heroImage && (
+              <Image
+                src={industry.heroImage}
+                alt={industry.label}
+                fill
+                sizes="120px"
+                className="object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+            )}
           </motion.div>
 
           {/* floating sign/icon badge */}

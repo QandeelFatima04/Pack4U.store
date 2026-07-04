@@ -8,6 +8,7 @@ import { WhatsAppButton } from "@/components/whatsapp-button";
 import { PackagingTypeCard, IndustryTile, ProjectCard } from "@/components/cards";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { SectionHeading, PricingTiers, CtaBand } from "@/components/sections";
+import { Testimonials } from "@/components/testimonials";
 import {
   FadeIn,
   StaggerIn,
@@ -226,6 +227,9 @@ export default function HomePage() {
           </StaggerIn>
         </div>
       </section>
+
+      {/* ── SOCIAL PROOF (renders only when real testimonials/logos exist) ── */}
+      <Testimonials />
 
       {/* ── CONSULTATION + SUSTAINABILITY ── */}
       <section className="section bg-secondary/40">

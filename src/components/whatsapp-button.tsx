@@ -35,7 +35,7 @@ export function WhatsAppButton({
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Chat with Boxit on WhatsApp"
+        aria-label="Chat with Pack4U on WhatsApp"
         onClick={() => track("whatsapp_click", { source: "sticky" })}
         className={cn(
           "fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-black/15 transition hover:scale-105 hover:bg-[#1ebe5b]",

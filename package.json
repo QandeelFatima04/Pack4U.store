@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "qa": "npm run lint && npm run typecheck && npm run build",
     "prep-images": "node scripts/prep-images.mjs"
   },
   "dependencies": {
@@ -31,6 +33,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
     "sharp": "^0.34.2",
     "tailwindcss": "^4",
     "typescript": "^5"

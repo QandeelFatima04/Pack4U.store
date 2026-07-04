@@ -130,6 +130,30 @@ export type Faq = QA & {
   category: "Products" | "Printing & Finishing" | "Pricing & MOQ" | "Ordering" | "Delivery" | "Company";
 };
 
+/** Customer testimonial / review (blueprint social proof). Rendered only when real entries exist. */
+export type Testimonial = {
+  /** Real person or brand name. */
+  name: string;
+  /** Role + company, e.g. "Founder, Aurora Skincare". */
+  role?: string;
+  /** The quote itself, in the customer's words. */
+  quote: string;
+  /** Optional 1–5 star rating. */
+  rating?: number;
+  /** Optional avatar image path under /public. */
+  avatar?: string;
+};
+
+/** Client / brand logo for the trust strip. Rendered only when real entries exist. */
+export type ClientLogo = {
+  /** Brand name (used as the image alt and fallback text). */
+  name: string;
+  /** Logo image path under /public, e.g. "/images/clients/acme.svg". */
+  logo: string;
+  /** Optional link to the client's site. */
+  url?: string;
+};
+
 export type BlogPost = {
   slug: string;
   title: string;

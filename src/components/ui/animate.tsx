@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, type Variants, useScroll, useTransform } from "framer-motion";
+import { motion, type Variants, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { useRef, type ReactNode } from "react";
 
 // Shared easing used throughout the site
@@ -39,14 +39,19 @@ export function FadeIn({
   delay?: number;
   className?: string;
 }) {
+  const reduce = useReducedMotion();
   return (
     <motion.div
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-60px" }}
       variants={{
-        hidden: { opacity: 0, y: 28 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease, delay } },
+        hidden: reduce ? { opacity: 0 } : { opacity: 0, y: 28 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: { duration: reduce ? 0.2 : 0.65, ease, delay: reduce ? 0 : delay },
+        },
       }}
       className={className}
     >
@@ -65,6 +70,7 @@ export function StaggerIn({
   className?: string;
   delay?: number;
 }) {
+  const reduce = useReducedMotion();
   return (
     <motion.div
       initial="hidden"
@@ -72,7 +78,9 @@ export function StaggerIn({
       viewport={{ once: true, margin: "-60px" }}
       variants={{
         hidden: {},
-        visible: { transition: { staggerChildren: 0.1, delayChildren: delay } },
+        visible: {
+          transition: { staggerChildren: reduce ? 0 : 0.1, delayChildren: reduce ? 0 : delay },
+        },
       }}
       className={className}
     >
@@ -81,10 +89,17 @@ export function StaggerIn({
   );
 }
 
+// Reduced-motion variant of fadeUpVariants: fade only, no vertical slide.
+const fadeOnlyVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.2, ease } },
+};
+
 // Each direct child of StaggerIn should be wrapped in this
 export function StaggerItem({ children, className }: { children: ReactNode; className?: string }) {
+  const reduce = useReducedMotion();
   return (
-    <motion.div variants={fadeUpVariants} className={className}>
+    <motion.div variants={reduce ? fadeOnlyVariants : fadeUpVariants} className={className}>
       {children}
     </motion.div>
   );
@@ -100,6 +115,7 @@ export function AnimatedHeadline({
   className?: string;
   delay?: number;
 }) {
+  const reduce = useReducedMotion();
   const words = text.split(" ");
   return (
     <motion.span
@@ -108,7 +124,9 @@ export function AnimatedHeadline({
       animate="visible"
       variants={{
         hidden: {},
-        visible: { transition: { staggerChildren: 0.07, delayChildren: delay } },
+        visible: {
+          transition: { staggerChildren: reduce ? 0 : 0.07, delayChildren: reduce ? 0 : delay },
+        },
       }}
     >
       {words.map((word, i) => (
@@ -116,12 +134,12 @@ export function AnimatedHeadline({
           key={i}
           className="inline-block mr-[0.25em]"
           variants={{
-            hidden: { opacity: 0, y: 20, filter: "blur(4px)" },
+            hidden: reduce ? { opacity: 0 } : { opacity: 0, y: 20, filter: "blur(4px)" },
             visible: {
               opacity: 1,
               y: 0,
               filter: "blur(0px)",
-              transition: { duration: 0.55, ease },
+              transition: { duration: reduce ? 0.2 : 0.55, ease },
             },
           }}
         >
@@ -142,11 +160,12 @@ export function AnimatedLine({
   delay?: number;
   className?: string;
 }) {
+  const reduce = useReducedMotion();
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16, filter: "blur(3px)" }}
+      initial={reduce ? { opacity: 0 } : { opacity: 0, y: 16, filter: "blur(3px)" }}
       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      transition={{ duration: 0.6, ease, delay }}
+      transition={{ duration: reduce ? 0.2 : 0.6, ease, delay: reduce ? 0 : delay }}
       className={className}
     >
       {children}
@@ -164,12 +183,16 @@ export function ParallaxSection({
   speed?: number;
   className?: string;
 }) {
+  const reduce = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], ["0%", `${speed * 100}%`]);
   return (
     <div ref={ref} className={`relative overflow-hidden ${className ?? ""}`}>
-      <motion.div style={{ y }} className="absolute inset-0 will-change-transform">
+      <motion.div
+        style={reduce ? undefined : { y }}
+        className="absolute inset-0 will-change-transform"
+      >
         {children}
       </motion.div>
     </div>
@@ -178,11 +201,12 @@ export function ParallaxSection({
 
 // Pulsing "NEW" badge
 export function PulseBadge({ label = "NEW" }: { label?: string }) {
+  const reduce = useReducedMotion();
   return (
     <motion.span
       className="inline-flex items-center rounded-full bg-brand px-3 py-0.5 text-xs font-bold uppercase tracking-widest text-white"
-      animate={{ scale: [1, 1.06, 1] }}
-      transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+      animate={reduce ? undefined : { scale: [1, 1.06, 1] }}
+      transition={reduce ? undefined : { duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
     >
       {label}
     </motion.span>
@@ -191,9 +215,10 @@ export function PulseBadge({ label = "NEW" }: { label?: string }) {
 
 // Scale-up card on hover
 export function HoverCard({ children, className }: { children: ReactNode; className?: string }) {
+  const reduce = useReducedMotion();
   return (
     <motion.div
-      whileHover={{ y: -6, scale: 1.01 }}
+      whileHover={reduce ? undefined : { y: -6, scale: 1.01 }}
       transition={{ duration: 0.3, ease }}
       className={className}
     >

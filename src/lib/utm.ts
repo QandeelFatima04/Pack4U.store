@@ -20,7 +20,7 @@ export type Attribution = Partial<
   first_seen?: string;
 };
 
-const STORAGE_KEY = "boxit_attribution";
+const STORAGE_KEY = "pack4u_attribution";
 
 /** Read attribution from URL params (returns only present keys). */
 function fromUrl(search: string): Attribution {

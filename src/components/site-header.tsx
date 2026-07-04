@@ -29,16 +29,15 @@ const dropdowns: { label: string; href: string; links: NavLink[] }[] = [
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [openSection, setOpenSection] = useState<string | null>("Industries");
-  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const isHomepage = pathname === "/";
+  // Off the homepage the header is always solid; only the homepage starts glassy.
+  const [scrolled, setScrolled] = useState(!isHomepage);
 
   useEffect(() => {
-    if (!isHomepage) {
-      setScrolled(true);
-      return;
-    }
+    if (!isHomepage) return;
     const handler = () => setScrolled(window.scrollY > 80);
+    // One-time sync in case the page loads already scrolled.
     handler();
     window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
@@ -63,9 +62,6 @@ export function SiteHeader() {
         </div>
 
         <nav className="hidden items-center gap-3.5 lg:flex">
-          <Link href="/custom-packaging" className={`whitespace-nowrap text-sm font-medium transition ${linkClass}`}>
-            Custom Packaging
-          </Link>
           {dropdowns.map((d) => (
             <div key={d.label} className="group relative">
               <Link
@@ -141,11 +137,6 @@ export function SiteHeader() {
                 </SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col gap-1 px-4 pb-8">
-                <Link href="/custom-packaging" onClick={() => setOpen(false)}
-                  className="rounded-lg px-3 py-2.5 text-sm font-semibold hover:bg-muted">
-                  Custom Packaging
-                </Link>
-
                 {/* Collapsible dropdown sections */}
                 {dropdowns.map((d) => {
                   const isOpen = openSection === d.label;
