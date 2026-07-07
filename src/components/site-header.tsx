@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { usePathname } from "next/navigation";
 import { Menu, ChevronDown } from "lucide-react";
 import { Logo } from "@/components/logo";
@@ -32,6 +32,27 @@ export function SiteHeader() {
   // Which desktop dropdown is currently open (null = none).
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const navRef = useRef<HTMLElement | null>(null);
+  // Hover-intent: delay closing so a transient pointer excursion (or the
+  // pointer move during a click on a menu item) doesn't hide the menu before
+  // the click lands. Without this, clicking a dropdown link silently fails.
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const openDropdown = useCallback((label: string) => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setOpenMenu(label);
+  }, []);
+
+  const scheduleClose = useCallback(() => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    closeTimer.current = setTimeout(() => setOpenMenu(null), 160);
+  }, []);
+
+  // Clear any pending close timer on unmount.
+  useEffect(() => {
+    return () => {
+      if (closeTimer.current) clearTimeout(closeTimer.current);
+    };
+  }, []);
   const pathname = usePathname();
   const isHomepage = pathname === "/";
   // Off the homepage the header is always solid; only the homepage starts glassy.
@@ -95,14 +116,14 @@ export function SiteHeader() {
               <div
                 key={d.label}
                 className="relative"
-                onMouseEnter={() => setOpenMenu(d.label)}
-                onMouseLeave={() => setOpenMenu(null)}
+                onMouseEnter={() => openDropdown(d.label)}
+                onMouseLeave={scheduleClose}
               >
                 <button
                   type="button"
                   aria-expanded={isOpen}
                   aria-haspopup="menu"
-                  onClick={() => setOpenMenu(isOpen ? null : d.label)}
+                  onClick={() => (isOpen ? setOpenMenu(null) : openDropdown(d.label))}
                   className={`inline-flex items-center gap-1 whitespace-nowrap text-sm font-medium transition ${linkClass}`}
                 >
                   {d.label}

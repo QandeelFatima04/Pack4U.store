@@ -9,9 +9,33 @@ import { Label } from "@/components/ui/label";
 import { submitLead } from "@/lib/submit-lead";
 import { WhatsAppButton } from "@/components/whatsapp-button";
 
+/**
+ * Sanitize a phone number as the user types.
+ * - Keeps a single leading "+" (international) plus digits only.
+ * - Caps length by prefix so the number can't exceed a valid size:
+ *   local "03xxxxxxxxx" = 11 digits; international "+92xxxxxxxxxx" = up to 12 digits.
+ */
+function sanitizePhone(raw: string): string {
+  const hasPlus = raw.trimStart().startsWith("+");
+  let digits = raw.replace(/\D/g, "");
+
+  let maxDigits: number;
+  if (hasPlus || digits.startsWith("92")) {
+    // Country code (92) + national number (10 digits).
+    maxDigits = 12;
+  } else {
+    // Local format, e.g. 03045300300.
+    maxDigits = 11;
+  }
+  digits = digits.slice(0, maxDigits);
+
+  return hasPlus ? `+${digits}` : digits;
+}
+
 export function ContactForm() {
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
+  const [phone, setPhone] = useState("");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -67,7 +91,16 @@ export function ContactForm() {
         </div>
         <div className="space-y-1.5">
           <Label htmlFor="phone">Phone / WhatsApp</Label>
-          <Input id="phone" name="phone" />
+          <Input
+            id="phone"
+            name="phone"
+            type="tel"
+            inputMode="tel"
+            autoComplete="tel"
+            placeholder="03045300300 or +923045300300"
+            value={phone}
+            onChange={(e) => setPhone(sanitizePhone(e.target.value))}
+          />
         </div>
       </div>
       <div className="space-y-1.5">
