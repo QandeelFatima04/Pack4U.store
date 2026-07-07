@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { Menu, ChevronDown } from "lucide-react";
 import { Logo } from "@/components/logo";
@@ -29,6 +29,9 @@ const dropdowns: { label: string; href: string; links: NavLink[] }[] = [
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [openSection, setOpenSection] = useState<string | null>("Industries");
+  // Which desktop dropdown is currently open (null = none).
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const navRef = useRef<HTMLElement | null>(null);
   const pathname = usePathname();
   const isHomepage = pathname === "/";
   // Off the homepage the header is always solid; only the homepage starts glassy.
@@ -42,6 +45,30 @@ export function SiteHeader() {
     window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
   }, [isHomepage]);
+
+  // Close the desktop dropdown on route change.
+  useEffect(() => {
+    setOpenMenu(null);
+  }, [pathname]);
+
+  // Close the desktop dropdown on outside click or Escape.
+  useEffect(() => {
+    if (!openMenu) return;
+    const onPointerDown = (e: PointerEvent) => {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setOpenMenu(null);
+      }
+    };
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpenMenu(null);
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [openMenu]);
 
   const isGlass = isHomepage && !scrolled;
   const linkClass = isGlass
@@ -61,31 +88,56 @@ export function SiteHeader() {
           <Logo />
         </div>
 
-        <nav className="hidden items-center gap-3.5 lg:flex">
-          {dropdowns.map((d) => (
-            <div key={d.label} className="group relative">
-              <Link
-                href={d.href}
-                className={`inline-flex items-center gap-1 whitespace-nowrap text-sm font-medium transition ${linkClass}`}
+        <nav ref={navRef} className="hidden items-center gap-3.5 lg:flex">
+          {dropdowns.map((d) => {
+            const isOpen = openMenu === d.label;
+            return (
+              <div
+                key={d.label}
+                className="relative"
+                onMouseEnter={() => setOpenMenu(d.label)}
+                onMouseLeave={() => setOpenMenu(null)}
               >
-                {d.label}
-                <ChevronDown className="h-3.5 w-3.5 opacity-70" />
-              </Link>
-              <div className="invisible absolute left-1/2 top-full z-50 w-72 -translate-x-1/2 pt-3 opacity-0 transition group-hover:visible group-hover:opacity-100">
-                <div className="rounded-xl border bg-popover p-2 shadow-lg">
-                  {d.links.map((link) => (
+                <button
+                  type="button"
+                  aria-expanded={isOpen}
+                  aria-haspopup="menu"
+                  onClick={() => setOpenMenu(isOpen ? null : d.label)}
+                  className={`inline-flex items-center gap-1 whitespace-nowrap text-sm font-medium transition ${linkClass}`}
+                >
+                  {d.label}
+                  <ChevronDown
+                    className={`h-3.5 w-3.5 opacity-70 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+                  />
+                </button>
+                <div
+                  className={`absolute left-1/2 top-full z-50 w-72 -translate-x-1/2 pt-3 transition ${
+                    isOpen ? "visible opacity-100" : "invisible opacity-0"
+                  }`}
+                >
+                  <div className="rounded-xl border bg-popover p-2 shadow-lg">
                     <Link
-                      key={link.href}
-                      href={link.href}
-                      className="block rounded-lg px-3 py-2 text-sm text-popover-foreground transition hover:bg-muted"
+                      href={d.href}
+                      onClick={() => setOpenMenu(null)}
+                      className="block rounded-lg px-3 py-2 text-sm font-medium text-brand transition hover:bg-muted"
                     >
-                      {link.label}
+                      All {d.label}
                     </Link>
-                  ))}
+                    {d.links.map((link) => (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        onClick={() => setOpenMenu(null)}
+                        className="block rounded-lg px-3 py-2 text-sm text-popover-foreground transition hover:bg-muted"
+                      >
+                        {link.label}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
           <Link href="/portfolio" className={`text-sm font-medium transition ${linkClass}`}>
             Portfolio
           </Link>

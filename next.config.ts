@@ -1,10 +1,23 @@
 import type { NextConfig } from "next";
+import fs from "node:fs";
 import path from "node:path";
 
+// Pin the workspace root (a stray lockfile exists in the home dir). When running
+// from a git worktree, node_modules lives in the main checkout, so walk up until
+// we find it — otherwise Turbopack can't resolve the `next` package.
+function resolveTurbopackRoot(): string {
+  let dir = path.resolve(".");
+  while (true) {
+    if (fs.existsSync(path.join(dir, "node_modules", "next"))) return dir;
+    const parent = path.dirname(dir);
+    if (parent === dir) return path.resolve(".");
+    dir = parent;
+  }
+}
+
 const nextConfig: NextConfig = {
-  // Pin the workspace root (a stray lockfile exists in the home dir).
   turbopack: {
-    root: path.resolve("."),
+    root: resolveTurbopackRoot(),
   },
   async redirects() {
     return [
