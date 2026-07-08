@@ -2,9 +2,10 @@ import type { NextConfig } from "next";
 import path from "node:path";
 
 const nextConfig: NextConfig = {
-  // Pin the workspace root (a stray lockfile exists in the home dir).
+  // Pin the workspace root to the main project so the shared node_modules
+  // (linked from the parent folder) resolves within the Turbopack root.
   turbopack: {
-    root: path.resolve("."),
+    root: path.resolve(__dirname, "..", "..", ".."),
   },
   images: {
     remotePatterns: [

@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ProductGallery } from "@/components/product-gallery";
 import { formatPKR } from "@/lib/format";
-import type { PackagingType, IndustryPage, Project } from "@/content/types";
+import type { PackagingType, Project } from "@/content/types";
 
 export function PackagingTypeCard({ type }: { type: PackagingType }) {
   const gallery =
@@ -17,7 +17,9 @@ export function PackagingTypeCard({ type }: { type: PackagingType }) {
       <ProductGallery
         images={gallery}
         alt={type.name}
-        className="rounded-none border-0"
+        fit="cover"
+        aspect="aspect-[4/3]"
+        className="rounded-none border-0 bg-white"
         sizes="(max-width: 768px) 100vw, 33vw"
       />
       <div className="flex flex-1 flex-col p-5">
@@ -40,33 +42,8 @@ export function PackagingTypeCard({ type }: { type: PackagingType }) {
   );
 }
 
-export function IndustryTile({ industry }: { industry: IndustryPage }) {
-  return (
-    <Link
-      href={`/${industry.slug}`}
-      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-card p-6 transition hover:-translate-y-1 hover:shadow-lg hover:shadow-black/5"
-    >
-      <span
-        className="absolute inset-x-0 top-0 h-1.5"
-        style={{ backgroundColor: industry.accent }}
-        aria-hidden
-      />
-      <span
-        className="grid h-11 w-11 place-items-center rounded-xl text-sm font-bold text-white"
-        style={{ backgroundColor: industry.accent }}
-      >
-        {industry.shortLabel.slice(0, 2)}
-      </span>
-      <h3 className="mt-4 font-[family-name:var(--font-heading)] text-lg font-bold">
-        {industry.label}
-      </h3>
-      <p className="mt-2 flex-1 text-sm text-muted-foreground">{industry.audience}</p>
-      <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold group-hover:gap-2">
-        Explore <ArrowRight className="h-4 w-4 transition-all" />
-      </span>
-    </Link>
-  );
-}
+// IndustryTile now lives in its own client component (animated circular design).
+export { IndustryTile } from "@/components/industry-tile";
 
 export function ProjectCard({ project }: { project: Project }) {
   return (

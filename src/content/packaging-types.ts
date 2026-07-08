@@ -64,10 +64,10 @@ export const packagingTypes: PackagingType[] = [
   },
   {
     slug: "custom-paper-bags",
-    name: "Custom Paper Bags",
-    shortName: "Paper Bags",
+    name: "Custom Bags",
+    shortName: "Bags",
     tagline: "Branded shopping & gift bags customers carry home",
-    heroHeadline: "Custom Paper Bags for Retail & Gifting",
+    heroHeadline: "Custom Bags for Retail & Gifting",
     heroSub:
       "Branded paper bags for shops, boutiques, events and gifting — printed with your logo and brand colours, with handle, size and finish options that match your products.",
     useCases: ["Retail shopping bags", "Boutique & fashion", "Gift bags", "Event giveaways", "Takeaway / food", "Corporate gifting"],
@@ -96,10 +96,10 @@ export const packagingTypes: PackagingType[] = [
       { question: "Minimum order for paper bags?", answer: "Typically 300–500 bags for custom-printed orders." },
     ],
     seo: {
-      seoTitle: "Custom Paper Bags Pakistan — Branded Shopping & Gift Bags",
+      seoTitle: "Custom Bags Pakistan — Branded Shopping & Gift Bags",
       metaDescription:
         "Custom printed paper bags in Pakistan for retail, fashion, food and gifting. Branded shopping bags with handle, size and finish options. Request a quote.",
-      keywords: ["custom paper bags Pakistan", "branded paper bags", "shopping bags", "printed paper bags"],
+      keywords: ["custom bags Pakistan", "branded paper bags", "shopping bags", "printed paper bags"],
     },
   },
   {

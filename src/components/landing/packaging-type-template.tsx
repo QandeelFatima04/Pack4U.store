@@ -13,6 +13,9 @@ import type { PackagingType } from "@/content/types";
 
 export function PackagingTypeTemplate({ type }: { type: PackagingType }) {
   const gallery = type.gallery && type.gallery.length ? type.gallery : type.image ? [type.image] : [];
+  // Bags are a tall/portrait product — show the whole image on its detail page
+  // instead of cropping it. Other product pages keep the full-bleed crop.
+  const isBags = type.slug === "custom-paper-bags";
   return (
     <>
       <BreadcrumbJsonLd
@@ -55,7 +58,9 @@ export function PackagingTypeTemplate({ type }: { type: PackagingType }) {
             images={gallery}
             alt={`${type.name} by Pack4U`}
             priority
-            aspect="aspect-[4/3]"
+            aspect={isBags ? "aspect-[1271/1872]" : "aspect-[4/3]"}
+            fit={isBags ? "contain" : "cover"}
+            className={isBags ? "bg-white" : undefined}
             sizes="(max-width: 1024px) 100vw, 50vw"
           />
         </div>

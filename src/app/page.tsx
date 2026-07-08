@@ -56,7 +56,7 @@ export default function HomePage() {
               </span>
             </AnimatedLine>
             <h1 className="mt-6 font-[family-name:var(--font-heading)] text-4xl font-bold leading-[1.07] tracking-tight sm:text-5xl lg:text-6xl">
-              <AnimatedHeadline text="Custom Paper Packaging" delay={0.2} />
+              <AnimatedHeadline text="Custom Packaging" delay={0.2} />
               <br />
               <AnimatedHeadline text="for Product" delay={0.5} />{" "}
               <AnimatedHeadline text="Brands" delay={0.7} className="text-brand" />
