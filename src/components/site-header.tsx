@@ -178,7 +178,7 @@ export function SiteHeader() {
             asChild
             size="sm"
             variant="outline"
-            className={`hidden xl:inline-flex ${
+            className={`hidden sm:inline-flex ${
               isGlass ? "border-white/40 bg-white/10 text-white hover:bg-white/20" : ""
             }`}
           >
