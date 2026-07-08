@@ -50,6 +50,7 @@ const goals = [
   "Move toward sustainable packaging",
   "Create gift / retail packaging",
   "Improve e-commerce unboxing",
+  "Routine order",
   "Not sure yet",
 ];
 
