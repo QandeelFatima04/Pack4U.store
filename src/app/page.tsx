@@ -2,10 +2,16 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, PencilRuler, Layers, PackageCheck, Truck, Sparkles, Calculator } from "lucide-react";
+import { ArrowRight, Sparkles, Calculator } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WhatsAppButton } from "@/components/whatsapp-button";
 import { PackagingTypeCard, IndustryTile, ProjectCard } from "@/components/cards";
+import {
+  ShareRequirementIllustration,
+  MaterialAdviceIllustration,
+  FinalizeSpecsIllustration,
+  ProductionDeliveryIllustration,
+} from "@/components/process-illustrations";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { SectionHeading, PricingTiers, CtaBand } from "@/components/sections";
 import { Testimonials } from "@/components/testimonials";
@@ -32,10 +38,10 @@ const heroImages = [
 ];
 
 const steps = [
-  { icon: PencilRuler, title: "Share your product & requirement", text: "Tell us what you sell, your quantity, size, budget and goal." },
-  { icon: Layers, title: "Get structure & material advice", text: "We recommend the right paper, type, printing and finish." },
-  { icon: PackageCheck, title: "Finalize specs or prototype", text: "We align on size, artwork, finishing and feasibility." },
-  { icon: Truck, title: "Production & delivery", text: "Produced to the agreed spec and delivered for use." },
+  { illustration: ShareRequirementIllustration, title: "Share your product & requirement", text: "Tell us what you sell, your quantity, size, budget and goal." },
+  { illustration: MaterialAdviceIllustration, title: "Get structure & material advice", text: "We recommend the right paper, type, printing and finish." },
+  { illustration: FinalizeSpecsIllustration, title: "Finalize specs or prototype", text: "We align on size, artwork, finishing and feasibility." },
+  { illustration: ProductionDeliveryIllustration, title: "Production & delivery", text: "Produced to the agreed spec and delivered for use." },
 ];
 
 export default function HomePage() {
@@ -162,8 +168,8 @@ export default function HomePage() {
             {steps.map((s, i) => (
               <StaggerItem key={s.title}>
                 <div className="h-full rounded-2xl border bg-card p-6">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-brand/10 text-brand">
-                    <s.icon className="h-5 w-5" />
+                  <div className="overflow-hidden rounded-xl bg-brand/5">
+                    <s.illustration className="h-24 w-full" preserveAspectRatio="xMidYMid meet" />
                   </div>
                   <p className="mt-4 text-xs font-bold text-brand">Step {i + 1}</p>
                   <h3 className="mt-1 font-semibold">{s.title}</h3>
