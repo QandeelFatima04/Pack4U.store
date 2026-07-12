@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { submitLead } from "@/lib/submit-lead";
 import { WhatsAppButton } from "@/components/whatsapp-button";
 import { packagingTypes } from "@/content/packaging-types";
-import { industries } from "@/content/industries";
+import { estimatorIndustries } from "@/content/estimator-pricing";
 
 const projectTypes = [
   ...packagingTypes.map((p) => ({ value: p.slug, label: p.name })),
@@ -19,8 +19,7 @@ const projectTypes = [
 ];
 
 const industryOptions = [
-  ...industries.map((i) => ({ value: i.slug, label: i.label })),
-  { value: "corporate", label: "Corporate" },
+  ...estimatorIndustries.map((i) => ({ value: i.slug, label: i.name })),
   { value: "other", label: "Other" },
 ];
 
@@ -34,9 +33,11 @@ const quantityRanges = [
 ];
 
 const customizations = [
-  { id: "printing", label: "Printing" },
+  { id: "printing", label: "4-colour printing" },
   { id: "emboss", label: "Embossing / debossing" },
   { id: "foiling", label: "Foiling" },
+  { id: "spot-uv", label: "Spot UV" },
+  { id: "lamination", label: "Lamination" },
   { id: "die-cut", label: "Die cutting" },
   { id: "window", label: "Window cut-out" },
   { id: "custom-shape", label: "Custom shape" },
@@ -61,6 +62,8 @@ function selectCls() {
 export function QuoteForm() {
   const params = useSearchParams();
   const presetType = params.get("type") ?? "";
+  const presetIndustry = params.get("industry") ?? "";
+  const presetProduct = params.get("product") ?? "";
   const presetQtyRaw = params.get("qty");
   const presetFinishes = (params.get("finishes") ?? "").split(",").filter(Boolean);
   const presetEst = params.get("est");
@@ -213,7 +216,7 @@ export function QuoteForm() {
           </div>
           <div className="space-y-1.5">
             <Label htmlFor="q-industry">What type of business is this for? *</Label>
-            <select id="q-industry" name="industry" required defaultValue="" className={selectCls()}>
+            <select id="q-industry" name="industry" required defaultValue={presetIndustry} className={selectCls()}>
               <option value="" disabled>Select industry…</option>
               {industryOptions.map((o) => (
                 <option key={o.value} value={o.value}>{o.label}</option>
@@ -222,7 +225,7 @@ export function QuoteForm() {
           </div>
           <div className="space-y-1.5 sm:col-span-2">
             <Label htmlFor="q-product">What product are you packaging?</Label>
-            <Input id="q-product" name="productDetails" placeholder="e.g. 50ml serum bottle, coffee pods…" />
+            <Input id="q-product" name="productDetails" defaultValue={presetProduct} placeholder="e.g. 50ml serum bottle, coffee pods…" />
           </div>
           <div className="space-y-1.5">
             <Label htmlFor="q-dimensions">Product dimensions (if known)</Label>

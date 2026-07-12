@@ -2,24 +2,20 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Info } from "lucide-react";
+import { ArrowRight, Info, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { WhatsAppButton } from "@/components/whatsapp-button";
 import { formatPKR } from "@/lib/format";
-import { site } from "@/lib/site";
-import { packagingTypes } from "@/content/packaging-types";
-import { estimatorConfig } from "@/content/pricing";
+import {
+  estimatorIndustries,
+  pickProduct,
+  productNameToTypeValue,
+  FINISH_LABELS,
+  FINISH_ORDER,
+  type EstFinishKey,
+} from "@/content/estimator-pricing";
 import { cn } from "@/lib/utils";
-
-const { quantityTiers, sizeBands, finishes, setupFee, rangeSpread } = estimatorConfig;
-
-function tierForQty(qty: number) {
-  // Highest tier whose minimum is <= qty (tiers are ascending).
-  let chosen = quantityTiers[0];
-  for (const t of quantityTiers) if (qty >= t.min) chosen = t;
-  return chosen;
-}
 
 export function Estimator({
   defaultTypeSlug,
@@ -28,152 +24,247 @@ export function Estimator({
   defaultTypeSlug?: string;
   compact?: boolean;
 }) {
-  const [typeSlug, setTypeSlug] = useState(
-    defaultTypeSlug ?? packagingTypes[0].slug,
-  );
-  const [sizeId, setSizeId] = useState("m");
-  const [selectedFinishes, setSelectedFinishes] = useState<string[]>(["printing"]);
-  const [qty, setQty] = useState(500);
+  const initialIndustry = estimatorIndustries[0];
+  const initialProduct = pickProduct(initialIndustry, defaultTypeSlug);
 
-  const type = packagingTypes.find((p) => p.slug === typeSlug) ?? packagingTypes[0];
+  const [industrySlug, setIndustrySlug] = useState(initialIndustry.slug);
+  const [productName, setProductName] = useState(initialProduct.name);
+  const [sizeId, setSizeId] = useState(initialProduct.sizes[0]?.id ?? "medium");
+  const [selectedFinishes, setSelectedFinishes] = useState<EstFinishKey[]>([]);
+  const [qty, setQty] = useState(initialProduct.sizes[0]?.moq ?? 500);
+
+  const industry =
+    estimatorIndustries.find((i) => i.slug === industrySlug) ?? estimatorIndustries[0];
+  const product =
+    industry.products.find((p) => p.name === productName) ?? industry.products[0];
+  const size = product.sizes.find((s) => s.id === sizeId) ?? product.sizes[0];
+
+  // Finishes that are actually offered for this product (null ⇒ not available).
+  const availableFinishes = useMemo(
+    () =>
+      FINISH_ORDER.filter((key) => product.finishes[key] !== null).map((key) => {
+        const value = product.finishes[key];
+        return {
+          key,
+          label: FINISH_LABELS[key],
+          included: value === "included",
+          add: typeof value === "number" ? value : 0,
+        };
+      }),
+    [product],
+  );
 
   const result = useMemo(() => {
-    const safeQty = Math.max(site.minMoq, Math.round(qty || 0));
-    const size = sizeBands.find((s) => s.id === sizeId) ?? sizeBands[1];
-    const tier = tierForQty(safeQty);
-    const finishFactor = selectedFinishes.reduce((acc, id) => {
-      const f = finishes.find((x) => x.id === id);
-      return acc * (f ? f.factor : 1);
-    }, 1);
-    const perUnit = type.basePricePerUnit * size.factor * finishFactor * tier.factor;
-    const subtotal = perUnit * safeQty;
-    const total = subtotal + setupFee;
-    return {
-      safeQty,
-      tier,
-      perUnitLow: perUnit * (1 - rangeSpread),
-      perUnitHigh: perUnit * (1 + rangeSpread),
-      totalLow: total * (1 - rangeSpread),
-      totalHigh: total * (1 + rangeSpread),
-    };
-  }, [type, sizeId, selectedFinishes, qty]);
+    if (!product.estimable || !size) return null;
+    const moq = size.moq;
+    const safeQty = Math.max(moq, Math.round(qty || moq));
+    const addOn = availableFinishes.reduce(
+      (sum, f) => (!f.included && selectedFinishes.includes(f.key) ? sum + f.add : sum),
+      0,
+    );
+    const perUnit = size.price + addOn;
+    return { safeQty, moq, perUnit, total: perUnit * safeQty };
+  }, [product, size, qty, selectedFinishes, availableFinishes]);
 
-  function toggleFinish(id: string) {
+  function selectIndustry(slug: string) {
+    const next = estimatorIndustries.find((i) => i.slug === slug) ?? estimatorIndustries[0];
+    const nextProduct = pickProduct(next);
+    setIndustrySlug(slug);
+    setProductName(nextProduct.name);
+    setSizeId(nextProduct.sizes[0]?.id ?? "medium");
+    setSelectedFinishes([]);
+    setQty(nextProduct.sizes[0]?.moq ?? 500);
+  }
+
+  function selectProduct(name: string) {
+    const next = industry.products.find((p) => p.name === name) ?? industry.products[0];
+    setProductName(name);
+    setSizeId(next.sizes[0]?.id ?? "medium");
+    setSelectedFinishes([]);
+    setQty(next.sizes[0]?.moq ?? 500);
+  }
+
+  function selectSize(id: "small" | "medium" | "large") {
+    const next = product.sizes.find((s) => s.id === id);
+    setSizeId(id);
+    if (next) setQty((q) => Math.max(next.moq, Math.round(q || next.moq)));
+  }
+
+  function toggleFinish(key: EstFinishKey) {
     setSelectedFinishes((cur) =>
-      cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id],
+      cur.includes(key) ? cur.filter((x) => x !== key) : [...cur, key],
     );
   }
 
-  const quoteHref =
-    `/get-quote?type=${type.slug}` +
-    `&qty=${result.safeQty}` +
-    `&finishes=${selectedFinishes.join(",")}` +
-    `&est=${Math.round(result.totalLow)}-${Math.round(result.totalHigh)}`;
+  const activeFinishLabels = availableFinishes
+    .filter((f) => f.included || selectedFinishes.includes(f.key))
+    .map((f) => f.label);
 
-  const whatsappText = `Hi Pack4U, I used the estimator. ${type.name}, size ${sizeId.toUpperCase()}, qty ${result.safeQty}, finishes: ${selectedFinishes.join(", ") || "none"}. Estimated ${formatPKR(result.totalLow)}–${formatPKR(result.totalHigh)}. Please confirm an exact quote.`;
+  const quoteHref =
+    `/get-quote?industry=${industry.slug}` +
+    `&type=${productNameToTypeValue(product.name)}` +
+    `&product=${encodeURIComponent(product.name)}` +
+    (result ? `&qty=${result.safeQty}&est=${Math.round(result.total)}` : "");
+
+  const whatsappText = result
+    ? `Hi Pack4U, I used the estimator. Industry: ${industry.name}. ${product.name}, ${size?.label} size, qty ${result.safeQty}, finishes: ${activeFinishLabels.join(", ") || "none"}. Estimated ${formatPKR(result.total)} (${formatPKR(result.perUnit)}/unit). Please confirm an exact quote.`
+    : `Hi Pack4U, I'd like a quote for ${product.name} (${industry.name}). Please share options and pricing.`;
 
   return (
     <div className={cn("grid gap-6", compact ? "" : "lg:grid-cols-5 lg:gap-10")}>
       {/* Inputs */}
       <div className={cn("space-y-6", compact ? "" : "lg:col-span-3")}>
-        {/* Packaging type */}
+        {/* Industry */}
         <div className="space-y-2">
-          <Label htmlFor="est-type">Packaging type</Label>
+          <Label htmlFor="est-industry">What type of business is this for?</Label>
           <select
-            id="est-type"
-            value={typeSlug}
-            onChange={(e) => setTypeSlug(e.target.value)}
+            id="est-industry"
+            value={industrySlug}
+            onChange={(e) => selectIndustry(e.target.value)}
             className="flex h-11 w-full rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
-            {packagingTypes.map((p) => (
-              <option key={p.slug} value={p.slug}>
+            {estimatorIndustries.map((i) => (
+              <option key={i.slug} value={i.slug}>
+                {i.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Packaging type */}
+        <div className="space-y-2">
+          <Label htmlFor="est-type">What type of packaging do you need?</Label>
+          <select
+            id="est-type"
+            value={productName}
+            onChange={(e) => selectProduct(e.target.value)}
+            className="flex h-11 w-full rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            {industry.products.map((p) => (
+              <option key={p.name} value={p.name}>
                 {p.name}
               </option>
             ))}
           </select>
         </div>
 
-        {/* Size */}
-        <div className="space-y-2">
-          <Label>Size</Label>
-          <div className="grid grid-cols-3 gap-2">
-            {sizeBands.map((s) => (
-              <button
-                key={s.id}
-                type="button"
-                onClick={() => setSizeId(s.id)}
-                className={cn(
-                  "rounded-lg border px-3 py-2.5 text-sm font-medium transition",
-                  sizeId === s.id
-                    ? "border-brand bg-brand/10 text-brand"
-                    : "hover:bg-muted",
-                )}
-              >
-                {s.label}
-              </button>
-            ))}
-          </div>
-        </div>
+        {product.estimable && size ? (
+          <>
+            {/* Size */}
+            <div className="space-y-2">
+              <Label>Size</Label>
+              <div className="grid grid-cols-3 gap-2">
+                {product.sizes.map((s) => (
+                  <button
+                    key={s.id}
+                    type="button"
+                    onClick={() => selectSize(s.id)}
+                    className={cn(
+                      "rounded-lg border px-3 py-2.5 text-center text-sm font-medium transition",
+                      sizeId === s.id
+                        ? "border-brand bg-brand/10 text-brand"
+                        : "hover:bg-muted",
+                    )}
+                  >
+                    <span className="block">{s.label}</span>
+                    <span className="mt-0.5 block text-xs font-normal text-muted-foreground">
+                      from {formatPKR(s.price)}/unit
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
 
-        {/* Finishes */}
-        <div className="space-y-2">
-          <Label>Finishes &amp; customization</Label>
-          <div className="grid grid-cols-2 gap-2">
-            {finishes.map((f) => {
-              const on = selectedFinishes.includes(f.id);
-              return (
-                <button
-                  key={f.id}
-                  type="button"
-                  onClick={() => toggleFinish(f.id)}
-                  className={cn(
-                    "rounded-lg border px-3 py-2.5 text-left text-sm font-medium transition",
-                    on ? "border-brand bg-brand/10 text-brand" : "hover:bg-muted",
-                  )}
-                >
-                  {f.label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
+            {/* Finishes */}
+            <div className="space-y-2">
+              <Label>Finishes &amp; customization</Label>
+              <div className="grid grid-cols-2 gap-2">
+                {availableFinishes.map((f) => {
+                  if (f.included) {
+                    return (
+                      <div
+                        key={f.key}
+                        className="flex items-center gap-1.5 rounded-lg border border-brand/40 bg-brand/5 px-3 py-2.5 text-left text-sm font-medium text-brand"
+                      >
+                        <Check className="h-3.5 w-3.5 shrink-0" />
+                        <span>
+                          {f.label}
+                          <span className="font-normal text-brand/70"> · included</span>
+                        </span>
+                      </div>
+                    );
+                  }
+                  const on = selectedFinishes.includes(f.key);
+                  return (
+                    <button
+                      key={f.key}
+                      type="button"
+                      onClick={() => toggleFinish(f.key)}
+                      className={cn(
+                        "rounded-lg border px-3 py-2.5 text-left text-sm font-medium transition",
+                        on ? "border-brand bg-brand/10 text-brand" : "hover:bg-muted",
+                      )}
+                    >
+                      {f.label}
+                      <span className="font-normal text-muted-foreground">
+                        {" "}
+                        +{formatPKR(f.add)}/unit
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
 
-        {/* Quantity */}
-        <div className="space-y-2">
-          <Label htmlFor="est-qty">
-            Quantity{" "}
-            <span className="font-normal text-muted-foreground">
-              (minimum {site.minMoq})
-            </span>
-          </Label>
-          <input
-            id="est-qty"
-            type="number"
-            min={site.minMoq}
-            step={50}
-            value={qty}
-            onChange={(e) => setQty(Number(e.target.value))}
-            onBlur={() => setQty((q) => Math.max(site.minMoq, Math.round(q || site.minMoq)))}
-            className="flex h-11 w-full rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          />
-          <div className="flex flex-wrap gap-2">
-            {quantityTiers.map((t) => (
-              <button
-                key={t.id}
-                type="button"
-                onClick={() => setQty(t.min)}
-                className={cn(
-                  "rounded-full border px-3 py-1 text-xs font-medium transition",
-                  result.tier.id === t.id
-                    ? "border-brand bg-brand/10 text-brand"
-                    : "hover:bg-muted",
-                )}
-              >
-                {t.label}
-              </button>
-            ))}
+            {/* Quantity */}
+            <div className="space-y-2">
+              <Label htmlFor="est-qty">
+                Quantity{" "}
+                <span className="font-normal text-muted-foreground">
+                  (minimum {result?.moq.toLocaleString()} for {size.label} size)
+                </span>
+              </Label>
+              <input
+                id="est-qty"
+                type="number"
+                min={size.moq}
+                step={100}
+                value={qty}
+                onChange={(e) => setQty(Number(e.target.value))}
+                onBlur={() => setQty((q) => Math.max(size.moq, Math.round(q || size.moq)))}
+                className="flex h-11 w-full rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              />
+              {qty < size.moq && (
+                <p className="text-xs font-medium text-brand">
+                  Minimum order for the {size.label} size is {size.moq.toLocaleString()} units.
+                  You can increase the quantity, but not go below this.
+                </p>
+              )}
+              <div className="flex flex-wrap gap-2">
+                {[size.moq, size.moq * 2, size.moq * 5].map((n) => (
+                  <button
+                    key={n}
+                    type="button"
+                    onClick={() => setQty(n)}
+                    className={cn(
+                      "rounded-full border px-3 py-1 text-xs font-medium transition",
+                      result?.safeQty === n
+                        ? "border-brand bg-brand/10 text-brand"
+                        : "hover:bg-muted",
+                    )}
+                  >
+                    {n.toLocaleString()}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="rounded-xl border bg-secondary/40 p-5 text-sm text-muted-foreground">
+            This option is custom-quoted. Tell us a little about your project and we&apos;ll
+            put together the right packaging set and pricing for you.
           </div>
-        </div>
+        )}
       </div>
 
       {/* Result */}
@@ -182,33 +273,54 @@ export function Estimator({
           <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             Estimated price
           </p>
-          <p className="mt-2 font-[family-name:var(--font-heading)] text-3xl font-bold leading-tight">
-            {formatPKR(result.totalLow)}
-            <span className="text-muted-foreground"> – </span>
-            {formatPKR(result.totalHigh)}
-          </p>
-          <p className="mt-1 text-sm text-muted-foreground">
-            for {result.safeQty.toLocaleString()} units
-          </p>
-          <div className="mt-4 rounded-lg bg-secondary/60 p-3 text-sm">
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Per unit</span>
-              <span className="font-semibold">
-                {formatPKR(result.perUnitLow)} – {formatPKR(result.perUnitHigh)}
-              </span>
-            </div>
-            <div className="mt-1 flex justify-between">
-              <span className="text-muted-foreground">MOQ</span>
-              <span className="font-semibold">From {site.minMoq} units</span>
-            </div>
-            <div className="mt-1 flex justify-between">
-              <span className="text-muted-foreground">Includes one-time setup</span>
-              <span className="font-semibold">{formatPKR(setupFee)}</span>
-            </div>
-          </div>
+          {result && size ? (
+            <>
+              <p className="mt-2 font-[family-name:var(--font-heading)] text-3xl font-bold leading-tight">
+                {formatPKR(result.total)}
+              </p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                for {result.safeQty.toLocaleString()} units · {product.name}
+              </p>
+              <div className="mt-4 rounded-lg bg-secondary/60 p-3 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Per unit</span>
+                  <span className="font-semibold">{formatPKR(result.perUnit)}</span>
+                </div>
+                <div className="mt-1 flex justify-between">
+                  <span className="text-muted-foreground">Size</span>
+                  <span className="font-semibold">{size.label}</span>
+                </div>
+                <div className="mt-1 flex justify-between">
+                  <span className="text-muted-foreground">MOQ</span>
+                  <span className="font-semibold">
+                    From {result.moq.toLocaleString()} units
+                  </span>
+                </div>
+                {activeFinishLabels.length > 0 && (
+                  <div className="mt-1 flex justify-between gap-3">
+                    <span className="shrink-0 text-muted-foreground">Finishes</span>
+                    <span className="text-right font-semibold">
+                      {activeFinishLabels.join(", ")}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </>
+          ) : (
+            <>
+              <p className="mt-2 font-[family-name:var(--font-heading)] text-2xl font-bold leading-tight">
+                Custom quote
+              </p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                {product.name} — {industry.name}
+              </p>
+            </>
+          )}
+
           <Button asChild size="lg" className="mt-5 w-full">
             <Link href={quoteHref}>
-              Get exact quote <ArrowRight className="h-4 w-4" />
+              {result ? "Get exact quote" : "Request a quote"}{" "}
+              <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>
           <div className="mt-3 flex justify-center">
@@ -216,8 +328,8 @@ export function Estimator({
           </div>
           <p className="mt-4 flex gap-1.5 text-xs text-muted-foreground">
             <Info className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-            This is an indicative estimate. Your final quote depends on exact size,
-            material, artwork and finishing — we confirm it before any production.
+            This is an indicative estimate based on standard specs. Your final quote depends
+            on exact size, material, artwork and finishing — we confirm it before any production.
           </p>
         </div>
       </div>

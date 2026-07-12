@@ -6,7 +6,7 @@ import { BreadcrumbJsonLd } from "@/components/json-ld";
 export const metadata: Metadata = {
   title: "Packaging Price Estimator — Instant Custom Packaging Estimate",
   description:
-    "Estimate the price of custom packaging instantly. Pick packaging type, size, finishes and quantity (MOQ from 300 units) for a price range and per-unit cost, then request an exact quote.",
+    "Estimate the price of custom packaging instantly. Pick your industry, packaging type, size, finishes and quantity for a per-unit and total cost, then request an exact quote.",
   alternates: { canonical: "/estimate" },
   keywords: ["packaging price estimator", "packaging cost calculator", "custom packaging price Pakistan"],
 };
@@ -22,7 +22,7 @@ export default function EstimatePage() {
             Estimate your packaging price in seconds
           </h1>
           <p className="mt-5 max-w-2xl text-lg text-muted-foreground">
-            Choose a packaging type, size, finishes and quantity for an instant price range and per-unit cost. Minimum order is 300 units. When you&apos;re ready, send it through for an exact quote.
+            Choose your industry, packaging type, size, finishes and quantity for an instant per-unit and total price. Minimum order quantities vary by product. When you&apos;re ready, send it through for an exact quote.
           </p>
         </div>
       </section>
