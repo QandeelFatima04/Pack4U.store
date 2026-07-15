@@ -38,7 +38,7 @@ export const packagingTypes: PackagingType[] = [
     estimable: true,
     basePricePerUnit: 38,
     image: "/images/types/boxes.jpg",
-    gallery: ["/images/types/boxes.jpg", ...productImages["retail-boxes"], ...productImages["ecommerce-boxes"]],
+    gallery: ["/images/types/boxes.jpg", ...productImages["honey-box"], ...productImages["essential-oil-boxes"], ...productImages["jewelry-box"], ...productImages["serum-box"]],
     faqs: [
       {
         question: "What box styles can you produce?",
@@ -173,7 +173,7 @@ export const packagingTypes: PackagingType[] = [
     estimable: true,
     basePricePerUnit: 10,
     image: "/images/types/inserts.jpg",
-    gallery: ["/images/types/inserts.jpg", ...productImages["dawlance-kit"]],
+    gallery: ["/images/types/inserts.jpg", ...productImages["welcome-kit"]],
     faqs: [
       { question: "Do inserts come with the box?", answer: "They can. Many brands add a thank-you card and an insert to a box order so the whole unboxing is consistent." },
       { question: "Can you add a QR code or discount code?", answer: "Yes — we print QR codes, unique discount codes and referral links directly on the insert." },
@@ -201,7 +201,7 @@ export const packagingTypes: PackagingType[] = [
     estimable: true,
     basePricePerUnit: 70,
     image: "/images/types/gift-boxes.jpg",
-    gallery: ["/images/types/gift-boxes.jpg", ...productImages["corporate-gift-box"]],
+    gallery: ["/images/types/gift-boxes.jpg", ...productImages["corporate-gift-box"], ...productImages["welcome-kit"]],
     faqs: [
       { question: "What makes a gift box 'rigid'?", answer: "Rigid boxes use a thick grey board wrapped in printed paper — they hold their shape, feel premium and are ideal for gifting and high-value products." },
       { question: "Can you add inserts to hold the products?", answer: "Yes — foam, board or moulded-pulp inserts cut to hold each item so the gift presents perfectly when opened." },

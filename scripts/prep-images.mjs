@@ -24,6 +24,19 @@ const MI = "Sabrina/wetransfer_for-noman_2024-11-20_1244/For Noman/Mists";
 const CB = "Sabrina/wetransfer_for-noman_2024-11-20_1244/For Noman/Corporate Box";
 const DB = "Sabrina/wetransfer_for-noman_2024-11-20_1244/For Noman/Discovery Box";
 
+// Groups below are keyed off what each photo actually shows, identified from the
+// artwork on the box. The IMG_#### source files are unnamed but are not generic:
+// each belongs to a specific job, and several jobs were previously split across
+// slugs (the welcome kit) or merged into one (the editorial shoot).
+//
+// EXCLUDED ON PURPOSE — cannabis/THC, CBD and vape work, which sits outside the
+// industries this site sells to. Do not re-add without updating the industry copy:
+//   PackU/IMG_3065-3068  Delta-9 gummies, cannabis flower, pre-roll dispensers
+//   PackU/IMG_3072, 3077 range shots including a smoke-brand cube
+//   EDit/IMG_3460        line-up including CBD capsules + a vape carton
+//   EDit/IMG_3472        CBD gel capsules
+//   EDit/IMG_3496        smoke-brand box
+
 // target (relative to public/images) -> source (relative to SRC)
 const MAP = {
   "hero/hero-1.jpg": `${PF}/Mumba with box.jpg`,
@@ -33,16 +46,16 @@ const MAP = {
   "industries/cosmetics.jpg": `${PF}/Ezra with box.jpg`,
   "industries/food.jpg": `${PK}/Coffee Box.JPG`,
   "industries/fashion.jpg": `${PK}/Rigid box 2.JPG`,
-  "industries/ecommerce.jpg": `${PK}/IMG_3065.JPG`,
+  "industries/ecommerce.jpg": `${PK}/IMG_3073.JPG`,
   "industries/gift.jpg": `${CB}/_ALI6797.JPG`,
   "industries/retail.jpg": `${PK}/Rigid Box 3.JPG`,
-  "types/boxes.jpg": `${PK}/IMG_3066.JPG`,
+  "types/boxes.jpg": `${PK}/IMG_3075.JPG`,
   "types/paper-bags.jpg": `${PK}/Souvenir bag.JPG`,
   "types/tags-labels.jpg": `${PF}/Kai with box.JPG`,
   "types/sleeves.jpg": `${PF}/Dyar with box.JPG`,
   "types/inserts.jpg": `${PK}/Dawlance insta.jpg`,
   "types/gift-boxes.jpg": `${CB}/_ALI6813.JPG`,
-  "types/food-boxes.jpg": `${PK}/IMG_3094.JPG`,
+  "types/food-boxes.jpg": `${PK}/IMG_3080.JPG`,
 };
 
 // slug -> ALL shots of that product (each becomes products/<slug>/NN.jpg in order)
@@ -50,9 +63,10 @@ const GROUPS = {
   // Cosmetics / fragrance — boxed perfumes (multiple angles where available)
   "perfume-kai": [`${PF}/Kai with box.JPG`, `${PF}/Kai Box.jpeg`],
   "perfume-mulan": [`${PF}/Mulan with box.jpg`, `${PF}/Mulan with box.jpeg`],
-  "perfume-dyar": [`${PF}/Dyar with box.JPG`],
+  "perfume-diyar": [`${PF}/Dyar with box.JPG`],
   "perfume-ezra": [`${PF}/Ezra with box.jpg`],
-  "perfume-mumba": [`${PF}/Mumba with box.jpg`],
+  // "Perfume box.JPG" is the same SKU as "Mumba with box" — a second angle, not its own product.
+  "perfume-mumba": [`${PF}/Mumba with box.jpg`, `${PK}/Perfume box.JPG`],
   "perfume-zaram": [`${PF}/Zaram with box.JPG`],
   // Cosmetics — mist bottle boxes (hi-res multi-angle sets)
   "mist-boomerang-chic": [`${MI}/boomerang chic 1.jpg`, `${MI}/boomerang chic 2.jpg`, `${MI}/boomerang chic 3-2.jpg`, `${MI}/boomerang chic 4.jpg`],
@@ -72,20 +86,25 @@ const GROUPS = {
     `${DB}/WhatsApp Image 2024-11-20 at 5.06.38 PM(1).jpeg`,
     `${DB}/WhatsApp Image 2024-11-20 at 5.06.39 PM.jpeg`,
   ],
-  "dawlance-kit": [`${PK}/Dawlance insta.jpg`, `${PK}/insta page.jpg`],
-  // Boxes / retail / food / fashion
+  // One job, previously split between "dawlance-kit" and 4 shots of "retail-boxes".
+  "welcome-kit": [
+    `${PK}/Dawlance insta.jpg`, `${PK}/insta page.jpg`, `${PK}/IMG_3094.JPG`,
+    `${PK}/IMG_3095.JPG`, `${PK}/IMG_3097.JPG`, `${PK}/IMG_3099.JPG`,
+  ],
+  // Boxes / bags
   "rigid-box": [`${PK}/Rigid box.JPG`, `${PK}/Rigid box 2.JPG`, `${PK}/Rigid Box 3.JPG`, `${PK}/Rigid box 4.JPG`],
   "coffee-box": [`${PK}/Coffee Box.JPG`],
-  "perfume-box": [`${PK}/Perfume box.JPG`],
+  "coffee-variety-kit": [`${PK}/IMG_3080.JPG`, `${PK}/IMG_3081.JPG`],
   "souvenir-bag": [`${PK}/Souvenir bag.JPG`],
-  "ecommerce-boxes": [`${PK}/IMG_3065.JPG`, `${PK}/IMG_3066.JPG`, `${PK}/IMG_3067.JPG`, `${PK}/IMG_3068.JPG`],
-  "product-boxes": [`${PK}/IMG_3072.JPG`, `${PK}/IMG_3073.JPG`, `${PK}/IMG_3075.JPG`, `${PK}/IMG_3077.JPG`],
-  "retail-boxes": [`${PK}/IMG_3080.JPG`, `${PK}/IMG_3081.JPG`, `${PK}/IMG_3094.JPG`, `${PK}/IMG_3095.JPG`, `${PK}/IMG_3097.JPG`, `${PK}/IMG_3099.JPG`],
-  "editorial-packaging": [
-    `${ED}/IMG_3435.JPG`, `${ED}/IMG_3447.JPG`, `${ED}/IMG_3448.JPG`, `${ED}/IMG_3454.JPG`,
-    `${ED}/IMG_3456.JPG`, `${ED}/IMG_3460.JPG`, `${ED}/IMG_3472.JPG`, `${ED}/IMG_3480.JPG`,
-    `${ED}/IMG_3481.JPG`, `${ED}/IMG_3482.JPG`, `${ED}/IMG_3494.JPG`, `${ED}/IMG_3496.JPG`,
+  "jewelry-box": [`${PK}/IMG_3073.JPG`],
+  "honey-box": [`${PK}/IMG_3075.JPG`],
+  // Editorial shoot — was one 12-shot "editorial-packaging" set spanning several jobs.
+  "essential-oil-boxes": [
+    `${ED}/IMG_3435.JPG`, `${ED}/IMG_3454.JPG`, `${ED}/IMG_3456.JPG`,
+    `${ED}/IMG_3480.JPG`, `${ED}/IMG_3481.JPG`, `${ED}/IMG_3482.JPG`,
   ],
+  "date-bar-box": [`${ED}/IMG_3447.JPG`, `${ED}/IMG_3448.JPG`],
+  "serum-box": [`${ED}/IMG_3494.JPG`],
 };
 
 async function exists(p) {

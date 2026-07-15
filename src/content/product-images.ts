@@ -10,14 +10,15 @@ export const productImages: Record<string, string[]> = {
     "/images/products/perfume-mulan/01.jpg",
     "/images/products/perfume-mulan/02.jpg"
   ],
-  "perfume-dyar": [
-    "/images/products/perfume-dyar/01.jpg"
+  "perfume-diyar": [
+    "/images/products/perfume-diyar/01.jpg"
   ],
   "perfume-ezra": [
     "/images/products/perfume-ezra/01.jpg"
   ],
   "perfume-mumba": [
-    "/images/products/perfume-mumba/01.jpg"
+    "/images/products/perfume-mumba/01.jpg",
+    "/images/products/perfume-mumba/02.jpg"
   ],
   "perfume-zaram": [
     "/images/products/perfume-zaram/01.jpg"
@@ -71,9 +72,13 @@ export const productImages: Record<string, string[]> = {
     "/images/products/discovery-box/02.jpg",
     "/images/products/discovery-box/03.jpg"
   ],
-  "dawlance-kit": [
-    "/images/products/dawlance-kit/01.jpg",
-    "/images/products/dawlance-kit/02.jpg"
+  "welcome-kit": [
+    "/images/products/welcome-kit/01.jpg",
+    "/images/products/welcome-kit/02.jpg",
+    "/images/products/welcome-kit/03.jpg",
+    "/images/products/welcome-kit/04.jpg",
+    "/images/products/welcome-kit/05.jpg",
+    "/images/products/welcome-kit/06.jpg"
   ],
   "rigid-box": [
     "/images/products/rigid-box/01.jpg",
@@ -84,44 +89,32 @@ export const productImages: Record<string, string[]> = {
   "coffee-box": [
     "/images/products/coffee-box/01.jpg"
   ],
-  "perfume-box": [
-    "/images/products/perfume-box/01.jpg"
+  "coffee-variety-kit": [
+    "/images/products/coffee-variety-kit/01.jpg",
+    "/images/products/coffee-variety-kit/02.jpg"
   ],
   "souvenir-bag": [
     "/images/products/souvenir-bag/01.jpg"
   ],
-  "ecommerce-boxes": [
-    "/images/products/ecommerce-boxes/01.jpg",
-    "/images/products/ecommerce-boxes/02.jpg",
-    "/images/products/ecommerce-boxes/03.jpg",
-    "/images/products/ecommerce-boxes/04.jpg"
+  "jewelry-box": [
+    "/images/products/jewelry-box/01.jpg"
   ],
-  "product-boxes": [
-    "/images/products/product-boxes/01.jpg",
-    "/images/products/product-boxes/02.jpg",
-    "/images/products/product-boxes/03.jpg",
-    "/images/products/product-boxes/04.jpg"
+  "honey-box": [
+    "/images/products/honey-box/01.jpg"
   ],
-  "retail-boxes": [
-    "/images/products/retail-boxes/01.jpg",
-    "/images/products/retail-boxes/02.jpg",
-    "/images/products/retail-boxes/03.jpg",
-    "/images/products/retail-boxes/04.jpg",
-    "/images/products/retail-boxes/05.jpg",
-    "/images/products/retail-boxes/06.jpg"
+  "essential-oil-boxes": [
+    "/images/products/essential-oil-boxes/01.jpg",
+    "/images/products/essential-oil-boxes/02.jpg",
+    "/images/products/essential-oil-boxes/03.jpg",
+    "/images/products/essential-oil-boxes/04.jpg",
+    "/images/products/essential-oil-boxes/05.jpg",
+    "/images/products/essential-oil-boxes/06.jpg"
   ],
-  "editorial-packaging": [
-    "/images/products/editorial-packaging/01.jpg",
-    "/images/products/editorial-packaging/02.jpg",
-    "/images/products/editorial-packaging/03.jpg",
-    "/images/products/editorial-packaging/04.jpg",
-    "/images/products/editorial-packaging/05.jpg",
-    "/images/products/editorial-packaging/06.jpg",
-    "/images/products/editorial-packaging/07.jpg",
-    "/images/products/editorial-packaging/08.jpg",
-    "/images/products/editorial-packaging/09.jpg",
-    "/images/products/editorial-packaging/10.jpg",
-    "/images/products/editorial-packaging/11.jpg",
-    "/images/products/editorial-packaging/12.jpg"
+  "date-bar-box": [
+    "/images/products/date-bar-box/01.jpg",
+    "/images/products/date-bar-box/02.jpg"
+  ],
+  "serum-box": [
+    "/images/products/serum-box/01.jpg"
   ]
 };
