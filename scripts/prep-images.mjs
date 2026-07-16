@@ -37,6 +37,9 @@ const DB = "Sabrina/wetransfer_for-noman_2024-11-20_1244/For Noman/Discovery Box
 //   EDit/IMG_3472        CBD gel capsules
 //   EDit/IMG_3496        smoke-brand box
 
+// NOTE: public/images/process/* is not produced here — those four step photos are
+// not from the photoshoot and are committed already optimized.
+
 // target (relative to public/images) -> source (relative to SRC)
 const MAP = {
   "hero/hero-1.jpg": `${PF}/Mumba with box.jpg`,

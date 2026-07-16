@@ -34,10 +34,34 @@ const heroImages = [
 ];
 
 const steps = [
-  { icon: PencilRuler, title: "Share your product & requirement", text: "Tell us what you sell, your quantity, size, budget and goal." },
-  { icon: Layers, title: "Get structure & material advice", text: "We recommend the right paper, type, printing and finish." },
-  { icon: PackageCheck, title: "Finalize specs or prototype", text: "We align on size, artwork, finishing and feasibility." },
-  { icon: Truck, title: "Production & delivery", text: "Produced to the agreed spec and delivered for use." },
+  {
+    icon: PencilRuler,
+    title: "Share your product & requirement",
+    text: "Tell us what you sell, your quantity, size, budget and goal.",
+    image: "/images/process/step-1.jpg",
+    imageAlt: "Packaging sketches in a notebook beside sample kraft and white boxes",
+  },
+  {
+    icon: Layers,
+    title: "Get structure & material advice",
+    text: "We recommend the right paper, type, printing and finish.",
+    image: "/images/process/step-2.jpg",
+    imageAlt: "Flat box dieline with a fan of kraft, board and corrugated paper swatches",
+  },
+  {
+    icon: PackageCheck,
+    title: "Finalize specs or prototype",
+    text: "We align on size, artwork, finishing and feasibility.",
+    image: "/images/process/step-3.jpg",
+    imageAlt: "Box prototype on its dieline drawing with foil finish swatches and a ruler",
+  },
+  {
+    icon: Truck,
+    title: "Production & delivery",
+    text: "Produced to the agreed spec and delivered for use.",
+    image: "/images/process/step-4.jpg",
+    imageAlt: "Sealed cartons moving along a conveyor at a packing warehouse",
+  },
 ];
 
 export default function HomePage() {
@@ -163,13 +187,24 @@ export default function HomePage() {
           <StaggerIn className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" delay={0.05}>
             {steps.map((s, i) => (
               <StaggerItem key={s.title}>
-                <div className="h-full rounded-2xl border bg-card p-6">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-brand/10 text-brand">
-                    <s.icon className="h-5 w-5" />
+                <div className="h-full overflow-hidden rounded-2xl border bg-card">
+                  <div className="relative aspect-[4/3] w-full">
+                    <Image
+                      src={s.image}
+                      alt={s.imageAlt}
+                      fill
+                      sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                      className="object-cover"
+                    />
                   </div>
-                  <p className="mt-4 text-xs font-bold text-brand">Step {i + 1}</p>
-                  <h3 className="mt-1 font-semibold">{s.title}</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">{s.text}</p>
+                  <div className="p-6">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-brand/10 text-brand">
+                      <s.icon className="h-5 w-5" />
+                    </div>
+                    <p className="mt-4 text-xs font-bold text-brand">Step {i + 1}</p>
+                    <h3 className="mt-1 font-semibold">{s.title}</h3>
+                    <p className="mt-1 text-sm text-muted-foreground">{s.text}</p>
+                  </div>
                 </div>
               </StaggerItem>
             ))}
