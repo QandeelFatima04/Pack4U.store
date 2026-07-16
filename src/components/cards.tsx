@@ -51,7 +51,7 @@ export function ProjectCard({ project }: { project: Project }) {
       <div className="relative">
         <ProductGallery
           images={project.images.length ? project.images : [""]}
-          alt={`${project.client} — ${project.product}`}
+          alt={`${project.product} — ${project.client}`}
           className="rounded-none border-0"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
@@ -65,9 +65,9 @@ export function ProjectCard({ project }: { project: Project }) {
           <Badge variant="secondary">{project.packagingType}</Badge>
         </div>
         <h3 className="mt-3 font-[family-name:var(--font-heading)] text-base font-bold">
-          {project.client}
+          {project.product}
         </h3>
-        <p className="mt-1 text-sm text-muted-foreground">{project.product}</p>
+        <p className="mt-1 text-sm text-muted-foreground">{project.client}</p>
         <p className="mt-3 flex-1 text-sm text-muted-foreground">{project.outcome}</p>
         <dl className="mt-4 grid grid-cols-2 gap-2 border-t pt-3 text-xs text-muted-foreground">
           <div>
