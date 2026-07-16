@@ -59,7 +59,7 @@ export const faqs: Faq[] = [
     category: "Pricing & MOQ",
     question: "What is your minimum order quantity (MOQ)?",
     answer:
-      "Our practical minimum is 300–500 units for most custom-printed packaging. Rigid/premium boxes can run lower at a higher per-unit cost.",
+      "It depends on the product. Boxes, bags, inserts and rigid gift boxes start at 500 units; corrugated mailers and food boxes at 1,000–2,000; tags, labels and sleeves at 5,000. The estimator shows the exact minimum once you pick your industry, product and size.",
   },
   {
     category: "Pricing & MOQ",

@@ -6,7 +6,7 @@ import { packagingTypes } from "@/content/packaging-types";
 import { consultationTopics } from "@/content/consultation";
 import { projects } from "@/content/portfolio";
 import { faqs, faqCategories } from "@/content/faqs";
-import { pricingTiers, guarantees, estimatorConfig } from "@/content/pricing";
+import { pricingTiers, guarantees } from "@/content/pricing";
 import { blogPosts } from "@/content/blog";
 import type {
   IndustrySlug,
@@ -47,9 +47,9 @@ export const getFeaturedProjects = () => projects.filter((p) => p.featured);
 export const getFaqs = () => faqs;
 export { faqCategories };
 
-// Offers / estimator config
+// Offers
 export const getPricingTiers = () => pricingTiers;
-export { guarantees, estimatorConfig };
+export { guarantees };
 
 // Blog
 export const getBlogPosts = () =>

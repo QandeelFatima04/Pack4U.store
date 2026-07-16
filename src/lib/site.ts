@@ -19,8 +19,9 @@ export const site = {
   city: "Pakistan",
   country: "Pakistan",
   address: "Pakistan", // TODO confirm full address
-  // MOQ floor used across the site (estimator + quote guidance)
-  minMoq: 300,
+  // Lowest MOQ in the pricing sheet (inserts, cards, boxes). Most products sit higher —
+  // tags and sleeves start at 5,000 — so quote a product's own MOQ where one is known.
+  minMoq: 500,
   social: {
     instagram: "https://www.instagram.com/pack4u.store/",
     facebook: "https://www.facebook.com/pack4u.store",

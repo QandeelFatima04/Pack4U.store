@@ -81,10 +81,18 @@ export type PackagingType = {
   // Estimator inputs
   estimable: boolean;
   /**
-   * PKR, Medium size, 300–500 tier, no finishes. Omit when there is no real rate yet —
-   * the tile and landing page hide the price rather than show an invented one.
+   * PKR per unit — the lowest rate this type reaches anywhere in the pricing sheet
+   * (Small size, no paid finishes), since it is shown as "From <x>/unit". Omit when
+   * the sheet carries no rate: the tile and landing page then read "Custom-quoted"
+   * rather than showing an invented figure.
    */
   basePricePerUnit?: number;
+  /**
+   * Lowest MOQ this type reaches in the pricing sheet. Varies sharply by type —
+   * boxes start at 500, tags and sleeves not until 5,000 — so there is no single
+   * site-wide floor to quote here.
+   */
+  startingMoq?: number;
   image?: string;
   gallery?: string[];
   /** Names the project pictured on the tile, so the photo is identified without renaming the category. */
@@ -186,23 +194,5 @@ export type BlogPost = {
   seo?: Seo;
 };
 
-// ── Estimator pricing model ───────────────────────────────────────────────
-export type QuantityTier = {
-  id: string;
-  label: string;
-  min: number;
-  factor: number; // per-unit multiplier (lower = cheaper at higher volume)
-};
-
-export type SizeBand = { id: string; label: string; factor: number };
-
-export type Finish = { id: string; label: string; factor: number; note?: string };
-
-export type EstimatorConfig = {
-  quantityTiers: QuantityTier[];
-  sizeBands: SizeBand[];
-  finishes: Finish[];
-  setupFee: number; // one-time plates/die cost, PKR
-  rangeSpread: number; // ± fraction applied to the estimate
-  currency: string;
-};
+// The estimator's pricing model lives in content/estimator-pricing.ts, typed there
+// against the pricing sheet's real per-industry MOQs and rates.

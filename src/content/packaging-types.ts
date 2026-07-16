@@ -1,6 +1,10 @@
 import type { PackagingType } from "./types";
 import { productImages } from "./product-images";
 
+// basePricePerUnit / startingMoq are the lowest figures each type reaches across the
+// pricing sheet (Sheet3), since both are shown as "From <x>". The estimator quotes the
+// exact per-industry, per-size rate — see content/estimator-pricing.ts.
+
 export const packagingTypes: PackagingType[] = [
   {
     slug: "custom-boxes",
@@ -36,7 +40,8 @@ export const packagingTypes: PackagingType[] = [
       "Corrugated (shipping-grade)",
     ],
     estimable: true,
-    basePricePerUnit: 38,
+    basePricePerUnit: 40,
+    startingMoq: 500,
     image: "/images/types/boxes.jpg",
     gallery: ["/images/types/boxes.jpg", ...productImages["honey-box"], ...productImages["essential-oil-boxes"], ...productImages["jewelry-box"], ...productImages["serum-box"]],
     faqs: [
@@ -52,7 +57,7 @@ export const packagingTypes: PackagingType[] = [
       },
       {
         question: "What is the minimum order for custom boxes?",
-        answer: "Our practical minimum is 300–500 units. Lower quantities are possible for rigid boxes but the per-unit cost rises.",
+        answer: "Most custom boxes start at 500 units. Corrugated and shipping-grade mailers start at 1,000, and food boxes at 1,000–2,000 depending on the style.",
       },
     ],
     seo: {
@@ -84,7 +89,8 @@ export const packagingTypes: PackagingType[] = [
     ],
     materialOptions: ["Kraft paper", "Art / coated paper", "Recycled paper", "Textured / premium paper"],
     estimable: true,
-    basePricePerUnit: 32,
+    basePricePerUnit: 30,
+    startingMoq: 500,
     image: "/images/types/paper-bags.jpg",
     gallery: ["/images/types/paper-bags.jpg", ...productImages["souvenir-bag"]],
     faqs: [
@@ -96,7 +102,7 @@ export const packagingTypes: PackagingType[] = [
         question: "Can paper bags carry heavier products?",
         answer: "Yes — we step up paper GSM and add a reinforced top fold and base board for heavier or premium products.",
       },
-      { question: "Minimum order for paper bags?", answer: "Typically 300–500 bags for custom-printed orders." },
+      { question: "Minimum order for paper bags?", answer: "Card bags start at 500 for cosmetics and gifting. Paper, delivery and food bags start at 1,000–2,000 depending on the type." },
     ],
     seo: {
       seoTitle: "Custom Bags Pakistan — Branded Shopping & Gift Bags",
@@ -118,7 +124,8 @@ export const packagingTypes: PackagingType[] = [
     customizationOptions: ["Full-colour printing", "Foil stamping", "Emboss / deboss", "Custom die-cut shape", "String / eyelet", "Spot UV"],
     materialOptions: ["Art card", "Kraft card", "Textured / cotton card", "Adhesive label stock"],
     estimable: true,
-    basePricePerUnit: 9,
+    basePricePerUnit: 8,
+    startingMoq: 5000,
     image: "/images/types/tags-labels.jpg",
     // types/tags-labels.jpg is the same photograph as perfume-kai/01, so it's left out
     // of the gallery rather than shown twice. It still serves as the page hero above.
@@ -126,7 +133,7 @@ export const packagingTypes: PackagingType[] = [
     faqs: [
       { question: "Can tags match my box and bag?", answer: "Yes — we keep stock, colour and finish consistent across your full packaging set so everything looks like one brand." },
       { question: "Do you add strings and eyelets?", answer: "Yes, we supply tags with eyelets and string in your chosen colour, ready to attach." },
-      { question: "Minimum order for tags & labels?", answer: "Tags and labels usually start at 300–500 pieces, often combined with a box or bag order." },
+      { question: "Minimum order for tags & labels?", answer: "Tags and labels start at 5,000 pieces. They print many-up on a sheet, so the run has to be long enough to be worth a plate — which is also why the per-unit cost is the lowest of anything we make." },
     ],
     seo: {
       seoTitle: "Custom Tags & Labels Pakistan — Hang Tags, Price Tags, Stickers",
@@ -148,13 +155,14 @@ export const packagingTypes: PackagingType[] = [
     customizationOptions: ["Full-colour printing", "Foil stamping", "Emboss / deboss", "Matte / gloss lamination", "Custom width & wrap"],
     materialOptions: ["Art / coated paper", "Kraft paper", "Recycled paper", "Textured paper"],
     estimable: true,
-    basePricePerUnit: 12,
+    basePricePerUnit: 10,
+    startingMoq: 5000,
     image: "/images/types/sleeves.jpg",
     gallery: ["/images/types/sleeves.jpg", ...productImages["mist-blank-spell"]],
     faqs: [
       { question: "Why choose a sleeve over a printed box?", answer: "Sleeves let you keep a plain or stock box and add full branding on the wrap — a lower-cost route to a premium look, and easy to update per season." },
       { question: "Can you make sleeves for an existing box?", answer: "Yes. Send the box dimensions or a sample and we cut the sleeve to fit." },
-      { question: "Minimum order?", answer: "Sleeves and belly bands typically start at 300–500 units." },
+      { question: "Minimum order?", answer: "Sleeves and belly bands start at 5,000 units. The per-unit cost is low, but the run is long — if you need a smaller quantity, an insert or a printed box is usually the better route." },
     ],
     seo: {
       seoTitle: "Custom Sleeves & Belly Bands Pakistan",
@@ -176,13 +184,14 @@ export const packagingTypes: PackagingType[] = [
     customizationOptions: ["Full-colour printing", "Foil stamping", "Emboss / deboss", "Spot UV", "Custom size & fold", "QR codes"],
     materialOptions: ["Art card", "Kraft card", "Textured / cotton card", "Recycled card"],
     estimable: true,
-    basePricePerUnit: 10,
+    basePricePerUnit: 30,
+    startingMoq: 500,
     image: "/images/types/inserts.jpg",
     gallery: ["/images/types/inserts.jpg", ...productImages["welcome-kit"]],
     faqs: [
       { question: "Do inserts come with the box?", answer: "They can. Many brands add a thank-you card and an insert to a box order so the whole unboxing is consistent." },
       { question: "Can you add a QR code or discount code?", answer: "Yes — we print QR codes, unique discount codes and referral links directly on the insert." },
-      { question: "Minimum order?", answer: "Inserts and cards typically start at 300–500 pieces." },
+      { question: "Minimum order?", answer: "Inserts and cards start at 500 pieces — the lowest minimum we run, which is why they are a common first step into branded packaging." },
     ],
     seo: {
       seoTitle: "Custom Inserts & Thank-You Cards Pakistan",
@@ -205,13 +214,14 @@ export const packagingTypes: PackagingType[] = [
     customizationOptions: ["Full-colour or special-colour printing", "Foil stamping", "Emboss / deboss", "Magnetic closure", "Custom foam / board inserts", "Ribbon & magnetic flaps"],
     materialOptions: ["Rigid / grey board wrapped in art paper", "Specialty / textured wrap", "Recycled rigid board"],
     estimable: true,
-    basePricePerUnit: 70,
+    basePricePerUnit: 200,
+    startingMoq: 500,
     image: "/images/types/gift-boxes.jpg",
     gallery: ["/images/types/gift-boxes.jpg", ...productImages["corporate-gift-box"], ...productImages["welcome-kit"]],
     faqs: [
       { question: "What makes a gift box 'rigid'?", answer: "Rigid boxes use a thick grey board wrapped in printed paper — they hold their shape, feel premium and are ideal for gifting and high-value products." },
       { question: "Can you add inserts to hold the products?", answer: "Yes — foam, board or moulded-pulp inserts cut to hold each item so the gift presents perfectly when opened." },
-      { question: "Minimum order for rigid gift boxes?", answer: "Rigid boxes can run from lower quantities, but 300+ gives the best per-unit cost." },
+      { question: "Minimum order for rigid gift boxes?", answer: "Rigid gift boxes start at 500 units. They cost more per unit than folding cartons because the board is hand-wrapped, and the per-unit price drops as the run grows." },
     ],
     seo: {
       seoTitle: "Custom Gift Boxes & Rigid Packaging Pakistan",
@@ -233,13 +243,14 @@ export const packagingTypes: PackagingType[] = [
     customizationOptions: ["Full-colour printing", "Food-suitable coatings", "Window cut-out", "Custom die-cut shape", "Inserts & dividers"],
     materialOptions: ["Food-grade board", "Kraft board", "Greaseproof-lined board", "Corrugated (for heavier items)"],
     estimable: true,
-    basePricePerUnit: 30,
+    basePricePerUnit: 12,
+    startingMoq: 1000,
     image: "/images/types/food-boxes.jpg",
     gallery: ["/images/types/food-boxes.jpg", ...productImages["coffee-box"]],
     faqs: [
       { question: "Are the boxes food-safe?", answer: "We use food-suitable boards and coatings and advise the right liner for your product. Tell us what goes inside and we recommend a safe, practical option." },
       { question: "Can you add a window?", answer: "Yes — clear window cut-outs let customers see the product, popular for bakery and dessert boxes." },
-      { question: "Minimum order for food boxes?", answer: "Custom-printed food boxes typically start at 300–500 units." },
+      { question: "Minimum order for food boxes?", answer: "Custom-printed food boxes start at 1,000 units. Burger and cake boxes in the bakery range start at 2,000." },
     ],
     seo: {
       seoTitle: "Custom Food & Bakery Boxes Pakistan",

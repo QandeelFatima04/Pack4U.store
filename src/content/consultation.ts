@@ -40,7 +40,7 @@ export const consultationTopics: ConsultationTopic[] = [
     ],
     faqs: [
       { question: "I don't have artwork yet — can you still help?", answer: "Yes. We help you decide structure, material and size first, and can guide you on artwork or work with your designer." },
-      { question: "What's the smallest order I can start with?", answer: "Our practical floor is 300–500 units. We help you pick a starting format that keeps first-order cost sensible." },
+      { question: "What's the smallest order I can start with?", answer: "500 units — inserts, thank-you cards, boxes, bags and rigid gift boxes all start there. We help you pick a starting format that keeps first-order cost sensible." },
       { question: "Is the consultation free?", answer: "The initial discovery call is free. If you move to production, it folds straight into your project." },
     ],
     cta: {

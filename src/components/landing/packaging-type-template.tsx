@@ -43,9 +43,12 @@ export function PackagingTypeTemplate({ type }: { type: PackagingType }) {
             </h1>
             <p className="mt-5 max-w-xl text-lg text-muted-foreground">{type.heroSub}</p>
             <p className="mt-4 text-sm font-semibold text-brand">
-              {type.basePricePerUnit
-                ? `From ${formatPKR(type.basePricePerUnit)}/unit · MOQ from 300 units`
-                : "Custom-quoted · MOQ from 300 units"}
+              {[
+                type.basePricePerUnit ? `From ${formatPKR(type.basePricePerUnit)}/unit` : "Custom-quoted",
+                type.startingMoq ? `MOQ from ${type.startingMoq.toLocaleString()} units` : null,
+              ]
+                .filter(Boolean)
+                .join(" · ")}
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg">
@@ -130,7 +133,7 @@ export function PackagingTypeTemplate({ type }: { type: PackagingType }) {
           <SectionHeading
             eyebrow="Instant estimate"
             title={`Estimate your ${type.shortName.toLowerCase()} price`}
-            subtitle="Pick size, finishes and quantity for an instant price range. MOQ starts at 300 units."
+            subtitle="Pick your industry, size, finishes and quantity for an instant price range. The minimum order shown updates with your selection."
           />
           <div className="mt-10">
             <Estimator defaultTypeSlug={type.slug} />

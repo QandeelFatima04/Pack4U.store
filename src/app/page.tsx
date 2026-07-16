@@ -78,7 +78,7 @@ export default function HomePage() {
             <AnimatedLine delay={1.3}>
               <dl className="mt-12 flex flex-wrap gap-x-10 gap-y-5">
                 {[
-                  { label: "MOQ from", value: "300 units" },
+                  { label: "MOQ from", value: "500 units" },
                   { label: "Lead time", value: "7–15 days" },
                   { label: "Industries", value: "6+ served" },
                   { label: "Made in", value: site.country },
@@ -191,7 +191,7 @@ export default function HomePage() {
                   Get a price before you talk to anyone
                 </h2>
                 <p className="mt-4 text-muted-foreground">
-                  Use our estimator to get an instant price range and per-unit cost — pick your packaging type, size, finishes and quantity. MOQ starts at 300 units.
+                  Use our estimator to get an instant price range and per-unit cost — pick your industry, packaging type, size, finishes and quantity. Minimums start at 500 units and vary by product.
                 </p>
                 <div className="mt-6">
                   <Button asChild size="lg"><Link href="/estimate"><Calculator className="h-4 w-4" /> Open the estimator</Link></Button>

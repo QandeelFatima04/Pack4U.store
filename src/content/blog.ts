@@ -31,7 +31,7 @@ Printing, lamination, foil, emboss and window cut-outs all add cost. Pick the on
 
 ## 5. Confirm quantity and MOQ
 
-Most custom packaging starts at 300–500 units, and the per-unit cost drops as quantity rises. Use our [price estimator](/estimate) to see the trade-off before you commit.
+Minimums vary by product: boxes, bags and inserts start at 500 units, food boxes at 1,000–2,000, and tags, labels and sleeves at 5,000. The per-unit cost drops as quantity rises. Use our [price estimator](/estimate) to see the trade-off before you commit.
 
 Still unsure? [Start a packaging consultation](/packaging-for-startups) and we'll recommend a direction for your product and budget.`,
     seo: {
@@ -130,7 +130,7 @@ Want a specific number? [Send us your current spec](/packaging-cost-optimization
 
 - **What you're packaging** — the product, and ideally its dimensions (or send a sample).
 - **Packaging type** — box, bag, tag, sleeve, insert, gift box… or "not sure" if you want advice.
-- **Quantity** — even a rough range. Remember most custom packaging starts at 300–500 units.
+- **Quantity** — even a rough range. Remember minimums start at 500 units and vary by product.
 - **Finishes** — any must-haves like printing, foil, emboss, window or die-cut.
 - **Artwork** — do you have print-ready artwork, a logo only, or need help?
 - **Deadline** — especially if it's tied to a launch or event date.
@@ -313,7 +313,7 @@ Approving artwork on screen and going straight to bulk leads to surprises. Alway
 
 ## Ignoring MOQ economics
 
-Ordering too few units makes the per-unit cost painful. Understand the 300–500 floor and the tiers above it.
+Ordering too few units makes the per-unit cost painful — and some products cannot be ordered short at all. Check the minimum for the specific item you want: 500 units for boxes and inserts, but 5,000 for tags and sleeves.
 
 ## No plan for reorders
 
@@ -345,7 +345,7 @@ Avoid all five: [start with a consultation](/packaging-for-startups) before you 
 - **Fit confirmed** — the product sits snugly, with an insert if needed.
 - **Artwork print-ready** — correct dimensions, bleed and colours.
 - **Sample approved** — you've held a physical sample of the final spec.
-- **MOQ and per-unit cost** understood (remember the 300–500 floor).
+- **MOQ and per-unit cost** understood (minimums start at 500 units and vary by product).
 - **Timeline locked** — production fits your launch date with buffer.
 - **Reorder spec saved** — so the next run matches the first.
 

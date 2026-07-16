@@ -325,7 +325,7 @@ export function QuoteForm() {
       </fieldset>
 
       <p className="text-xs text-muted-foreground">
-        Provide a WhatsApp number or email so we can send your quote. Most custom packaging starts at 300–500 units.
+        Provide a WhatsApp number or email so we can send your quote. Minimums start at 500 units and vary by product.
       </p>
       <Button type="submit" size="lg" disabled={loading} className="w-full sm:w-auto">
         {loading ? "Sending…" : "Get my packaging quote"}

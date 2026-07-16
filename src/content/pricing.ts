@@ -1,4 +1,4 @@
-import type { PricingTier, EstimatorConfig } from "./types";
+import type { PricingTier } from "./types";
 
 // "Ways to start" — buying frames, not fixed SKU prices (blueprint §6 offer architecture).
 export const pricingTiers: PricingTier[] = [
@@ -55,31 +55,3 @@ export const guarantees: string[] = [
   "A revision round included before production",
   "Single vendor for design, print and bulk delivery",
 ];
-
-// ── Estimator pricing model ───────────────────────────────────────────────
-// Placeholder multipliers — replace basePricePerUnit + factors with real costs
-// before launch. MOQ floor is 300 units (lowest selectable tier is 300–500).
-export const estimatorConfig: EstimatorConfig = {
-  currency: "PKR",
-  setupFee: 4000,
-  rangeSpread: 0.15,
-  quantityTiers: [
-    { id: "300-500", label: "300 – 500", min: 300, factor: 1.0 },
-    { id: "500-1000", label: "500 – 1,000", min: 500, factor: 0.86 },
-    { id: "1000-5000", label: "1,000 – 5,000", min: 1000, factor: 0.72 },
-    { id: "5000+", label: "5,000+", min: 5000, factor: 0.6 },
-  ],
-  sizeBands: [
-    { id: "s", label: "Small", factor: 0.8 },
-    { id: "m", label: "Medium", factor: 1.0 },
-    { id: "l", label: "Large", factor: 1.35 },
-  ],
-  finishes: [
-    { id: "printing", label: "Full-colour printing", factor: 1.15 },
-    { id: "lamination", label: "Matte / gloss lamination", factor: 1.08 },
-    { id: "foiling", label: "Foil stamping", factor: 1.22 },
-    { id: "emboss", label: "Emboss / deboss", factor: 1.18 },
-    { id: "window", label: "Window cut-out", factor: 1.12 },
-    { id: "die-cut", label: "Custom die-cut shape", factor: 1.16 },
-  ],
-};
