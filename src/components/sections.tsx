@@ -79,11 +79,14 @@ export function PricingTiers() {
             tier.highlight && "border-brand ring-2 ring-brand/20 shadow-lg",
           )}
         >
-          {tier.highlight && (
-            <span className="mb-3 inline-flex w-fit rounded-full bg-brand/10 px-3 py-1 text-xs font-semibold text-brand">
-              Most popular
-            </span>
-          )}
+          {/* Reserved even when empty, so every tier's title starts on the same line. */}
+          <div className="mb-3 h-6">
+            {tier.highlight && (
+              <span className="inline-flex w-fit rounded-full bg-brand/10 px-3 py-1 text-xs font-semibold text-brand">
+                Most popular
+              </span>
+            )}
+          </div>
           <h3 className="font-[family-name:var(--font-heading)] text-xl font-bold">
             {tier.name}
           </h3>
@@ -92,7 +95,8 @@ export function PricingTiers() {
             {tier.priceHint}
           </p>
           <p className="mt-2 text-sm text-muted-foreground">{tier.positioning}</p>
-          <ul className="mt-5 space-y-2.5">
+          {/* flex-1 absorbs the uneven bullet counts so every CTA lands on the same row. */}
+          <ul className="mt-5 flex-1 space-y-2.5">
             {tier.includes.map((inc) => (
               <li key={inc} className="flex gap-2 text-sm">
                 <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand" />

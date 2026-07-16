@@ -19,7 +19,7 @@ export const projects: Project[] = [
     industry: "Gift",
     packagingType: "Gift Boxes",
     filters: ["Gift", "Gift Boxes", "Boxes", "Cosmetics"],
-    product: "Corporate gift box",
+    product: "Corporate Boxes",
     material: "Rigid board, magnetic closure",
     customization: ["Rigid magnetic box", "Full-bleed printed interior", "Fitted insert", "Soft-touch finish"],
     quantityRange: "300–500",

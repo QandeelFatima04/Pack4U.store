@@ -7,7 +7,7 @@ export const industriesNav: NavLink[] = [
   { label: "Fashion & Accessories", href: "/custom-fashion-packaging" },
   { label: "E-commerce & D2C", href: "/custom-ecommerce-packaging" },
   { label: "Gift Packaging", href: "/custom-gift-packaging" },
-  { label: "Retail Packaging", href: "/custom-retail-packaging" },
+  { label: "Rigid Box", href: "/custom-rigid-boxes" },
 ];
 
 // Packaging type pages (blueprint §4)
@@ -19,6 +19,8 @@ export const packagingTypesNav: NavLink[] = [
   { label: "Inserts & Thank-You Cards", href: "/custom-inserts-thank-you-cards" },
   { label: "Gift Boxes", href: "/custom-gift-boxes" },
   { label: "Food Boxes", href: "/custom-food-boxes" },
+  { label: "Essential Oil Boxes", href: "/custom-essential-oil-boxes" },
+  { label: "Mist Bottle Sleeves & Packaging", href: "/custom-mist-bottle-packaging" },
 ];
 
 // Packaging consultation pages (blueprint §4)

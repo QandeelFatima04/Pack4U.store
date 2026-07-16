@@ -16,22 +16,25 @@ export function PackagingTypeCard({ type }: { type: PackagingType }) {
     <div className="group flex h-full flex-col overflow-hidden rounded-2xl border bg-card transition hover:shadow-lg hover:shadow-black/5">
       <ProductGallery
         images={gallery}
-        alt={type.name}
+        alt={type.galleryCaption ?? type.name}
         fit="cover"
         aspect="aspect-[4/3]"
         className="rounded-none border-0 bg-white"
         sizes="(max-width: 768px) 100vw, 33vw"
       />
       <div className="flex flex-1 flex-col p-5">
-        <h3 className="font-[family-name:var(--font-heading)] text-lg font-semibold leading-tight">
+        {type.galleryCaption && (
+          <p className="text-xs font-medium text-muted-foreground">{type.galleryCaption}</p>
+        )}
+        <h3 className="mt-1 font-[family-name:var(--font-heading)] text-lg font-semibold leading-tight">
           <Link href={`/${type.slug}`} className="hover:text-brand">
-            {type.name}
+            {type.tileLabel ?? type.name}
           </Link>
         </h3>
         <p className="mt-1 text-sm text-muted-foreground">{type.tagline}</p>
         <div className="mt-auto flex items-center justify-between gap-2 pt-4">
           <span className="text-sm font-semibold text-brand">
-            From {formatPKR(type.basePricePerUnit)}/unit
+            {type.basePricePerUnit ? `From ${formatPKR(type.basePricePerUnit)}/unit` : "Custom-quoted"}
           </span>
           <Link href={`/${type.slug}`} className="inline-flex items-center gap-1 text-sm font-semibold group-hover:gap-2">
             View <ArrowRight className="h-4 w-4 transition-all" />

@@ -48,7 +48,7 @@ const MAP = {
   "industries/fashion.jpg": `${PK}/Rigid box 2.JPG`,
   "industries/ecommerce.jpg": `${PK}/IMG_3073.JPG`,
   "industries/gift.jpg": `${CB}/_ALI6797.JPG`,
-  "industries/retail.jpg": `${PK}/Rigid Box 3.JPG`,
+  "industries/rigid-box.jpg": `${PK}/Rigid Box 3.JPG`,
   "types/boxes.jpg": `${PK}/IMG_3075.JPG`,
   "types/paper-bags.jpg": `${PK}/Souvenir bag.JPG`,
   "types/tags-labels.jpg": `${PF}/Kai with box.JPG`,
@@ -61,7 +61,8 @@ const MAP = {
 // slug -> ALL shots of that product (each becomes products/<slug>/NN.jpg in order)
 const GROUPS = {
   // Cosmetics / fragrance — boxed perfumes (multiple angles where available)
-  "perfume-kai": [`${PF}/Kai with box.JPG`, `${PF}/Kai Box.jpeg`],
+  // "Kai Box" leads: the styled hero shot, vs the plain white-background angle.
+  "perfume-kai": [`${PF}/Kai Box.jpeg`, `${PF}/Kai with box.JPG`],
   "perfume-mulan": [`${PF}/Mulan with box.jpg`, `${PF}/Mulan with box.jpeg`],
   "perfume-diyar": [`${PF}/Dyar with box.JPG`],
   "perfume-ezra": [`${PF}/Ezra with box.jpg`],
@@ -76,9 +77,11 @@ const GROUPS = {
   "mist-designer-crime": [`${MI}/designer crime 1.jpg`, `${MI}/designer crime 2.jpg`],
   "mist-drop-beat": [`${MI}/drop beat 1 .jpg`, `${MI}/drop beat 2.jpg`, `${MI}/drop beat 3-2.jpg`],
   // Gift / corporate
+  // _ALI6801 leads: the full open-box hero showing the insert, candle and parfum.
   "corporate-gift-box": [
+    `${CB}/_ALI6801.JPG`,
     `${CB}/_ALI6778.JPG`, `${CB}/_ALI6779.JPG`, `${CB}/_ALI6793.JPG`, `${CB}/_ALI6797.JPG`,
-    `${CB}/_ALI6801.JPG`, `${CB}/_ALI6813.JPG`, `${CB}/_ALI6828.JPG`, `${CB}/_ALI6840.JPG`,
+    `${CB}/_ALI6813.JPG`, `${CB}/_ALI6828.JPG`, `${CB}/_ALI6840.JPG`,
     `${CB}/_ALI6848.JPG`, `${CB}/_ALI6859.JPG`, `${CB}/_ALI6864.JPG`, `${CB}/_ALI6872.JPG`,
   ],
   "discovery-box": [

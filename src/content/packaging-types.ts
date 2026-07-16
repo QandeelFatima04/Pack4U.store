@@ -66,6 +66,9 @@ export const packagingTypes: PackagingType[] = [
     slug: "custom-paper-bags",
     name: "Custom Bags",
     shortName: "Bags",
+    // Tile only, by request. Nav, /custom-paper-bags, the estimator and the quote
+    // form all still read "Custom Bags" — the mismatch is intentional.
+    tileLabel: "Souvenir bag",
     tagline: "Branded shopping & gift bags customers carry home",
     heroHeadline: "Custom Bags for Retail & Gifting",
     heroSub:
@@ -117,7 +120,9 @@ export const packagingTypes: PackagingType[] = [
     estimable: true,
     basePricePerUnit: 9,
     image: "/images/types/tags-labels.jpg",
-    gallery: ["/images/types/tags-labels.jpg", ...productImages["perfume-kai"], ...productImages["perfume-mulan"]],
+    // types/tags-labels.jpg is the same photograph as perfume-kai/01, so it's left out
+    // of the gallery rather than shown twice. It still serves as the page hero above.
+    gallery: [...productImages["perfume-kai"], ...productImages["perfume-mulan"]],
     faqs: [
       { question: "Can tags match my box and bag?", answer: "Yes — we keep stock, colour and finish consistent across your full packaging set so everything looks like one brand." },
       { question: "Do you add strings and eyelets?", answer: "Yes, we supply tags with eyelets and string in your chosen colour, ready to attach." },
@@ -190,6 +195,7 @@ export const packagingTypes: PackagingType[] = [
     slug: "custom-gift-boxes",
     name: "Custom Gift Boxes",
     shortName: "Gift Boxes",
+    galleryCaption: "Corporate Boxes",
     tagline: "Premium rigid & magnetic boxes for gifting",
     heroHeadline: "Custom Gift Boxes & Rigid Packaging",
     heroSub:
@@ -240,6 +246,67 @@ export const packagingTypes: PackagingType[] = [
       metaDescription:
         "Custom food-suitable boxes in Pakistan for bakeries, cafés and food brands — takeaway, gifting and retail. Windows, kraft and printed options. Get a quote.",
       keywords: ["food packaging boxes Pakistan", "bakery boxes", "custom food boxes", "takeaway packaging Pakistan"],
+    },
+  },
+  // Both below intentionally carry no basePricePerUnit — no real rate has been
+  // supplied yet, so the tile and page read "Custom-quoted" instead of inventing one.
+  {
+    slug: "custom-essential-oil-boxes",
+    name: "Essential Oil Boxes",
+    shortName: "Essential Oil Boxes",
+    tagline: "Small printed cartons for 10ml bottles and droppers",
+    heroHeadline: "Custom Essential Oil Boxes",
+    heroSub:
+      "Small-format cartons built around a 10ml bottle or dropper — colour-coded across a range so each scent reads apart on shelf, with panel space for the dosage and risk copy the category requires.",
+    useCases: ["Essential oil bottles", "Diffuser blends", "Dropper bottles", "Roll-ons", "Sample & tester sets", "Aromatherapy ranges"],
+    industriesServed: ["Cosmetics", "Retail", "Gift", "E-commerce"],
+    customizationOptions: ["Full-colour printing", "Colour-coded range", "Matte / gloss lamination", "Spot UV", "Foil stamping", "Regulatory panel layout"],
+    materialOptions: ["Art card", "Folding boxboard", "Kraft card"],
+    estimable: false,
+    image: "/images/products/essential-oil-boxes/02.jpg",
+    gallery: [...productImages["essential-oil-boxes"]],
+    faqs: [
+      { question: "Can you fit the box to my exact bottle?", answer: "Yes — we build the carton around your bottle or dropper so it holds it snugly without rattling in transit." },
+      { question: "Can you keep a range consistent but tell scents apart?", answer: "Yes — one structure with a colour per scent is the usual approach, so the range reads as one brand while each variant stays findable on shelf." },
+      { question: "Is there room for the required warnings?", answer: "Yes — we lay out the dosage, risk and bilingual copy your category needs on the side panels without crowding the front face." },
+    ],
+    seo: {
+      seoTitle: "Custom Essential Oil Boxes Pakistan — Printed 10ml Cartons",
+      metaDescription:
+        "Custom essential oil boxes in Pakistan — small printed cartons for 10ml bottles, droppers and diffuser blends. Colour-coded ranges with regulatory panels. Get a quote.",
+      keywords: ["essential oil boxes Pakistan", "10ml bottle carton", "aromatherapy packaging Pakistan", "dropper bottle box"],
+    },
+  },
+  {
+    slug: "custom-mist-bottle-packaging",
+    name: "Mist Bottle Sleeves & Packaging",
+    shortName: "Mist Packaging",
+    tagline: "Printed sleeves and cartons for body mist bottles",
+    heroHeadline: "Custom Mist Bottle Sleeves & Packaging",
+    heroSub:
+      "Wrap-around sleeves and cartons for body mist bottles — printed to hug the bottle's curve, hold their colour under handling and keep a scent range looking like one family.",
+    useCases: ["Body mist bottles", "Fragrance mists", "Room & linen sprays", "Hair mists", "Scent ranges", "Launch & sampling sets"],
+    industriesServed: ["Cosmetics", "Retail", "Gift", "E-commerce"],
+    customizationOptions: ["Full-colour printing", "Wrap-around sleeve", "Brand-colour design", "Matte / gloss finish", "Spot UV", "Range-wide consistency"],
+    materialOptions: ["Art paper", "Adhesive label stock", "Art card", "Folding boxboard"],
+    estimable: false,
+    image: "/images/products/mist-boomerang-chic/01.jpg",
+    gallery: [
+      ...productImages["mist-boomerang-chic"],
+      ...productImages["mist-blank-spell"],
+      ...productImages["mist-drop-beat"],
+      ...productImages["mist-crooked-smile"],
+    ],
+    faqs: [
+      { question: "Will the print wrap a curved bottle cleanly?", answer: "Yes — we set the artwork to the bottle's diameter so the design meets without a visible step, and pick a stock that follows the curve rather than lifting at the seam." },
+      { question: "Can you keep a whole mist range consistent?", answer: "Yes — one sleeve layout with a colour and name per scent keeps the range recognisable while each variant stays distinct." },
+      { question: "Will it survive handling in store?", answer: "We laminate for scuff resistance so the sleeve still looks new after being picked up and put back repeatedly." },
+    ],
+    seo: {
+      seoTitle: "Custom Mist Bottle Sleeves & Packaging Pakistan",
+      metaDescription:
+        "Custom body mist packaging in Pakistan — printed wrap-around sleeves and cartons for mist and fragrance bottles, kept consistent across a scent range. Get a quote.",
+      keywords: ["body mist packaging Pakistan", "bottle sleeve printing", "mist bottle label Pakistan", "fragrance sleeve packaging"],
     },
   },
 ];

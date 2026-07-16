@@ -18,7 +18,7 @@ export type IndustrySlug =
   | "custom-fashion-packaging"
   | "custom-ecommerce-packaging"
   | "custom-gift-packaging"
-  | "custom-retail-packaging";
+  | "custom-rigid-boxes";
 
 export type PackagingTypeSlug =
   | "custom-boxes"
@@ -27,7 +27,9 @@ export type PackagingTypeSlug =
   | "custom-sleeves-belly-bands"
   | "custom-inserts-thank-you-cards"
   | "custom-gift-boxes"
-  | "custom-food-boxes";
+  | "custom-food-boxes"
+  | "custom-essential-oil-boxes"
+  | "custom-mist-bottle-packaging";
 
 export type ConsultationSlug =
   | "packaging-for-startups"
@@ -48,6 +50,12 @@ export type IndustryPage = {
   offer: string;
   productTypeSlugs: PackagingTypeSlug[]; // related packaging types
   customization: string[];
+  /**
+   * Overrides the "Packaging for <shortLabel> brands" section title. Needed when
+   * shortLabel names a product rather than an audience, where the default reads
+   * as "Packaging for rigid box brands".
+   */
+  whatWeMakeTitle?: string;
   portfolioSlugs: string[];
   startingMoq: string;
   leadTime: string;
@@ -72,9 +80,20 @@ export type PackagingType = {
   materialOptions: string[];
   // Estimator inputs
   estimable: boolean;
-  basePricePerUnit: number; // PKR, Medium size, 300–500 tier, no finishes (placeholder)
+  /**
+   * PKR, Medium size, 300–500 tier, no finishes. Omit when there is no real rate yet —
+   * the tile and landing page hide the price rather than show an invented one.
+   */
+  basePricePerUnit?: number;
   image?: string;
   gallery?: string[];
+  /** Names the project pictured on the tile, so the photo is identified without renaming the category. */
+  galleryCaption?: string;
+  /**
+   * Overrides the name shown on the tile only. The landing page, nav, estimator and
+   * quote form all keep `name`, so set this only when a mismatch is intended.
+   */
+  tileLabel?: string;
   faqs: QA[];
   seo?: Seo;
 };

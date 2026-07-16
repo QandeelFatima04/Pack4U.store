@@ -10,7 +10,7 @@ import {
   Shirt,
   ShoppingBag,
   Gift,
-  Store,
+  Package,
   type LucideIcon,
 } from "lucide-react";
 import type { IndustryPage } from "@/content/types";
@@ -24,7 +24,7 @@ const iconBySlug: Record<string, LucideIcon> = {
   "custom-fashion-packaging": Shirt,
   "custom-ecommerce-packaging": ShoppingBag,
   "custom-gift-packaging": Gift,
-  "custom-retail-packaging": Store,
+  "custom-rigid-boxes": Package,
 };
 
 export function IndustryTile({ industry }: { industry: IndustryPage }) {

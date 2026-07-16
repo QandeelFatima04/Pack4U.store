@@ -43,7 +43,9 @@ export function PackagingTypeTemplate({ type }: { type: PackagingType }) {
             </h1>
             <p className="mt-5 max-w-xl text-lg text-muted-foreground">{type.heroSub}</p>
             <p className="mt-4 text-sm font-semibold text-brand">
-              From {formatPKR(type.basePricePerUnit)}/unit · MOQ from 300 units
+              {type.basePricePerUnit
+                ? `From ${formatPKR(type.basePricePerUnit)}/unit · MOQ from 300 units`
+                : "Custom-quoted · MOQ from 300 units"}
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg">

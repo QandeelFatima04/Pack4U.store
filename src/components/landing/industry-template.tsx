@@ -115,7 +115,10 @@ export function IndustryTemplate({ industry }: { industry: IndustryPage }) {
       {/* Packaging types */}
       <section className="section bg-secondary/40">
         <div className="container-page">
-          <SectionHeading eyebrow="What we make" title={`Packaging for ${industry.shortLabel.toLowerCase()} brands`} />
+          <SectionHeading
+            eyebrow="What we make"
+            title={industry.whatWeMakeTitle ?? `Packaging for ${industry.shortLabel.toLowerCase()} brands`}
+          />
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {types.map((t) => (
               <PackagingTypeCard key={t.slug} type={t} />

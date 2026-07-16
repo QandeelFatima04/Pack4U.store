@@ -24,8 +24,10 @@ import {
 } from "@/lib/content";
 import { site } from "@/lib/site";
 
+// Even 2x2. A row-span here forces a third grid row and leaves an empty cell,
+// which makes the hero taller than the copy beside it.
 const heroImages = [
-  { src: "/images/hero/hero-1.jpg", alt: "Custom printed cosmetic and perfume packaging", cls: "row-span-2" },
+  { src: "/images/hero/hero-1.jpg", alt: "Custom printed cosmetic and perfume packaging" },
   { src: "/images/hero/hero-3.jpg", alt: "Premium rigid corporate gift box" },
   { src: "/images/hero/hero-2.jpg", alt: "Branded coffee and food packaging box" },
   { src: "/images/hero/hero-4.jpg", alt: "Custom rigid retail box" },
@@ -96,7 +98,7 @@ export default function HomePage() {
               {heroImages.map((img) => (
                 <div
                   key={img.src}
-                  className={`relative overflow-hidden rounded-2xl border border-white/10 ${img.cls ?? ""} ${img.cls ? "aspect-auto" : "aspect-square"}`}
+                  className="relative aspect-square overflow-hidden rounded-2xl border border-white/10"
                 >
                   <Image
                     src={img.src}
