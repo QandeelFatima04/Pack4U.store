@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { FaqAccordion } from "@/components/faq-accordion";
-import { FaqJsonLd } from "@/components/json-ld";
+import { FaqJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { CtaBand } from "@/components/sections";
 import { getFaqs, faqCategories } from "@/lib/content";
+
+const crumbs = [{ name: "Home", url: "/" }, { name: "FAQ", url: "/faq" }];
 
 export const metadata: Metadata = {
   title: "FAQ — Custom Packaging Questions",
@@ -17,9 +20,11 @@ export default function FaqPage() {
   return (
     <>
       <FaqJsonLd items={faqs.map((f) => ({ question: f.question, answer: f.answer }))} />
+      <BreadcrumbJsonLd items={crumbs} />
 
       <section className="bg-gradient-to-b from-secondary/60 to-background">
         <div className="container-page py-16 sm:py-20">
+          <Breadcrumbs items={crumbs} />
           <p className="eyebrow">FAQ</p>
           <h1 className="mt-4 font-[family-name:var(--font-heading)] text-4xl font-bold sm:text-5xl">
             Custom packaging questions, answered

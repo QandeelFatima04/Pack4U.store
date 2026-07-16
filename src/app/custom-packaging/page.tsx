@@ -6,6 +6,7 @@ import { WhatsAppButton } from "@/components/whatsapp-button";
 import { SectionHeading, PricingTiers, Guarantees, CtaBand } from "@/components/sections";
 import { PackagingTypeCard, IndustryTile } from "@/components/cards";
 import { BreadcrumbJsonLd, ServiceJsonLd } from "@/components/json-ld";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { getAllPackagingTypes, getAllIndustries } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -23,12 +24,14 @@ const steps = [
   { icon: Truck, title: "Production & delivery", text: "Your packaging is produced to the agreed specs and delivered for use." },
 ];
 
+const crumbs = [{ name: "Home", url: "/" }, { name: "Custom Packaging", url: "/custom-packaging" }];
+
 export default function CustomPackagingPage() {
   const types = getAllPackagingTypes();
   const industries = getAllIndustries();
   return (
     <>
-      <BreadcrumbJsonLd items={[{ name: "Home", url: "/" }, { name: "Custom Packaging", url: "/custom-packaging" }]} />
+      <BreadcrumbJsonLd items={crumbs} />
       <ServiceJsonLd
         name="Custom Paper Packaging"
         description="Custom paper packaging for product brands — boxes, bags, tags, sleeves and inserts, from concept to production."
@@ -37,6 +40,7 @@ export default function CustomPackagingPage() {
 
       <section className="border-b bg-gradient-to-b from-secondary/50 to-background">
         <div className="container-page py-14 sm:py-20">
+          <Breadcrumbs items={crumbs} />
           <p className="eyebrow">Custom Packaging</p>
           <h1 className="mt-3 max-w-3xl font-[family-name:var(--font-heading)] text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
             Custom paper packaging, from concept to finished production

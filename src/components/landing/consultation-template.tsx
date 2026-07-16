@@ -5,6 +5,7 @@ import { WhatsAppButton } from "@/components/whatsapp-button";
 import { SectionHeading, CtaBand } from "@/components/sections";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { BreadcrumbJsonLd, ServiceJsonLd, FaqJsonLd } from "@/components/json-ld";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import type { ConsultationTopic } from "@/content/types";
 
 export function ConsultationTemplate({ topic }: { topic: ConsultationTopic }) {
@@ -23,11 +24,13 @@ export function ConsultationTemplate({ topic }: { topic: ConsultationTopic }) {
       {/* Problem-led hero */}
       <section className="border-b bg-gradient-to-b from-secondary/50 to-background">
         <div className="container-page py-14 sm:py-20">
-          <nav className="mb-5 text-sm text-muted-foreground">
-            <Link href="/" className="hover:text-brand">Home</Link> /{" "}
-            <Link href="/packaging-consultation" className="hover:text-brand">Consultation</Link> /{" "}
-            <span className="text-foreground">{topic.label}</span>
-          </nav>
+          <Breadcrumbs
+            items={[
+              { name: "Home", url: "/" },
+              { name: "Consultation", url: "/packaging-consultation" },
+              { name: topic.label, url: `/${topic.slug}` },
+            ]}
+          />
           <p className="eyebrow">Packaging consultation</p>
           <h1 className="mt-3 max-w-3xl font-[family-name:var(--font-heading)] text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
             {topic.heroHeadline}

@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { PackageCheck, Layers, PencilRuler, MapPin } from "lucide-react";
 import { SectionHeading, CtaBand } from "@/components/sections";
+import { BreadcrumbJsonLd } from "@/components/json-ld";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { site } from "@/lib/site";
+
+const crumbs = [{ name: "Home", url: "/" }, { name: "About", url: "/about" }];
 
 export const metadata: Metadata = {
   title: "About Pack4U — Custom Packaging Partner",
@@ -36,8 +40,10 @@ const values = [
 export default function AboutPage() {
   return (
     <>
+      <BreadcrumbJsonLd items={crumbs} />
       <section className="bg-gradient-to-b from-secondary/60 to-background">
         <div className="container-page py-16 sm:py-24">
+          <Breadcrumbs items={crumbs} />
           <p className="eyebrow">About {site.name}</p>
           <h1 className="mt-4 max-w-3xl font-[family-name:var(--font-heading)] text-4xl font-bold leading-tight sm:text-5xl">
             Custom paper packaging for product brands — from concept to production.

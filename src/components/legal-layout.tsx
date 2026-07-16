@@ -1,15 +1,23 @@
+import { BreadcrumbJsonLd } from "@/components/json-ld";
+import { Breadcrumbs } from "@/components/breadcrumbs";
+
 export function LegalLayout({
   title,
   updated,
+  url,
   children,
 }: {
   title: string;
   updated: string;
+  url: string; // path, e.g. "/privacy"
   children: React.ReactNode;
 }) {
+  const crumbs = [{ name: "Home", url: "/" }, { name: title, url }];
   return (
     <section className="section">
+      <BreadcrumbJsonLd items={crumbs} />
       <div className="container-page max-w-3xl">
+        <Breadcrumbs items={crumbs} />
         <h1 className="font-[family-name:var(--font-heading)] text-4xl font-bold">
           {title}
         </h1>

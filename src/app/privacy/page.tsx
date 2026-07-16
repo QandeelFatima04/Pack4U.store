@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <LegalLayout title="Privacy Policy" updated="June 2026">
+    <LegalLayout title="Privacy Policy" updated="June 2026" url="/privacy">
       <p>
         This policy explains what we collect and why. By using {site.url} you
         agree to it.

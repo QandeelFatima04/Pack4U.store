@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { SectionHeading, CtaBand } from "@/components/sections";
 import { BreadcrumbJsonLd } from "@/components/json-ld";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { getAllConsultationTopics } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -12,13 +13,16 @@ export const metadata: Metadata = {
   alternates: { canonical: "/packaging-consultation" },
 };
 
+const crumbs = [{ name: "Home", url: "/" }, { name: "Packaging Consultation", url: "/packaging-consultation" }];
+
 export default function ConsultationHub() {
   const topics = getAllConsultationTopics();
   return (
     <>
-      <BreadcrumbJsonLd items={[{ name: "Home", url: "/" }, { name: "Packaging Consultation", url: "/packaging-consultation" }]} />
+      <BreadcrumbJsonLd items={crumbs} />
       <section className="border-b bg-gradient-to-b from-secondary/50 to-background">
         <div className="container-page py-14 sm:py-20">
+          <Breadcrumbs items={crumbs} />
           <p className="eyebrow">Packaging Consultation</p>
           <h1 className="mt-3 max-w-3xl font-[family-name:var(--font-heading)] text-4xl font-bold tracking-tight sm:text-5xl">
             Make practical packaging decisions before production

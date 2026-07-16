@@ -4,6 +4,7 @@ import { Check } from "lucide-react";
 import { QuoteForm } from "@/components/forms/quote-form";
 import { WhatsAppButton } from "@/components/whatsapp-button";
 import { BreadcrumbJsonLd } from "@/components/json-ld";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { guarantees } from "@/lib/content";
 import { site, telLink } from "@/lib/site";
 
@@ -14,12 +15,15 @@ export const metadata: Metadata = {
   alternates: { canonical: "/get-quote" },
 };
 
+const crumbs = [{ name: "Home", url: "/" }, { name: "Get a Quote", url: "/get-quote" }];
+
 export default function GetQuotePage() {
   return (
     <>
-      <BreadcrumbJsonLd items={[{ name: "Home", url: "/" }, { name: "Get a Quote", url: "/get-quote" }]} />
+      <BreadcrumbJsonLd items={crumbs} />
       <section className="border-b bg-gradient-to-b from-secondary/50 to-background">
         <div className="container-page py-12 sm:py-16">
+          <Breadcrumbs items={crumbs} />
           <p className="eyebrow">Get a quote</p>
           <h1 className="mt-3 max-w-3xl font-[family-name:var(--font-heading)] text-4xl font-bold tracking-tight sm:text-5xl">
             Tell us about your packaging

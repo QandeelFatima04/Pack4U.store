@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function ShippingPage() {
   return (
-    <LegalLayout title="Shipping & Delivery" updated="June 2026">
+    <LegalLayout title="Shipping & Delivery" updated="June 2026" url="/shipping">
       <p>
         We produce custom packaging to order and deliver across Pakistan. The
         details below are general guidance — exact timelines and delivery costs

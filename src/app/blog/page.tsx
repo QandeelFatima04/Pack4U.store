@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { BreadcrumbJsonLd } from "@/components/json-ld";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { getBlogPosts } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -19,12 +21,16 @@ function formatDate(iso: string) {
   });
 }
 
+const crumbs = [{ name: "Home", url: "/" }, { name: "Blog", url: "/blog" }];
+
 export default function BlogPage() {
   const posts = getBlogPosts();
   return (
     <>
+      <BreadcrumbJsonLd items={crumbs} />
       <section className="bg-gradient-to-b from-secondary/60 to-background">
         <div className="container-page py-16 sm:py-20">
+          <Breadcrumbs items={crumbs} />
           <p className="eyebrow">Blog</p>
           <h1 className="mt-4 font-[family-name:var(--font-heading)] text-4xl font-bold sm:text-5xl">
             Custom packaging guides &amp; ideas

@@ -1,11 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { CtaBand } from "@/components/sections";
 import { BreadcrumbJsonLd } from "@/components/json-ld";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { getBlogPosts, getBlogPost } from "@/lib/content";
+
+const crumbs = (post: { title: string; slug: string }) => [
+  { name: "Home", url: "/" },
+  { name: "Blog", url: "/blog" },
+  { name: post.title, url: `/blog/${post.slug}` },
+];
 
 // Minimal inline renderer: **bold** and [text](href) links.
 function renderInline(text: string): React.ReactNode[] {
@@ -63,20 +69,9 @@ export default async function BlogPostPage({
 
   return (
     <>
-      <BreadcrumbJsonLd
-        items={[
-          { name: "Home", url: "/" },
-          { name: "Blog", url: "/blog" },
-          { name: post.title, url: `/blog/${post.slug}` },
-        ]}
-      />
+      <BreadcrumbJsonLd items={crumbs(post)} />
       <article className="container-page max-w-3xl py-16 sm:py-20">
-        <Link
-          href="/blog"
-          className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-brand"
-        >
-          <ArrowLeft className="h-4 w-4" /> All posts
-        </Link>
+        <Breadcrumbs items={crumbs(post)} className="mb-6" />
         <div className="mt-6 flex flex-wrap gap-2">
           {post.tags.map((t) => (
             <Badge key={t} variant="secondary">

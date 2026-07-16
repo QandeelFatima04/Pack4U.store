@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import { ContactForm } from "@/components/forms/contact-form";
 import { WhatsAppButton } from "@/components/whatsapp-button";
+import { BreadcrumbJsonLd } from "@/components/json-ld";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { site, telLink } from "@/lib/site";
+
+const crumbs = [{ name: "Home", url: "/" }, { name: "Contact", url: "/contact" }];
 
 export const metadata: Metadata = {
   title: "Contact Pack4U — Custom Packaging Enquiries",
@@ -14,8 +18,10 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <section className="section">
+      <BreadcrumbJsonLd items={crumbs} />
       <div className="container-page grid gap-12 lg:grid-cols-2">
         <div>
+          <Breadcrumbs items={crumbs} />
           <p className="eyebrow">Contact</p>
           <h1 className="mt-4 font-[family-name:var(--font-heading)] text-4xl font-bold sm:text-5xl">
             Let&apos;s talk packaging

@@ -8,6 +8,7 @@ import { FaqAccordion } from "@/components/faq-accordion";
 import { Estimator } from "@/components/estimator";
 import { ProductGallery } from "@/components/product-gallery";
 import { BreadcrumbJsonLd, ServiceJsonLd, FaqJsonLd } from "@/components/json-ld";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { formatPKR } from "@/lib/format";
 import type { PackagingType } from "@/content/types";
 
@@ -32,11 +33,13 @@ export function PackagingTypeTemplate({ type }: { type: PackagingType }) {
       <section className="border-b bg-gradient-to-b from-secondary/50 to-background">
         <div className="container-page grid items-center gap-10 py-14 sm:py-20 lg:grid-cols-2">
           <div>
-            <nav className="mb-5 text-sm text-muted-foreground">
-              <Link href="/" className="hover:text-brand">Home</Link> /{" "}
-              <Link href="/packaging-types" className="hover:text-brand">Packaging Types</Link> /{" "}
-              <span className="text-foreground">{type.shortName}</span>
-            </nav>
+            <Breadcrumbs
+              items={[
+                { name: "Home", url: "/" },
+                { name: "Packaging Types", url: "/packaging-types" },
+                { name: type.shortName, url: `/${type.slug}` },
+              ]}
+            />
             <p className="eyebrow">Custom {type.shortName}</p>
             <h1 className="mt-3 font-[family-name:var(--font-heading)] text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
               {type.heroHeadline}

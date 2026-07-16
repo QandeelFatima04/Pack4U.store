@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SectionHeading, CtaBand } from "@/components/sections";
 import { Estimator } from "@/components/estimator";
 import { BreadcrumbJsonLd } from "@/components/json-ld";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 
 export const metadata: Metadata = {
   title: "Packaging Price Estimator — Instant Custom Packaging Estimate",
@@ -11,12 +12,15 @@ export const metadata: Metadata = {
   keywords: ["packaging price estimator", "packaging cost calculator", "custom packaging price Pakistan"],
 };
 
+const crumbs = [{ name: "Home", url: "/" }, { name: "Price Estimator", url: "/estimate" }];
+
 export default function EstimatePage() {
   return (
     <>
-      <BreadcrumbJsonLd items={[{ name: "Home", url: "/" }, { name: "Price Estimator", url: "/estimate" }]} />
+      <BreadcrumbJsonLd items={crumbs} />
       <section className="border-b bg-gradient-to-b from-secondary/50 to-background">
         <div className="container-page py-14 sm:py-20">
+          <Breadcrumbs items={crumbs} />
           <p className="eyebrow">Price Estimator</p>
           <h1 className="mt-3 max-w-3xl font-[family-name:var(--font-heading)] text-4xl font-bold tracking-tight sm:text-5xl">
             Estimate your packaging price in seconds

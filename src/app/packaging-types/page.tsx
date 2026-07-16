@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { CtaBand } from "@/components/sections";
 import { PackagingTypeCard } from "@/components/cards";
 import { BreadcrumbJsonLd } from "@/components/json-ld";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { getAllPackagingTypes } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -14,13 +15,16 @@ export const metadata: Metadata = {
   alternates: { canonical: "/packaging-types" },
 };
 
+const crumbs = [{ name: "Home", url: "/" }, { name: "Packaging Types", url: "/packaging-types" }];
+
 export default function PackagingTypesHub() {
   const types = getAllPackagingTypes();
   return (
     <>
-      <BreadcrumbJsonLd items={[{ name: "Home", url: "/" }, { name: "Packaging Types", url: "/packaging-types" }]} />
+      <BreadcrumbJsonLd items={crumbs} />
       <section className="border-b bg-gradient-to-b from-secondary/50 to-background">
         <div className="container-page py-14 sm:py-20">
+          <Breadcrumbs items={crumbs} />
           <p className="eyebrow">Packaging Types</p>
           <h1 className="mt-3 max-w-3xl font-[family-name:var(--font-heading)] text-4xl font-bold tracking-tight sm:text-5xl">
             Custom packaging products we develop

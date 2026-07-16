@@ -7,6 +7,7 @@ import { FaqAccordion } from "@/components/faq-accordion";
 import { ProductGallery } from "@/components/product-gallery";
 import { PackagingTypeCard, ProjectCard } from "@/components/cards";
 import { BreadcrumbJsonLd, ServiceJsonLd, FaqJsonLd } from "@/components/json-ld";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { getPackagingTypesBySlugs, getProjectsBySlugs } from "@/lib/content";
 import type { IndustryPage } from "@/content/types";
 
@@ -35,11 +36,13 @@ export function IndustryTemplate({ industry }: { industry: IndustryPage }) {
       <section className="border-b bg-gradient-to-b from-secondary/50 to-background">
         <div className="container-page grid items-center gap-10 py-14 sm:py-20 lg:grid-cols-2">
           <div>
-            <nav className="mb-5 text-sm text-muted-foreground">
-              <Link href="/" className="hover:text-brand">Home</Link> /{" "}
-              <Link href="/industries" className="hover:text-brand">Industries</Link> /{" "}
-              <span className="text-foreground">{industry.shortLabel}</span>
-            </nav>
+            <Breadcrumbs
+              items={[
+                { name: "Home", url: "/" },
+                { name: "Industries", url: "/industries" },
+                { name: industry.shortLabel, url: `/${industry.slug}` },
+              ]}
+            />
             <p
               className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold text-white"
               style={{ backgroundColor: industry.accent }}

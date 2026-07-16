@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SectionHeading, CtaBand } from "@/components/sections";
 import { IndustryTile } from "@/components/cards";
 import { BreadcrumbJsonLd } from "@/components/json-ld";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { getAllIndustries } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -11,13 +12,16 @@ export const metadata: Metadata = {
   alternates: { canonical: "/industries" },
 };
 
+const crumbs = [{ name: "Home", url: "/" }, { name: "Industries", url: "/industries" }];
+
 export default function IndustriesHub() {
   const industries = getAllIndustries();
   return (
     <>
-      <BreadcrumbJsonLd items={[{ name: "Home", url: "/" }, { name: "Industries", url: "/industries" }]} />
+      <BreadcrumbJsonLd items={crumbs} />
       <section className="border-b bg-gradient-to-b from-secondary/50 to-background">
         <div className="container-page py-14 sm:py-20">
+          <Breadcrumbs items={crumbs} />
           <p className="eyebrow">Industries</p>
           <h1 className="mt-3 max-w-3xl font-[family-name:var(--font-heading)] text-4xl font-bold tracking-tight sm:text-5xl">
             Packaging built for your product category

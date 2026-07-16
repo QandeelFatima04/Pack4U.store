@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { CtaBand } from "@/components/sections";
 import { PortfolioGrid } from "@/components/portfolio-grid";
 import { BreadcrumbJsonLd } from "@/components/json-ld";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { getAllProjects } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -11,13 +12,16 @@ export const metadata: Metadata = {
   alternates: { canonical: "/portfolio" },
 };
 
+const crumbs = [{ name: "Home", url: "/" }, { name: "Portfolio", url: "/portfolio" }];
+
 export default function PortfolioPage() {
   const projects = getAllProjects();
   return (
     <>
-      <BreadcrumbJsonLd items={[{ name: "Home", url: "/" }, { name: "Portfolio", url: "/portfolio" }]} />
+      <BreadcrumbJsonLd items={crumbs} />
       <section className="border-b bg-gradient-to-b from-secondary/50 to-background">
         <div className="container-page py-14 sm:py-20">
+          <Breadcrumbs items={crumbs} />
           <p className="eyebrow">Portfolio</p>
           <h1 className="mt-3 max-w-3xl font-[family-name:var(--font-heading)] text-4xl font-bold tracking-tight sm:text-5xl">
             Packaging work across product categories

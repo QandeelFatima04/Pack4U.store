@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <LegalLayout title="Terms of Service" updated="June 2026">
+    <LegalLayout title="Terms of Service" updated="June 2026" url="/terms">
       <p>
         These terms govern your use of our website and any custom packaging orders
         you place with us.
