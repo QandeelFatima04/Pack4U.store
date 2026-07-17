@@ -169,6 +169,9 @@ export function SiteHeader() {
           <Link href="/faq" className={`text-sm font-medium transition ${linkClass}`}>
             FAQ
           </Link>
+          <Link href="/blog" className={`text-sm font-medium transition ${linkClass}`}>
+            Blog
+          </Link>
           <Link href="/contact" className={`text-sm font-medium transition ${linkClass}`}>
             Contact
           </Link>
@@ -267,6 +270,10 @@ export function SiteHeader() {
                 <Link href="/faq" onClick={() => setOpen(false)}
                   className="rounded-lg px-3 py-2.5 text-sm font-semibold hover:bg-muted">
                   FAQ
+                </Link>
+                <Link href="/blog" onClick={() => setOpen(false)}
+                  className="rounded-lg px-3 py-2.5 text-sm font-semibold hover:bg-muted">
+                  Blog
                 </Link>
                 <Link href="/contact" onClick={() => setOpen(false)}
                   className="rounded-lg px-3 py-2.5 text-sm font-semibold hover:bg-muted">
