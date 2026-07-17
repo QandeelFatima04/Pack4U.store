@@ -183,7 +183,7 @@ export default function HomePage() {
                 replacing any, so every browse-to-product-page path is intact. */}
             {showcaseProject && (
               <StaggerItem key={showcaseProject.slug} className="h-full">
-                <ProjectCard project={showcaseProject} />
+                <ProjectCard project={showcaseProject} quoteTypeSlug="custom-gift-boxes" />
               </StaggerItem>
             )}
           </StaggerIn>
@@ -221,7 +221,7 @@ export default function HomePage() {
               </StaggerItem>
             ))}
           </StaggerIn>
-          <FadeIn delay={0.15} className="mt-10">
+          <FadeIn delay={0.15} className="mt-10 flex justify-center">
             <Button asChild size="lg"><Link href="/get-quote">Start your packaging project</Link></Button>
           </FadeIn>
         </div>

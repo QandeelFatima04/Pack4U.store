@@ -106,7 +106,16 @@ export function PackagingTypeCard({ type }: { type: PackagingType }) {
 // IndustryTile now lives in its own client component (animated circular design).
 export { IndustryTile } from "@/components/industry-tile";
 
-export function ProjectCard({ project }: { project: Project }) {
+export function ProjectCard({
+  project,
+  quoteTypeSlug,
+}: {
+  project: Project;
+  // When set, renders "Estimate price" / "Get a quote" actions that preselect
+  // this packaging-type slug. Left off for the portfolio proof grid, where the
+  // tiles are showcase-only.
+  quoteTypeSlug?: string;
+}) {
   return (
     <div className="group flex h-full flex-col overflow-hidden rounded-2xl border bg-card transition hover:shadow-lg hover:shadow-black/5">
       <div className="relative">
@@ -140,6 +149,17 @@ export function ProjectCard({ project }: { project: Project }) {
             <dd>{project.quantityRange}</dd>
           </div>
         </dl>
+        {quoteTypeSlug && (
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            {/* ?type= preselects this product in the estimator/quote form. */}
+            <Button asChild size="sm" variant="outline">
+              <Link href={`/estimate?type=${quoteTypeSlug}`}>Estimate price</Link>
+            </Button>
+            <Button asChild size="sm">
+              <Link href={`/get-quote?type=${quoteTypeSlug}`}>Get a quote</Link>
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

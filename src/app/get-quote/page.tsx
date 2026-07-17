@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { Check } from "lucide-react";
+import { Check, Phone } from "lucide-react";
 import { QuoteForm } from "@/components/forms/quote-form";
 import { WhatsAppButton } from "@/components/whatsapp-button";
 import { BreadcrumbJsonLd } from "@/components/json-ld";
@@ -64,9 +64,10 @@ export default function GetQuotePage() {
                   <WhatsAppButton source="get-quote-aside" />
                   <CallLink
                     source="get-quote-aside"
-                    className="text-sm font-semibold text-brand hover:underline"
+                    className="inline-flex items-center justify-center gap-2 rounded-full border border-brand px-6 py-3 text-sm font-semibold text-brand transition hover:bg-brand hover:text-white"
                   >
-                    {site.phoneDisplay}
+                    <Phone className="h-5 w-5" />
+                    Call {site.phoneDisplay}
                   </CallLink>
                 </div>
               </div>
