@@ -62,15 +62,24 @@ export function PackagingTypeTemplate({ type }: { type: PackagingType }) {
               </Button>
             </div>
           </div>
-          <ProductGallery
-            images={gallery}
-            alt={`${type.name} by Pack4U`}
-            priority
-            aspect={isBags ? "aspect-[1271/1872]" : "aspect-[4/3]"}
-            fit={isBags ? "contain" : "cover"}
-            className={isBags ? "bg-white" : undefined}
-            sizes="(max-width: 1024px) 100vw, 50vw"
-          />
+          <div>
+            <ProductGallery
+              images={gallery}
+              alt={type.galleryCaption ?? `${type.name} by Pack4U`}
+              priority
+              aspect={isBags ? "aspect-[1271/1872]" : "aspect-[4/3]"}
+              fit={isBags ? "contain" : "cover"}
+              className={isBags ? "bg-white" : undefined}
+              sizes="(max-width: 1024px) 100vw, 50vw"
+            />
+            {/* Identifies what's pictured — the project shown, or that these are
+                illustrations rather than photographs of finished work. */}
+            {type.galleryCaption && (
+              <p className="mt-3 text-center text-xs text-muted-foreground">
+                {type.galleryCaption}
+              </p>
+            )}
+          </div>
         </div>
       </section>
 

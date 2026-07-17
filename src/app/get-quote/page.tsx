@@ -5,8 +5,9 @@ import { QuoteForm } from "@/components/forms/quote-form";
 import { WhatsAppButton } from "@/components/whatsapp-button";
 import { BreadcrumbJsonLd } from "@/components/json-ld";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { CallLink } from "@/components/call-link";
 import { guarantees } from "@/lib/content";
-import { site, telLink } from "@/lib/site";
+import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Get a Packaging Quote — Custom Packaging Quote",
@@ -61,9 +62,12 @@ export default function GetQuotePage() {
                 </p>
                 <div className="mt-4 flex flex-col gap-3">
                   <WhatsAppButton source="get-quote-aside" />
-                  <a href={telLink()} className="text-sm font-semibold text-brand hover:underline">
+                  <CallLink
+                    source="get-quote-aside"
+                    className="text-sm font-semibold text-brand hover:underline"
+                  >
                     {site.phoneDisplay}
-                  </a>
+                  </CallLink>
                 </div>
               </div>
             </div>

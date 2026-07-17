@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { ProductGallery } from "@/components/product-gallery";
 import { formatPKR } from "@/lib/format";
 import type { PackagingType, Project } from "@/content/types";
@@ -32,13 +33,70 @@ export function PackagingTypeCard({ type }: { type: PackagingType }) {
           </Link>
         </h3>
         <p className="mt-1 text-sm text-muted-foreground">{type.tagline}</p>
-        <div className="mt-auto flex items-center justify-between gap-2 pt-4">
-          <span className="text-sm font-semibold text-brand">
-            {type.basePricePerUnit ? `From ${formatPKR(type.basePricePerUnit)}/unit` : "Custom-quoted"}
-          </span>
-          <Link href={`/${type.slug}`} className="inline-flex items-center gap-1 text-sm font-semibold group-hover:gap-2">
-            View <ArrowRight className="h-4 w-4 transition-all" />
-          </Link>
+
+        {/* Buyers need MOQ, materials, industries and lead time before they'll ask
+            for a quote. Each row is omitted when the record has no figure, rather
+            than showing an invented one. */}
+        <dl className="mt-4 space-y-1.5 border-t pt-3 text-xs">
+          {type.startingMoq && (
+            <div className="flex justify-between gap-3">
+              <dt className="text-muted-foreground">MOQ</dt>
+              <dd className="text-right font-semibold">
+                From {type.startingMoq.toLocaleString()} units
+              </dd>
+            </div>
+          )}
+          {type.leadTime && (
+            <div className="flex justify-between gap-3">
+              <dt className="text-muted-foreground">Lead time</dt>
+              <dd className="text-right font-semibold">{type.leadTime}</dd>
+            </div>
+          )}
+          {type.materialOptions?.length > 0 && (
+            <div className="flex justify-between gap-3">
+              <dt className="shrink-0 text-muted-foreground">Materials</dt>
+              <dd className="text-right font-semibold">
+                {type.materialOptions.slice(0, 2).join(", ")}
+                {type.materialOptions.length > 2 && ` +${type.materialOptions.length - 2}`}
+              </dd>
+            </div>
+          )}
+          {type.industriesServed?.length > 0 && (
+            <div className="flex justify-between gap-3">
+              <dt className="shrink-0 text-muted-foreground">Industries</dt>
+              <dd className="text-right font-semibold">
+                {type.industriesServed.slice(0, 2).join(", ")}
+                {type.industriesServed.length > 2 && ` +${type.industriesServed.length - 2}`}
+              </dd>
+            </div>
+          )}
+        </dl>
+
+        <div className="mt-auto pt-4">
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-sm font-semibold text-brand">
+              {type.basePricePerUnit
+                ? `From ${formatPKR(type.basePricePerUnit)}/unit`
+                : "Custom-quoted"}
+            </span>
+            <Link
+              href={`/${type.slug}`}
+              className="inline-flex items-center gap-1 text-sm font-semibold group-hover:gap-2"
+            >
+              View <ArrowRight className="h-4 w-4 transition-all" />
+            </Link>
+          </div>
+          <div className="mt-3 grid grid-cols-2 gap-2">
+            {/* ?type= preselects this product in the estimator. */}
+            <Button asChild size="sm" variant="outline">
+              <Link href={type.estimable ? `/estimate?type=${type.slug}` : `/${type.slug}`}>
+                {type.estimable ? "Estimate price" : "See options"}
+              </Link>
+            </Button>
+            <Button asChild size="sm">
+              <Link href={`/get-quote?type=${type.slug}`}>Request quote</Link>
+            </Button>
+          </div>
         </div>
       </div>
     </div>

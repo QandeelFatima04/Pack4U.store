@@ -20,6 +20,7 @@ import {
   getAllIndustries,
   getAllPackagingTypes,
   getFeaturedProjects,
+  getProject,
   getFaqs,
 } from "@/lib/content";
 import { site } from "@/lib/site";
@@ -69,6 +70,9 @@ export default function HomePage() {
   const types = getAllPackagingTypes();
   const projects = getFeaturedProjects();
   const faqs = getFaqs().slice(0, 6);
+  // Shown at the end of the "What we make" grid. Falls back to nothing if the
+  // slug is ever removed from the portfolio, rather than throwing.
+  const showcaseProject = getProject("discovery-box");
 
   return (
     <>
@@ -174,6 +178,14 @@ export default function HomePage() {
                 <PackagingTypeCard type={t} />
               </StaggerItem>
             ))}
+            {/* A real project closing out the category tiles — the categories are
+                what we make, this is one we made. Sits alongside them rather than
+                replacing any, so every browse-to-product-page path is intact. */}
+            {showcaseProject && (
+              <StaggerItem key={showcaseProject.slug} className="h-full">
+                <ProjectCard project={showcaseProject} />
+              </StaggerItem>
+            )}
           </StaggerIn>
         </div>
       </section>

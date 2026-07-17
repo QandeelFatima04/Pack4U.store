@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { SectionHeading, CtaBand } from "@/components/sections";
-import { Estimator } from "@/components/estimator";
+import { Suspense } from "react";
+import { CtaBand } from "@/components/sections";
+import { EstimatorWithPreset } from "@/components/estimator-with-preset";
 import { BreadcrumbJsonLd } from "@/components/json-ld";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 
@@ -33,7 +34,19 @@ export default function EstimatePage() {
 
       <section className="section">
         <div className="container-page">
-          <Estimator />
+          {/* ?type=<slug> preselects that product, so a buyer arriving from a
+              product card doesn't pick it again. The fallback must not be a real
+              <Estimator/> — it would render a second one with duplicate field ids. */}
+          <Suspense
+            fallback={
+              <div
+                className="h-[28rem] animate-pulse rounded-2xl bg-secondary/40"
+                aria-label="Loading the estimator"
+              />
+            }
+          >
+            <EstimatorWithPreset />
+          </Suspense>
         </div>
       </section>
 

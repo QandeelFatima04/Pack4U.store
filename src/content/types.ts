@@ -93,6 +93,12 @@ export type PackagingType = {
    * site-wide floor to quote here.
    */
   startingMoq?: number;
+  /**
+   * Production time after artwork and sample approval, e.g. "7–15 working days".
+   * Same shape as `IndustryPage.leadTime`. Buyers need this before they'll ask for
+   * a quote, so it is shown on the tile.
+   */
+  leadTime?: string;
   image?: string;
   gallery?: string[];
   /** Names the project pictured on the tile, so the photo is identified without renaming the category. */

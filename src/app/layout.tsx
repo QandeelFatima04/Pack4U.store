@@ -4,7 +4,7 @@ import "./globals.css";
 import { site } from "@/lib/site";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
-import { WhatsAppButton } from "@/components/whatsapp-button";
+import { StickyActions } from "@/components/sticky-actions";
 import { Analytics } from "@/components/analytics";
 import { UtmCapture } from "@/components/utm-capture";
 import { Toaster } from "@/components/ui/sonner";
@@ -80,7 +80,7 @@ export default function RootLayout({
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />
-        <WhatsAppButton variant="sticky" />
+        <StickyActions />
         <Toaster richColors position="top-center" />
       </body>
     </html>

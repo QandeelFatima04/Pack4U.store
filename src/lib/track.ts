@@ -16,6 +16,8 @@ export type KeyEvent =
   | "form_submit"
   | "sample_kit_request"
   | "quote_request"
+  | "estimate_generated"
+  | "quote_started"
   | "quiz_complete"
   | "catalogue_download"
   | "begin_checkout"
@@ -28,6 +30,9 @@ const META_EVENT: Partial<Record<KeyEvent, string>> = {
   form_submit: "Lead",
   sample_kit_request: "Lead",
   quote_request: "Lead",
+  // The estimate is real buying intent but not yet a lead — no contact details
+  // are collected. Meta's InitiateCheckout is the closest standard fit.
+  estimate_generated: "InitiateCheckout",
   quiz_complete: "Lead",
   catalogue_download: "ViewContent",
   begin_checkout: "InitiateCheckout",

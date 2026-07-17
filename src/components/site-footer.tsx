@@ -6,8 +6,9 @@ import {
   LinkedinIcon,
 } from "@/components/social-icons";
 import { Logo } from "@/components/logo";
+import { CallLink } from "@/components/call-link";
 import { footerNav } from "@/lib/nav";
-import { site, telLink } from "@/lib/site";
+import { site } from "@/lib/site";
 
 function Column({
   title,
@@ -46,9 +47,9 @@ export function SiteFooter() {
             and inserts, from concept and material selection to finished production.
           </p>
           <div className="mt-5 space-y-2 text-sm text-muted-foreground">
-            <a href={telLink()} className="flex items-center gap-2 hover:text-brand">
+            <CallLink source="footer" className="flex items-center gap-2 hover:text-brand">
               <Phone className="h-4 w-4" /> {site.phoneDisplay}
-            </a>
+            </CallLink>
             <a
               href={`mailto:${site.email}`}
               className="flex items-center gap-2 hover:text-brand"

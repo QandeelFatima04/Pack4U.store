@@ -15,6 +15,14 @@ import {
   FINISH_ORDER,
   type EstFinishKey,
 } from "@/content/estimator-pricing";
+import {
+  ESTIMATE_CALC_VERSION,
+  finishKeysToCustomizationIds,
+  makeReference,
+  writeEstimate,
+  clearEstimate,
+} from "@/lib/estimate";
+import { track } from "@/lib/track";
 import { cn } from "@/lib/utils";
 
 export function Estimator({
@@ -96,15 +104,52 @@ export function Estimator({
     );
   }
 
-  const activeFinishLabels = availableFinishes
-    .filter((f) => f.included || selectedFinishes.includes(f.key))
-    .map((f) => f.label);
+  const activeFinishes = availableFinishes.filter(
+    (f) => f.included || selectedFinishes.includes(f.key),
+  );
+  const activeFinishLabels = activeFinishes.map((f) => f.label);
 
   const quoteHref =
     `/get-quote?industry=${industry.slug}` +
     `&type=${productNameToTypeValue(product.name)}` +
     `&product=${encodeURIComponent(product.name)}` +
+    (activeFinishes.length
+      ? `&finishes=${finishKeysToCustomizationIds(activeFinishes.map((f) => f.key)).join(",")}`
+      : "") +
     (result ? `&qty=${result.safeQty}&est=${Math.round(result.total)}` : "");
+
+  // Hand the full spec to /get-quote. The URL params above stay as the fallback
+  // for links opened in a new tab or on another device.
+  function handoffToQuote() {
+    if (!result || !size) {
+      clearEstimate();
+      return;
+    }
+    const spec = {
+      calcVersion: ESTIMATE_CALC_VERSION,
+      reference: makeReference("EST"),
+      calculatedAt: new Date().toISOString(),
+      industrySlug: industry.slug,
+      industryName: industry.name,
+      productName: product.name,
+      typeValue: productNameToTypeValue(product.name),
+      sizeId: size.id,
+      sizeLabel: size.label,
+      finishKeys: activeFinishes.map((f) => f.key),
+      finishLabels: activeFinishLabels,
+      quantity: result.safeQty,
+      moq: result.moq,
+      perUnit: result.perUnit,
+      total: result.total,
+    };
+    writeEstimate(spec);
+    track("estimate_generated", {
+      product: product.name,
+      industry: industry.name,
+      quantity: result.safeQty,
+      value: Math.round(result.total),
+    });
+  }
 
   const whatsappText = result
     ? `Hi Pack4U, I used the estimator. Industry: ${industry.name}. ${product.name}, ${size?.label} size, qty ${result.safeQty}, finishes: ${activeFinishLabels.join(", ") || "none"}. Estimated ${formatPKR(result.total)} (${formatPKR(result.perUnit)}/unit). Please confirm an exact quote.`
@@ -318,7 +363,7 @@ export function Estimator({
           )}
 
           <Button asChild size="lg" className="mt-5 w-full">
-            <Link href={quoteHref}>
+            <Link href={quoteHref} onClick={handoffToQuote}>
               {result ? "Get exact quote" : "Request a quote"}{" "}
               <ArrowRight className="h-4 w-4" />
             </Link>

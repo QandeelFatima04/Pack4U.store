@@ -42,6 +42,7 @@ export const packagingTypes: PackagingType[] = [
     estimable: true,
     basePricePerUnit: 40,
     startingMoq: 500,
+    leadTime: "7–15 working days",
     image: "/images/types/boxes.jpg",
     gallery: ["/images/types/boxes.jpg", ...productImages["honey-box"], ...productImages["essential-oil-boxes"], ...productImages["jewelry-box"], ...productImages["serum-box"]],
     faqs: [
@@ -91,6 +92,7 @@ export const packagingTypes: PackagingType[] = [
     estimable: true,
     basePricePerUnit: 30,
     startingMoq: 500,
+    leadTime: "7–15 working days",
     image: "/images/types/paper-bags.jpg",
     gallery: ["/images/types/paper-bags.jpg", ...productImages["souvenir-bag"]],
     faqs: [
@@ -126,10 +128,20 @@ export const packagingTypes: PackagingType[] = [
     estimable: true,
     basePricePerUnit: 8,
     startingMoq: 5000,
-    image: "/images/types/tags-labels.jpg",
-    // types/tags-labels.jpg is the same photograph as perfume-kai/01, so it's left out
-    // of the gallery rather than shown twice. It still serves as the page hero above.
-    gallery: [...productImages["perfume-kai"], ...productImages["perfume-mulan"]],
+    leadTime: "7–15 working days",
+    // Temporary reference visuals, not Pack4U jobs. Pack4U has no tag or label
+    // photography yet; before this the hero/gallery were perfume-box shots
+    // (types/tags-labels.jpg is the same frame as perfume-kai/01), which showed
+    // buyers a box on the tags page. Replace with real tag shots when they exist
+    // and drop the caption below.
+    image: "/images/types/tags-ref-1.jpg",
+    gallery: [
+      "/images/types/tags-ref-1.jpg",
+      "/images/types/tags-ref-2.jpg",
+      "/images/types/tags-ref-3.jpg",
+      "/images/types/tags-ref-4.jpg",
+    ],
+    galleryCaption: "Reference visuals — tag and label formats we produce",
     faqs: [
       { question: "Can tags match my box and bag?", answer: "Yes — we keep stock, colour and finish consistent across your full packaging set so everything looks like one brand." },
       { question: "Do you add strings and eyelets?", answer: "Yes, we supply tags with eyelets and string in your chosen colour, ready to attach." },
@@ -157,6 +169,7 @@ export const packagingTypes: PackagingType[] = [
     estimable: true,
     basePricePerUnit: 10,
     startingMoq: 5000,
+    leadTime: "7–15 working days",
     image: "/images/types/sleeves.jpg",
     gallery: ["/images/types/sleeves.jpg", ...productImages["mist-blank-spell"]],
     faqs: [
@@ -186,6 +199,7 @@ export const packagingTypes: PackagingType[] = [
     estimable: true,
     basePricePerUnit: 30,
     startingMoq: 500,
+    leadTime: "7–15 working days",
     image: "/images/types/inserts.jpg",
     gallery: ["/images/types/inserts.jpg", ...productImages["welcome-kit"]],
     faqs: [
@@ -216,6 +230,9 @@ export const packagingTypes: PackagingType[] = [
     estimable: true,
     basePricePerUnit: 200,
     startingMoq: 500,
+    // Rigid/premium construction runs longer than standard board — matches the
+    // gift and rigid-box figures in industries.ts and the lead-time FAQ.
+    leadTime: "10–15 working days",
     image: "/images/types/gift-boxes.jpg",
     gallery: ["/images/types/gift-boxes.jpg", ...productImages["corporate-gift-box"], ...productImages["welcome-kit"]],
     faqs: [
@@ -245,6 +262,7 @@ export const packagingTypes: PackagingType[] = [
     estimable: true,
     basePricePerUnit: 12,
     startingMoq: 1000,
+    leadTime: "7–15 working days",
     image: "/images/types/food-boxes.jpg",
     gallery: ["/images/types/food-boxes.jpg", ...productImages["coffee-box"]],
     faqs: [

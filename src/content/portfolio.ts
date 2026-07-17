@@ -42,6 +42,7 @@ export const projects: Project[] = [
     problemSolved: "Needed a compact sampler that presents six scent vials for a discovery campaign.",
     outcome: "Slim sampler box that holds the full range and reads as a gift on arrival.",
     images: img("discovery-box"),
+    featured: true,
   },
   {
     slug: "welcome-kit",

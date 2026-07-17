@@ -105,9 +105,7 @@ export function SiteHeader() {
       }`}
     >
       <div className="container-page flex h-16 items-center justify-between gap-4">
-        <div className={isGlass ? "[&_*]:!text-white [&_svg_*]:!stroke-white" : ""}>
-          <Logo />
-        </div>
+        <Logo variant={isGlass ? "light" : "dark"} />
 
         <nav ref={navRef} className="hidden items-center gap-3.5 lg:flex">
           {dropdowns.map((d) => {

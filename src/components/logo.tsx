@@ -1,41 +1,40 @@
 import Link from "next/link";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
+/**
+ * The wordmark lockup.
+ *
+ * `variant="light"` swaps in the reversed artwork for dark backgrounds — the
+ * default lockup is navy and would disappear on the homepage hero. The header's
+ * `[&_*]:!text-white` trick can't recolour an image, so the variant is explicit.
+ */
 export function Logo({
   className,
-  withText = true,
+  variant = "dark",
 }: {
   className?: string;
-  withText?: boolean;
+  variant?: "dark" | "light";
 }) {
   return (
     <Link
       href="/"
-      className={cn("inline-flex items-center gap-2", className)}
+      className={cn("inline-flex items-center", className)}
       aria-label="Pack4U home"
     >
-      <span className="grid h-9 w-9 place-items-center rounded-xl bg-primary text-primary-foreground">
-        <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden>
-          {/* open box mark */}
-          <path
-            d="M12 3 3 7.5v9L12 21l9-4.5v-9L12 3Z"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M3 7.5 12 12l9-4.5M12 12v9"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </span>
-      {withText && (
-        <span className="text-xl font-extrabold tracking-tight text-foreground">
-          Pack<span className="text-brand">4U</span>
-        </span>
-      )}
+      {/* Sized for how it actually renders (h-8 ≈ 110px wide), not the file's
+          720px. Passing the intrinsic width makes next/image build a srcset up
+          to w=1920 — upscaling the source for a 32px-tall logo, which is pure
+          waste and wedges the dev optimizer. 220×64 keeps the 3.44 aspect and
+          leaves headroom for 2x screens. */}
+      <Image
+        src={variant === "light" ? "/images/logo-light.png" : "/images/logo.png"}
+        alt="Pack4U"
+        width={220}
+        height={64}
+        priority
+        className="h-8 w-auto"
+      />
     </Link>
   );
 }
