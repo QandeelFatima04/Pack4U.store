@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { Check } from "lucide-react";
@@ -10,11 +10,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { submitLead } from "@/lib/submit-lead";
 import { packagingTypes } from "@/content/packaging-types";
-import { estimatorIndustries } from "@/content/estimator-pricing";
+import { estimatorIndustries, lookupMoq } from "@/content/estimator-pricing";
 import { readEstimate, finishKeysToCustomizationIds } from "@/lib/estimate";
 import { track } from "@/lib/track";
 import { writeRfq } from "@/lib/rfq";
 import { formatPKR } from "@/lib/format";
+import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 const MAX_FILE_MB = 10;
@@ -31,13 +32,12 @@ const industryOptions = [
   { value: "other", label: "Other" },
 ];
 
-const quantityRanges = [
-  { value: "under-100", label: "Under 100" },
-  { value: "100-500", label: "100 – 500" },
-  { value: "500-1000", label: "500 – 1,000" },
-  { value: "1000-5000", label: "1,000 – 5,000" },
-  { value: "5000+", label: "5,000+" },
-  { value: "not-sure", label: "Not sure yet" },
+// Sheet3 lists three sizes per product (the "Dimensions" column), each with its
+// own MOQ. The buyer picks one; the MOQ then drives the quantity minimum.
+const sizeOptions = [
+  { id: "small", label: "Small" },
+  { id: "medium", label: "Medium" },
+  { id: "large", label: "Large" },
 ];
 
 const materialOptions = [
@@ -86,16 +86,7 @@ function selectCls() {
   return "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 }
 
-/** Map a numeric estimator quantity to the nearest range option. Falls back to
- *  no selection for a missing or unparseable ?qty. */
-function toQtyRange(n: number) {
-  if (!n || Number.isNaN(n)) return "";
-  if (n < 100) return "under-100";
-  if (n <= 500) return "100-500";
-  if (n <= 1000) return "500-1000";
-  if (n <= 5000) return "1000-5000";
-  return "5000+";
-}
+const sizeLabelById = (id: string) => sizeOptions.find((s) => s.id === id)?.label ?? "";
 
 export function QuoteForm() {
   const router = useRouter();
@@ -121,13 +112,41 @@ export function QuoteForm() {
     return Number.isFinite(n) && n > 0 ? n : null;
   })();
   const presetEst = presetEstValue !== null ? String(Math.round(presetEstValue)) : null;
-  const presetQtyRange = toQtyRange(presetQty);
 
   const [loading, setLoading] = useState(false);
   const [fileError, setFileError] = useState("");
   const [started, setStarted] = useState(false);
   const [step, setStep] = useState(0);
   const stepRef = useRef<HTMLDivElement>(null);
+
+  // Type, industry and size drive the Sheet3 MOQ, so they're controlled: changing
+  // any of them recomputes the quantity minimum below.
+  const [projectType, setProjectType] = useState(presetType);
+  const [industry, setIndustry] = useState(presetIndustry);
+  const [size, setSize] = useState(estimate?.sizeId ?? "");
+
+  // MOQ for the chosen industry + type + size, straight from the pricing sheet.
+  // null when the combination isn't a priced row (custom-quoted, or size unset).
+  const moq = useMemo(
+    () => lookupMoq(industry, projectType, size),
+    [industry, projectType, size],
+  );
+
+  // Quantity is a real number now. Seed it from the estimator's exact figure, else
+  // the MOQ. The buyer can raise it; they can't drop below the MOQ (min + clamp).
+  const [quantity, setQuantity] = useState(() =>
+    presetQty && !Number.isNaN(presetQty) ? String(presetQty) : "",
+  );
+
+  // Whenever a selection changes the MOQ, pull the quantity up to it if it's below
+  // (or empty). Done in the change handlers, not an effect, to avoid extra renders.
+  function bumpQtyTo(newMoq: number | null) {
+    if (newMoq == null) return;
+    setQuantity((q) => {
+      const n = Number(q);
+      return !q || Number.isNaN(n) || n < newMoq ? String(newMoq) : q;
+    });
+  }
 
   const isFirst = step === 0;
   const isLast = step === steps.length - 1;
@@ -178,9 +197,7 @@ export function QuoteForm() {
 
     const fd = new FormData(e.currentTarget);
 
-    const projectType = String(fd.get("projectType") || "");
-    const industry = String(fd.get("industry") || "");
-    const quantity = String(fd.get("quantity") || "");
+    // projectType, industry and quantity are controlled state — read them directly.
     const checkedCustomization = customizations
       .filter((c) => fd.get(`cz-${c.id}`) === "on")
       .map((c) => c.label);
@@ -228,7 +245,8 @@ export function QuoteForm() {
         leadTag,
         answers: {
           city: String(fd.get("city") || ""),
-          dimensions: String(fd.get("dimensions") || ""),
+          size: sizeLabelById(String(fd.get("size") || "")),
+          ...(moq != null ? { moq: String(moq) } : {}),
           material: String(fd.get("material") || ""),
           artworkStatus: String(fd.get("artworkStatus") || ""),
           existingPackaging: String(fd.get("existingPackaging") || ""),
@@ -392,7 +410,16 @@ export function QuoteForm() {
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
               <Label htmlFor="q-type">What type of packaging do you need?</Label>
-              <select id="q-type" name="projectType" defaultValue={presetType} className={selectCls()}>
+              <select
+                id="q-type"
+                name="projectType"
+                value={projectType}
+                onChange={(e) => {
+                  setProjectType(e.target.value);
+                  bumpQtyTo(lookupMoq(industry, e.target.value, size));
+                }}
+                className={selectCls()}
+              >
                 <option value="">Select packaging…</option>
                 {projectTypes.map((o) => (
                   <option key={o.value} value={o.value}>{o.label}</option>
@@ -401,7 +428,16 @@ export function QuoteForm() {
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="q-industry">What type of business is this for?</Label>
-              <select id="q-industry" name="industry" defaultValue={presetIndustry} className={selectCls()}>
+              <select
+                id="q-industry"
+                name="industry"
+                value={industry}
+                onChange={(e) => {
+                  setIndustry(e.target.value);
+                  bumpQtyTo(lookupMoq(e.target.value, projectType, size));
+                }}
+                className={selectCls()}
+              >
                 <option value="">Select industry…</option>
                 {industryOptions.map((o) => (
                   <option key={o.value} value={o.value}>{o.label}</option>
@@ -439,8 +475,22 @@ export function QuoteForm() {
           </legend>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
-              <Label htmlFor="q-dimensions">Product dimensions (if known)</Label>
-              <Input id="q-dimensions" name="dimensions" placeholder="e.g. 5 × 5 × 12 cm" />
+              <Label htmlFor="q-size">Size</Label>
+              <select
+                id="q-size"
+                name="size"
+                value={size}
+                onChange={(e) => {
+                  setSize(e.target.value);
+                  bumpQtyTo(lookupMoq(industry, projectType, e.target.value));
+                }}
+                className={selectCls()}
+              >
+                <option value="">Select size…</option>
+                {sizeOptions.map((o) => (
+                  <option key={o.id} value={o.id}>{o.label}</option>
+                ))}
+              </select>
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="q-material">Preferred material</Label>
@@ -452,13 +502,30 @@ export function QuoteForm() {
               </select>
             </div>
             <div className="space-y-1.5 sm:col-span-2">
-              <Label htmlFor="q-qty">Quantity</Label>
-              <select id="q-qty" name="quantity" defaultValue={presetQtyRange} className={selectCls()}>
-                <option value="">Select quantity…</option>
-                {quantityRanges.map((o) => (
-                  <option key={o.value} value={o.value}>{o.label}</option>
-                ))}
-              </select>
+              <Label htmlFor="q-qty">Quantity{moq != null ? " (MOQ)" : ""}</Label>
+              <Input
+                id="q-qty"
+                name="quantity"
+                type="number"
+                inputMode="numeric"
+                min={moq ?? 1}
+                step={1}
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+                placeholder={moq != null ? String(moq) : "e.g. 1000"}
+              />
+              {moq != null ? (
+                <p className="text-xs text-muted-foreground">
+                  Minimum order for a {sizeLabelById(size).toLowerCase()} size is{" "}
+                  <span className="font-semibold text-foreground">{moq.toLocaleString()}</span> units
+                  (per our pricing sheet). You can order more, not fewer.
+                </p>
+              ) : (
+                <p className="text-xs text-muted-foreground">
+                  Pick a packaging type, business and size to see the minimum order quantity.
+                  Minimums start at {site.minMoq.toLocaleString()} units and vary by product.
+                </p>
+              )}
             </div>
           </div>
         </fieldset>

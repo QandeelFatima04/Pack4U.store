@@ -220,6 +220,29 @@ export function productNameToTypeValue(name: string): string {
   return "";
 }
 
+// The Sheet3 MOQ for a given industry + packaging-type + size, or null when that
+// combination isn't a priced row (industry/type/size not in the sheet, or a
+// custom-quoted option). Buyers can order at or above this, never below.
+export function lookupMoq(
+  industrySlug: string,
+  typeSlug: string,
+  sizeId: string,
+): number | null {
+  if (!industrySlug || !typeSlug || !sizeId) return null;
+  const targetName = typeSlugToProductName[typeSlug]?.toLowerCase();
+  if (!targetName) return null; // complete-set / not-sure / unmapped → custom-quoted
+  const industry = estimatorIndustries.find((i) => i.slug === industrySlug);
+  if (!industry) return null;
+  const product = industry.products.find(
+    (p) =>
+      p.estimable &&
+      (p.name.toLowerCase() === targetName || p.name.toLowerCase().startsWith(targetName)),
+  );
+  if (!product) return null;
+  const size = product.sizes.find((s) => s.id === sizeId);
+  return size ? size.moq : null;
+}
+
 // Pick the default product for an industry given an optional type-page slug.
 export function pickProduct(industry: EstIndustry, typeSlug?: string): EstProduct {
   if (typeSlug) {
