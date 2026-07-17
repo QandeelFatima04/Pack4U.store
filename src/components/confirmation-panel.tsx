@@ -138,24 +138,25 @@ export function ConfirmationPanel() {
         <h2 className="font-[family-name:var(--font-heading)] text-lg font-bold">
           Need us sooner?
         </h2>
-        <div className="mt-4 flex flex-wrap items-center gap-3">
+        <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center md:flex-nowrap">
           <WhatsAppButton
             source="quote-confirmation"
             text={`Hi Pack4U, I've just submitted a packaging request${rfq.reference ? ` (${rfq.reference})` : ""}. Could you confirm you've received it?`}
+            className="px-4 whitespace-nowrap"
           />
           <a
             href={telLink()}
             onClick={() => track("call_click", { source: "quote-confirmation" })}
-            className="inline-flex items-center justify-center gap-2 rounded-full border border-brand px-6 py-3 text-sm font-semibold text-brand transition hover:bg-brand hover:text-white"
+            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full border border-brand px-4 py-3 text-sm font-semibold text-brand transition hover:bg-brand hover:text-white"
           >
-            <Phone className="h-5 w-5" />
+            <Phone className="h-5 w-5 shrink-0" />
             {site.phoneDisplay}
           </a>
           <a
             href={`mailto:${site.email}`}
-            className="inline-flex items-center justify-center gap-2 rounded-full border border-brand px-6 py-3 text-sm font-semibold text-brand transition hover:bg-brand hover:text-white"
+            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full border border-brand px-4 py-3 text-sm font-semibold text-brand transition hover:bg-brand hover:text-white"
           >
-            <Mail className="h-5 w-5" />
+            <Mail className="h-5 w-5 shrink-0" />
             {site.email}
           </a>
         </div>
