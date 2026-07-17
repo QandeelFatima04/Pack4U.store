@@ -67,10 +67,13 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", handler);
   }, [isHomepage]);
 
-  // Close the desktop dropdown on route change.
-  useEffect(() => {
+  // Close the desktop dropdown on route change. Derived during render rather
+  // than in an effect — see "You Might Not Need an Effect" (react.dev).
+  const [menuPathname, setMenuPathname] = useState(pathname);
+  if (pathname !== menuPathname) {
+    setMenuPathname(pathname);
     setOpenMenu(null);
-  }, [pathname]);
+  }
 
   // Close the desktop dropdown on outside click or Escape.
   useEffect(() => {

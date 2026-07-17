@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Info, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -48,21 +48,25 @@ export function Estimator({
   const size = product.sizes.find((s) => s.id === sizeId) ?? product.sizes[0];
 
   // Finishes that are actually offered for this product (null ⇒ not available).
-  const availableFinishes = useMemo(
-    () =>
-      FINISH_ORDER.filter((key) => product.finishes[key] !== null).map((key) => {
-        const value = product.finishes[key];
-        return {
-          key,
-          label: FINISH_LABELS[key],
-          included: value === "included",
-          add: typeof value === "number" ? value : 0,
-        };
-      }),
-    [product],
-  );
+  // The React Compiler auto-memoizes these derived values, so no manual useMemo.
+  const availableFinishes = FINISH_ORDER.filter(
+    (key) => product.finishes[key] !== null,
+  ).map((key) => {
+    const value = product.finishes[key];
+    return {
+      key,
+      label: FINISH_LABELS[key],
+      included: value === "included",
+      add: typeof value === "number" ? value : 0,
+    };
+  });
 
-  const result = useMemo(() => {
+  const result = ((): {
+    safeQty: number;
+    moq: number;
+    perUnit: number;
+    total: number;
+  } | null => {
     if (!product.estimable || !size) return null;
     const moq = size.moq;
     const safeQty = Math.max(moq, Math.round(qty || moq));
@@ -72,7 +76,7 @@ export function Estimator({
     );
     const perUnit = size.price + addOn;
     return { safeQty, moq, perUnit, total: perUnit * safeQty };
-  }, [product, size, qty, selectedFinishes, availableFinishes]);
+  })();
 
   function selectIndustry(slug: string) {
     const next = estimatorIndustries.find((i) => i.slug === slug) ?? estimatorIndustries[0];
