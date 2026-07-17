@@ -2,7 +2,7 @@
 
 import { useMemo, useSyncExternalStore } from "react";
 import Link from "next/link";
-import { CheckCircle2, AlertTriangle, Paperclip } from "lucide-react";
+import { CheckCircle2, AlertTriangle, Paperclip, Phone, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WhatsAppButton } from "@/components/whatsapp-button";
 import { readRfqRaw, parseRfq, subscribeRfq } from "@/lib/rfq";
@@ -138,7 +138,7 @@ export function ConfirmationPanel() {
         <h2 className="font-[family-name:var(--font-heading)] text-lg font-bold">
           Need us sooner?
         </h2>
-        <div className="mt-4 flex flex-wrap items-center gap-4">
+        <div className="mt-4 flex flex-wrap items-center gap-3">
           <WhatsAppButton
             source="quote-confirmation"
             text={`Hi Pack4U, I've just submitted a packaging request${rfq.reference ? ` (${rfq.reference})` : ""}. Could you confirm you've received it?`}
@@ -146,14 +146,16 @@ export function ConfirmationPanel() {
           <a
             href={telLink()}
             onClick={() => track("call_click", { source: "quote-confirmation" })}
-            className="text-sm font-semibold text-brand hover:underline"
+            className="inline-flex items-center justify-center gap-2 rounded-full border border-brand px-6 py-3 text-sm font-semibold text-brand transition hover:bg-brand hover:text-white"
           >
+            <Phone className="h-5 w-5" />
             {site.phoneDisplay}
           </a>
           <a
             href={`mailto:${site.email}`}
-            className="text-sm font-semibold text-brand hover:underline"
+            className="inline-flex items-center justify-center gap-2 rounded-full border border-brand px-6 py-3 text-sm font-semibold text-brand transition hover:bg-brand hover:text-white"
           >
+            <Mail className="h-5 w-5" />
             {site.email}
           </a>
         </div>
