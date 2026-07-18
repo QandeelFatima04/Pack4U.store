@@ -216,7 +216,7 @@ Want a specific number? [Send us your current spec](/packaging-cost-optimization
     date: "2026-04-15",
     author: "Pack4U",
     tags: ["Education", "Ordering"],
-    cover: "/images/types/boxes.jpg",
+    cover: "/images/types/inserts.jpg",
     body: `A good quote needs a few key details. Have these ready and you'll get an accurate price fast.
 
 ## The checklist
@@ -410,7 +410,7 @@ Match your bag to your tags, tissue and boxes so the whole retail experience fee
     date: "2026-02-22",
     author: "Pack4U",
     tags: ["Sustainability", "Education"],
-    cover: "/images/portfolio/souvenir-bag.jpg",
+    cover: "/images/products/honey-box/01.jpg",
     body: `You don't need a huge budget to make packaging more sustainable. You need practical paper-based options that fit your product.
 
 ## Start where plastic is easy to replace
