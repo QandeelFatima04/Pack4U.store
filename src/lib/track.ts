@@ -12,21 +12,30 @@ declare global {
 
 export type KeyEvent =
   | "whatsapp_click"
-  | "call_click"
+  | "phone_click"
+  | "email_click"
   | "form_submit"
   | "sample_kit_request"
   | "quote_request"
   | "estimate_generated"
-  | "quote_started"
   | "quiz_complete"
   | "catalogue_download"
   | "begin_checkout"
-  | "purchase";
+  | "purchase"
+  // --- Marketing funnel events (GA4-only; see META_EVENT for exceptions) ---
+  | "funnel_page_view"
+  | "funnel_content_view"
+  | "funnel_cta_click"
+  | "estimator_start"
+  | "estimator_step_complete"
+  | "estimator_complete"
+  | "quote_form_start"
+  | "generate_lead";
 
 // Map our events to Meta standard events where one fits.
 const META_EVENT: Partial<Record<KeyEvent, string>> = {
   whatsapp_click: "Contact",
-  call_click: "Contact",
+  phone_click: "Contact",
   form_submit: "Lead",
   sample_kit_request: "Lead",
   quote_request: "Lead",
@@ -37,19 +46,37 @@ const META_EVENT: Partial<Record<KeyEvent, string>> = {
   catalogue_download: "ViewContent",
   begin_checkout: "InitiateCheckout",
   purchase: "Purchase",
+  // NOTE: `generate_lead` has no Meta mapping on purpose — it is the canonical
+  // GA4 lead event. Meta's `Lead` keeps coming from `quote_request`/`form_submit`
+  // (fired Meta-only by submit-lead), so neither platform double-counts a lead.
 };
 
-export function track(event: KeyEvent, params: Record<string, unknown> = {}) {
+/**
+ * Fire a key event. Defaults to both GA4 (gtag) and Meta Pixel (fbq) where a
+ * Meta mapping exists. Pass `opts` to restrict a destination — e.g.
+ * `track("quote_request", params, { ga: false })` sends Meta-only so the event
+ * does not also land in GA4 (avoids double-counting alongside `generate_lead`).
+ */
+export function track(
+  event: KeyEvent,
+  params: Record<string, unknown> = {},
+  opts: { ga?: boolean; meta?: boolean } = {},
+) {
   if (typeof window === "undefined") return;
-  try {
-    window.gtag?.("event", event, params);
-  } catch {
-    /* noop */
+  const { ga = true, meta = true } = opts;
+  if (ga) {
+    try {
+      window.gtag?.("event", event, params);
+    } catch {
+      /* noop */
+    }
   }
-  try {
-    const metaName = META_EVENT[event];
-    if (metaName) window.fbq?.("track", metaName, params);
-  } catch {
-    /* noop */
+  if (meta) {
+    try {
+      const metaName = META_EVENT[event];
+      if (metaName) window.fbq?.("track", metaName, params);
+    } catch {
+      /* noop */
+    }
   }
 }

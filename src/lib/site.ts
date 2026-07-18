@@ -5,6 +5,8 @@ export const site = {
   name: "Pack4U",
   legalName: "Pack4U Packaging",
   tagline: "Custom Paper Packaging for Product Brands",
+  /** Logo under /public, used as the JSON-LD publisher logo (absolute URL built with site.url). */
+  logo: "/images/logo.png",
   heroHeadline: "Custom Paper Packaging for Product Brands",
   heroSub:
     "We help businesses design, develop, and produce custom boxes, bags, tags, sleeves, inserts, and branded paper packaging for retail, gifting, food, fashion, cosmetics, and e-commerce.",

@@ -7,7 +7,9 @@ import { cn } from "@/lib/utils";
 type Props = {
   text?: string;
   label?: string;
-  source?: string; // where the click came from, for tracking
+  source?: string; // where the click came from, for tracking (click_location)
+  pageType?: string; // page context, for the funnel analytics dimension
+  funnelStage?: string; // optional funnel stage, for the funnel analytics dimension
   variant?: "sticky" | "inline";
   className?: string;
 };
@@ -24,10 +26,18 @@ export function WhatsAppButton({
   text,
   label = "Get a quote on WhatsApp",
   source = "site",
+  pageType,
+  funnelStage,
   variant = "inline",
   className,
 }: Props) {
   const href = whatsappLink(text);
+  const params = (location: string) => ({
+    click_location: location,
+    source: location, // kept for continuity with existing GA reports
+    ...(pageType ? { page_type: pageType } : {}),
+    ...(funnelStage ? { funnel_stage: funnelStage } : {}),
+  });
 
   if (variant === "sticky") {
     return (
@@ -36,7 +46,7 @@ export function WhatsAppButton({
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat with Pack4U on WhatsApp"
-        onClick={() => track("whatsapp_click", { source: "sticky" })}
+        onClick={() => track("whatsapp_click", params("sticky"))}
         className={cn(
           "fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-black/15 transition hover:scale-105 hover:bg-[#1ebe5b]",
           className,
@@ -53,7 +63,7 @@ export function WhatsAppButton({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      onClick={() => track("whatsapp_click", { source })}
+      onClick={() => track("whatsapp_click", params(source))}
       className={cn(
         "inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1ebe5b]",
         className,

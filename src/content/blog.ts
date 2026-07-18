@@ -34,6 +34,20 @@ Printing, lamination, foil, emboss and window cut-outs all add cost. Pick the on
 Minimums vary by product: boxes, bags and inserts start at 500 units, food boxes at 1,000–2,000, and tags, labels and sleeves at 5,000. The per-unit cost drops as quantity rises. Use our [price estimator](/estimate) to see the trade-off before you commit.
 
 Still unsure? [Start a packaging consultation](/packaging-for-startups) and we'll recommend a direction for your product and budget.`,
+    funnelStage: "tofu",
+    contentCluster: "startup-packaging",
+    category: "Getting Started",
+    primaryCta: {
+      label: "Next: the pre-launch packaging checklist",
+      href: "/blog/packaging-checklist-before-launching-your-product",
+      destinationType: "article",
+      ctaName: "see_prelaunch_checklist",
+      nextFunnelStage: "mofu",
+    },
+    relatedPosts: [
+      "product-packaging-mistakes-startups-make",
+      "packaging-checklist-before-launching-your-product",
+    ],
     seo: {
       seoTitle: "How to Choose Packaging for a New Product",
       metaDescription:
@@ -49,7 +63,7 @@ Still unsure? [Start a packaging consultation](/packaging-for-startups) and we'l
     date: "2026-05-10",
     author: "Pack4U",
     tags: ["Education", "Boxes"],
-    cover: "/images/types/sleeves.jpg",
+    cover: "/images/portfolio/coffee-sleeve.jpg",
     body: `Two of the most common ways to brand a product are a fully printed box and a printed sleeve wrapped around a plain box. Both work — they just suit different situations.
 
 ## When a printed box wins
@@ -69,6 +83,20 @@ Sleeves use less material and printing, so they're usually the more affordable r
 If the box itself must feel premium end-to-end, print the box. If you mainly need branding and flexibility at lower cost, use a sleeve. Many brands start with a sleeve and graduate to a printed box as volumes grow.
 
 [Estimate both options](/estimate) or [request a quote](/get-quote) and we'll advise which fits your product.`,
+    funnelStage: "mofu",
+    contentCluster: "packaging-cost",
+    category: "Packaging Costs",
+    primaryCta: {
+      label: "Estimate box vs sleeve pricing",
+      href: "/estimate?type=custom-boxes",
+      destinationType: "estimator",
+      ctaName: "estimate_box_vs_sleeve",
+      nextFunnelStage: "mofu",
+    },
+    relatedPosts: [
+      "how-to-reduce-packaging-cost",
+      "what-to-prepare-before-requesting-a-packaging-quote",
+    ],
     seo: {
       seoTitle: "Custom Box vs Sleeve: Which Is Better for Your Product?",
       metaDescription:
@@ -108,6 +136,20 @@ Per-unit cost falls as quantity rises. If your sales support it, moving up a tie
 If you sell several products, a shared box system and common material reduce setup costs and simplify reorders.
 
 Want a specific number? [Send us your current spec](/packaging-cost-optimization) and we'll show a before/after with the cost impact.`,
+    funnelStage: "mofu",
+    contentCluster: "packaging-cost",
+    category: "Packaging Costs",
+    primaryCta: {
+      label: "Compare: custom box vs sleeve",
+      href: "/blog/custom-box-vs-sleeve",
+      destinationType: "article",
+      ctaName: "compare_box_vs_sleeve",
+      nextFunnelStage: "mofu",
+    },
+    relatedPosts: [
+      "custom-box-vs-sleeve",
+      "what-to-prepare-before-requesting-a-packaging-quote",
+    ],
     seo: {
       seoTitle: "How to Reduce Packaging Cost Without Making It Look Cheap",
       metaDescription:
@@ -141,6 +183,20 @@ Want a specific number? [Send us your current spec](/packaging-cost-optimization
 That's fine. Share what you have and mark the rest as "not sure" — we'll fill the gaps with recommendations. If you're early-stage, a [packaging consultation](/packaging-for-startups) is the better first step.
 
 When you're ready, [request a quote](/get-quote) or get an instant ballpark from the [price estimator](/estimate).`,
+    funnelStage: "bofu",
+    contentCluster: "ordering",
+    category: "Ordering Guides",
+    primaryCta: {
+      label: "Get a custom quote",
+      href: "/get-quote",
+      destinationType: "quote",
+      ctaName: "get_custom_quote",
+      nextFunnelStage: "bofu",
+    },
+    relatedPosts: [
+      "packaging-checklist-before-launching-your-product",
+      "how-to-choose-packaging-for-a-new-product",
+    ],
     seo: {
       seoTitle: "What to Prepare Before Requesting a Packaging Quote",
       metaDescription:
@@ -176,6 +232,20 @@ A how-to-use card or ingredient story turns the unboxing into part of the produc
 A soft-touch lamination or a foil logo can transform a simple white box. Pick one signature finish and keep it across the range.
 
 [See cosmetic packaging](/custom-cosmetic-packaging) or [request a quote](/get-quote).`,
+    funnelStage: "mofu",
+    contentCluster: "cosmetic-packaging",
+    category: "Packaging Ideas",
+    primaryCta: {
+      label: "See custom cosmetic packaging",
+      href: "/custom-cosmetic-packaging",
+      destinationType: "industry",
+      ctaName: "see_custom_cosmetic_packaging",
+      nextFunnelStage: "mofu",
+    },
+    relatedPosts: [
+      "packaging-ideas-for-bakeries-and-cafes",
+      "how-to-choose-packaging-for-a-new-product",
+    ],
     seo: {
       seoTitle: "Packaging Ideas for Skincare Brands",
       metaDescription:
@@ -211,6 +281,20 @@ A printed sleeve or a simple branded label turns plain takeaway packaging into s
 Use the same colours and logo across takeaway, gifting and retail so your brand is recognisable everywhere.
 
 [See food & bakery packaging](/custom-food-packaging) or [request a quote](/get-quote).`,
+    funnelStage: "tofu",
+    contentCluster: "industry-ideas",
+    category: "Packaging Ideas",
+    primaryCta: {
+      label: "See custom food packaging",
+      href: "/custom-food-packaging",
+      destinationType: "industry",
+      ctaName: "see_custom_food_packaging",
+      nextFunnelStage: "mofu",
+    },
+    relatedPosts: [
+      "packaging-ideas-for-skincare-brands",
+      "paper-bag-customization-options-for-retail-brands",
+    ],
     seo: {
       seoTitle: "Packaging Ideas for Bakeries and Cafés",
       metaDescription:
@@ -246,6 +330,20 @@ Full-colour printing, foil stamping, and matte or gloss lamination all change th
 Match your bag to your tags, tissue and boxes so the whole retail experience feels like one brand.
 
 [See custom bags](/custom-paper-bags) or [request a quote](/get-quote).`,
+    funnelStage: "mofu",
+    contentCluster: "materials-finishes",
+    category: "Materials & Finishes",
+    primaryCta: {
+      label: "See custom paper bags",
+      href: "/custom-paper-bags",
+      destinationType: "product",
+      ctaName: "see_custom_paper_bags",
+      nextFunnelStage: "mofu",
+    },
+    relatedPosts: [
+      "packaging-ideas-for-bakeries-and-cafes",
+      "how-to-reduce-packaging-cost",
+    ],
     seo: {
       seoTitle: "Paper Bag Customization Options for Retail Brands",
       metaDescription:
@@ -281,6 +379,20 @@ You don't have to change everything at once. A recycled box with a standard inse
 Only say what's true. Practical, honest sustainability beats vague green claims every time.
 
 [Explore a sustainable packaging upgrade](/sustainable-packaging-upgrade) and we'll show you the real cost comparison.`,
+    funnelStage: "tofu",
+    contentCluster: "sustainable-packaging",
+    category: "Sustainable Packaging",
+    primaryCta: {
+      label: "Explore a sustainable packaging upgrade",
+      href: "/sustainable-packaging-upgrade",
+      destinationType: "consultation",
+      ctaName: "explore_sustainable_upgrade",
+      nextFunnelStage: "mofu",
+    },
+    relatedPosts: [
+      "product-packaging-mistakes-startups-make",
+      "how-to-reduce-packaging-cost",
+    ],
     seo: {
       seoTitle: "Sustainable Packaging Options for Small Businesses",
       metaDescription:
@@ -320,6 +432,20 @@ Ordering too few units makes the per-unit cost painful — and some products can
 If the packaging can't be reproduced consistently, every reorder is a headache. Lock the spec.
 
 Avoid all five: [start with a consultation](/packaging-for-startups) before you order.`,
+    funnelStage: "tofu",
+    contentCluster: "startup-packaging",
+    category: "Getting Started",
+    primaryCta: {
+      label: "Read: how to choose packaging for a new product",
+      href: "/blog/how-to-choose-packaging-for-a-new-product",
+      destinationType: "article",
+      ctaName: "read_how_to_choose_packaging",
+      nextFunnelStage: "tofu",
+    },
+    relatedPosts: [
+      "how-to-choose-packaging-for-a-new-product",
+      "packaging-checklist-before-launching-your-product",
+    ],
     seo: {
       seoTitle: "Product Packaging Mistakes Startups Make",
       metaDescription:
@@ -354,6 +480,20 @@ Avoid all five: [start with a consultation](/packaging-for-startups) before you 
 Build in a little time buffer. Artwork revisions and sample rounds always take a bit longer than expected near a launch.
 
 Ready? [Request a quote](/get-quote) or [get an instant estimate](/estimate).`,
+    funnelStage: "mofu",
+    contentCluster: "startup-packaging",
+    category: "Getting Started",
+    primaryCta: {
+      label: "Estimate your packaging cost",
+      href: "/estimate",
+      destinationType: "estimator",
+      ctaName: "estimate_packaging_cost",
+      nextFunnelStage: "mofu",
+    },
+    relatedPosts: [
+      "how-to-choose-packaging-for-a-new-product",
+      "what-to-prepare-before-requesting-a-packaging-quote",
+    ],
     seo: {
       seoTitle: "Packaging Checklist Before Launching Your Product",
       metaDescription:

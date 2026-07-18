@@ -4,6 +4,7 @@ import { CtaBand } from "@/components/sections";
 import { EstimatorWithPreset } from "@/components/estimator-with-preset";
 import { BreadcrumbJsonLd } from "@/components/json-ld";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { FunnelView } from "@/components/funnel/funnel-view";
 
 export const metadata: Metadata = {
   title: "Packaging Price Estimator — Instant Custom Packaging Estimate",
@@ -19,6 +20,7 @@ export default function EstimatePage() {
   return (
     <>
       <BreadcrumbJsonLd items={crumbs} />
+      <FunnelView pageType="estimator" pageSlug="estimate" funnelStage="mofu" />
       <section className="border-b bg-gradient-to-b from-secondary/50 to-background">
         <div className="container-page py-14 sm:py-20">
           <Breadcrumbs items={crumbs} />

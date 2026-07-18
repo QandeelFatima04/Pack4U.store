@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { Check, Target, ClipboardList } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { WhatsAppButton } from "@/components/whatsapp-button";
+import { FunnelView } from "@/components/funnel/funnel-view";
+import { FunnelCta } from "@/components/funnel/funnel-cta";
 import { SectionHeading, CtaBand } from "@/components/sections";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { BreadcrumbJsonLd, ServiceJsonLd, FaqJsonLd } from "@/components/json-ld";
@@ -20,6 +20,7 @@ export function ConsultationTemplate({ topic }: { topic: ConsultationTopic }) {
       />
       <ServiceJsonLd name={topic.name} description={topic.heroSub} url={`/${topic.slug}`} />
       <FaqJsonLd items={topic.faqs} />
+      <FunnelView pageType="consultation" pageSlug={topic.slug} funnelStage="mofu" />
 
       {/* Problem-led hero */}
       <section className="border-b bg-gradient-to-b from-secondary/50 to-background">
@@ -40,10 +41,24 @@ export function ConsultationTemplate({ topic }: { topic: ConsultationTopic }) {
             {topic.problem}
           </div>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Button asChild size="lg">
-              <Link href={`/get-quote?topic=${topic.slug}`}>{topic.cta.label}</Link>
-            </Button>
-            <WhatsAppButton source={`consultation-${topic.slug}`} text={topic.cta.whatsappText} />
+            <FunnelCta
+              pageType="consultation"
+              pageSlug={topic.slug}
+              funnelStage="mofu"
+              nextFunnelStage="bofu"
+              ctaName="consultation_hero_quote"
+              label={topic.cta.label}
+              href={`/get-quote?topic=${topic.slug}`}
+              destinationType="quote"
+              position="landing_hero"
+              variant="default"
+            />
+            <WhatsAppButton
+              source={`consultation-${topic.slug}`}
+              pageType="consultation"
+              funnelStage="mofu"
+              text={topic.cta.whatsappText}
+            />
           </div>
         </div>
       </section>

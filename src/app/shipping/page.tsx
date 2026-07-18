@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { LegalLayout } from "@/components/legal-layout";
+import { EmailLink } from "@/components/email-link";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -34,7 +35,7 @@ export default function ShippingPage() {
       <h2>Questions?</h2>
       <p>
         Message us on WhatsApp or email{" "}
-        <a href={`mailto:${site.email}`}>{site.email}</a>.
+        <EmailLink clickLocation="shipping" pageType="legal">{site.email}</EmailLink>.
       </p>
     </LegalLayout>
   );

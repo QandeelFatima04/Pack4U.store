@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Info, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -24,6 +24,16 @@ import {
 } from "@/lib/estimate";
 import { track } from "@/lib/track";
 import { cn } from "@/lib/utils";
+
+/** Coarse quantity band for analytics — never sends the exact figure. */
+function qtyBand(n: number): string {
+  if (n < 250) return "100_249";
+  if (n < 500) return "250_499";
+  if (n < 1000) return "500_999";
+  if (n < 2500) return "1000_2499";
+  if (n < 5000) return "2500_4999";
+  return "5000_plus";
+}
 
 export function Estimator({
   defaultTypeSlug,
@@ -78,7 +88,68 @@ export function Estimator({
     return { safeQty, moq, perUnit, total: perUnit * safeQty };
   })();
 
+  // --- Funnel analytics: fire on real interactions only, never on page load.
+  // The estimator is a single live screen, so its four visible input groups map
+  // to funnel "steps": packaging (1), size (2), finishes (3), quantity (4).
+  const [engaged, setEngaged] = useState(false);
+  const startedRef = useRef(false);
+  const stepDoneRef = useRef({
+    packaging: false,
+    size: false,
+    finishes: false,
+    quantity: false,
+  });
+  const completeRef = useRef(false);
+
+  const eventBase = () => ({
+    industry: industry.slug,
+    packaging_type: productNameToTypeValue(product.name),
+  });
+
+  function fireStart() {
+    if (startedRef.current) return;
+    startedRef.current = true;
+    setEngaged(true);
+    track("estimator_start", eventBase());
+  }
+
+  function fireStep(
+    step: keyof typeof stepDoneRef.current,
+    stepNumber: number,
+    extra: Record<string, string> = {},
+  ) {
+    fireStart();
+    if (stepDoneRef.current[step]) return;
+    stepDoneRef.current[step] = true;
+    track("estimator_step_complete", {
+      estimator_step: step,
+      estimator_step_number: stepNumber,
+      ...eventBase(),
+      ...extra,
+    });
+  }
+
+  // Quantity step: fire once a valid (>= MOQ) quantity has been entered.
+  function noteQuantity(n: number) {
+    if (!size || Number.isNaN(n) || n < size.moq) return;
+    fireStep("quantity", 4, { quantity_band: qtyBand(n) });
+  }
+
+  // estimator_complete: once, after the user has engaged and a valid priced
+  // estimate is on screen. Non-estimable/custom-quote products yield no result,
+  // so they correctly never "complete".
+  useEffect(() => {
+    if (!engaged || completeRef.current || !result) return;
+    completeRef.current = true;
+    track("estimator_complete", {
+      industry: industry.slug,
+      packaging_type: productNameToTypeValue(product.name),
+      quantity_band: qtyBand(result.safeQty),
+    });
+  }, [engaged, result, industry, product]);
+
   function selectIndustry(slug: string) {
+    fireStep("packaging", 1);
     const next = estimatorIndustries.find((i) => i.slug === slug) ?? estimatorIndustries[0];
     const nextProduct = pickProduct(next);
     setIndustrySlug(slug);
@@ -89,6 +160,7 @@ export function Estimator({
   }
 
   function selectProduct(name: string) {
+    fireStep("packaging", 1);
     const next = industry.products.find((p) => p.name === name) ?? industry.products[0];
     setProductName(name);
     setSizeId(next.sizes[0]?.id ?? "medium");
@@ -97,12 +169,14 @@ export function Estimator({
   }
 
   function selectSize(id: "small" | "medium" | "large") {
+    fireStep("size", 2);
     const next = product.sizes.find((s) => s.id === id);
     setSizeId(id);
     if (next) setQty((q) => Math.max(next.moq, Math.round(q || next.moq)));
   }
 
   function toggleFinish(key: EstFinishKey) {
+    fireStep("finishes", 3);
     setSelectedFinishes((cur) =>
       cur.includes(key) ? cur.filter((x) => x !== key) : [...cur, key],
     );
@@ -152,6 +226,20 @@ export function Estimator({
       industry: industry.name,
       quantity: result.safeQty,
       value: Math.round(result.total),
+    });
+  }
+
+  // Estimator → quote hand-off, tracked as a funnel CTA (mofu → bofu).
+  function continueToQuote() {
+    handoffToQuote();
+    track("funnel_cta_click", {
+      page_type: "estimator",
+      funnel_stage: "mofu",
+      next_funnel_stage: "bofu",
+      cta_name: "estimator_continue_to_quote",
+      cta_position: "estimator_result",
+      destination_type: "quote",
+      ...eventBase(),
     });
   }
 
@@ -279,7 +367,11 @@ export function Estimator({
                 min={size.moq}
                 step={100}
                 value={qty}
-                onChange={(e) => setQty(Number(e.target.value))}
+                onChange={(e) => {
+                  const n = Number(e.target.value);
+                  setQty(n);
+                  noteQuantity(n);
+                }}
                 onBlur={() => setQty((q) => Math.max(size.moq, Math.round(q || size.moq)))}
                 className="flex h-11 w-full rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               />
@@ -294,7 +386,10 @@ export function Estimator({
                   <button
                     key={n}
                     type="button"
-                    onClick={() => setQty(n)}
+                    onClick={() => {
+                      setQty(n);
+                      noteQuantity(n);
+                    }}
                     className={cn(
                       "rounded-full border px-3 py-1 text-xs font-medium transition",
                       result?.safeQty === n
@@ -367,13 +462,19 @@ export function Estimator({
           )}
 
           <Button asChild size="lg" className="mt-5 w-full">
-            <Link href={quoteHref} onClick={handoffToQuote}>
+            <Link href={quoteHref} onClick={continueToQuote}>
               {result ? "Get exact quote" : "Request a quote"}{" "}
               <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>
           <div className="mt-3 flex justify-center">
-            <WhatsAppButton source="estimator" label="Confirm on WhatsApp" text={whatsappText} />
+            <WhatsAppButton
+              source="estimator"
+              pageType="estimator"
+              funnelStage="mofu"
+              label="Confirm on WhatsApp"
+              text={whatsappText}
+            />
           </div>
           <p className="mt-4 flex gap-1.5 text-xs text-muted-foreground">
             <Info className="mt-0.5 h-3.5 w-3.5 shrink-0" />

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { LegalLayout } from "@/components/legal-layout";
+import { EmailLink } from "@/components/email-link";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -39,7 +40,7 @@ export default function PrivacyPage() {
       <h2>Contact</h2>
       <p>
         For any privacy request, email{" "}
-        <a href={`mailto:${site.email}`}>{site.email}</a>.
+        <EmailLink clickLocation="privacy" pageType="legal">{site.email}</EmailLink>.
       </p>
     </LegalLayout>
   );

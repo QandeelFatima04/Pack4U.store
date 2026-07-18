@@ -95,6 +95,47 @@ export function ServiceJsonLd({
   );
 }
 
+export function ArticleJsonLd({
+  slug,
+  title,
+  description,
+  datePublished,
+  dateModified,
+  image,
+}: {
+  slug: string;
+  title: string;
+  description: string;
+  datePublished: string; // ISO
+  dateModified?: string; // ISO; falls back to datePublished
+  image?: string; // path under /public, e.g. "/images/types/boxes.jpg"
+}) {
+  const url = `${site.url}/blog/${slug}`;
+  return (
+    <JsonLd
+      data={{
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        headline: title,
+        description,
+        datePublished,
+        dateModified: dateModified ?? datePublished,
+        // Omit `image` entirely when absent — never emit an empty image property.
+        ...(image ? { image: `${site.url}${image}` } : {}),
+        author: { "@type": "Organization", name: site.legalName, url: site.url },
+        publisher: {
+          "@type": "Organization",
+          name: site.legalName,
+          url: site.url,
+          logo: { "@type": "ImageObject", url: `${site.url}${site.logo}` },
+        },
+        mainEntityOfPage: { "@type": "WebPage", "@id": url },
+        url,
+      }}
+    />
+  );
+}
+
 export function BreadcrumbJsonLd({
   items,
 }: {

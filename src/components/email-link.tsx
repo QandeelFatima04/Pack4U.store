@@ -1,27 +1,27 @@
 "use client";
 
-import { telLink } from "@/lib/site";
+import { site } from "@/lib/site";
 import { track } from "@/lib/track";
 
-/** A tel: link that reports the click as `phone_click` (GA4 + Meta Contact). */
-export function CallLink({
-  source,
+/** A mailto: link that reports the click as `email_click` (GA4 + Meta Contact-free). */
+export function EmailLink({
+  clickLocation,
   pageType,
   className,
   children,
 }: {
   /** Where the click came from, e.g. "footer" | "contact-page". */
-  source: string;
+  clickLocation: string;
   pageType?: string;
   className?: string;
   children: React.ReactNode;
 }) {
   return (
     <a
-      href={telLink()}
+      href={`mailto:${site.email}`}
       onClick={() =>
-        track("phone_click", {
-          click_location: source,
+        track("email_click", {
+          click_location: clickLocation,
           ...(pageType ? { page_type: pageType } : {}),
         })
       }

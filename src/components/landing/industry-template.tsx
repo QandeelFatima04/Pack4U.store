@@ -2,6 +2,8 @@ import Link from "next/link";
 import { ArrowRight, Check, X, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WhatsAppButton } from "@/components/whatsapp-button";
+import { FunnelView } from "@/components/funnel/funnel-view";
+import { FunnelCta } from "@/components/funnel/funnel-cta";
 import { SectionHeading, TransparencyBlock, CtaBand } from "@/components/sections";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { ProductGallery } from "@/components/product-gallery";
@@ -31,6 +33,7 @@ export function IndustryTemplate({ industry }: { industry: IndustryPage }) {
         image={industry.heroImage}
       />
       <FaqJsonLd items={industry.faqs} />
+      <FunnelView pageType="industry" pageSlug={industry.slug} funnelStage="mofu" />
 
       {/* Hero */}
       <section className="border-b bg-gradient-to-b from-secondary/50 to-background">
@@ -54,10 +57,24 @@ export function IndustryTemplate({ industry }: { industry: IndustryPage }) {
             </h1>
             <p className="mt-5 max-w-xl text-lg text-muted-foreground">{industry.heroSub}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button asChild size="lg">
-                <Link href={`/get-quote?industry=${industry.slug}`}>{industry.cta.label}</Link>
-              </Button>
-              <WhatsAppButton source={`industry-${industry.slug}`} text={industry.cta.whatsappText} />
+              <FunnelCta
+                pageType="industry"
+                pageSlug={industry.slug}
+                funnelStage="mofu"
+                nextFunnelStage="bofu"
+                ctaName="industry_hero_quote"
+                label={industry.cta.label}
+                href={`/get-quote?industry=${industry.slug}`}
+                destinationType="quote"
+                position="landing_hero"
+                variant="default"
+              />
+              <WhatsAppButton
+                source={`industry-${industry.slug}`}
+                pageType="industry"
+                funnelStage="mofu"
+                text={industry.cta.whatsappText}
+              />
             </div>
           </div>
           <ProductGallery

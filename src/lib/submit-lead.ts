@@ -33,7 +33,9 @@ export async function submitLead(
   try {
     const res = await fetch("/api/lead", init);
     const data = (await res.json()) as LeadResponse;
-    if (data.ok) track(EVENT_BY_TYPE[payload.type], { type: payload.type });
+    // Meta-only: keeps the Meta Pixel `Lead` firing while leaving GA4's lead
+    // measurement to the single canonical `generate_lead` fired by the forms.
+    if (data.ok) track(EVENT_BY_TYPE[payload.type], { type: payload.type }, { ga: false });
     return data;
   } catch {
     return { ok: false, error: "Network error. Please try WhatsApp instead." };

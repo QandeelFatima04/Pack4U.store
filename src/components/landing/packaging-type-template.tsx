@@ -3,6 +3,8 @@ import { Check, Layers, Boxes } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { WhatsAppButton } from "@/components/whatsapp-button";
+import { FunnelView } from "@/components/funnel/funnel-view";
+import { FunnelCta } from "@/components/funnel/funnel-cta";
 import { SectionHeading, CtaBand } from "@/components/sections";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { Estimator } from "@/components/estimator";
@@ -28,6 +30,7 @@ export function PackagingTypeTemplate({ type }: { type: PackagingType }) {
       />
       <ServiceJsonLd name={type.name} description={type.heroSub} url={`/${type.slug}`} image={type.image} />
       <FaqJsonLd items={type.faqs} />
+      <FunnelView pageType="product" pageSlug={type.slug} funnelStage="mofu" />
 
       {/* Hero */}
       <section className="border-b bg-gradient-to-b from-secondary/50 to-background">
@@ -54,9 +57,18 @@ export function PackagingTypeTemplate({ type }: { type: PackagingType }) {
                 .join(" · ")}
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-              <Button asChild size="lg">
-                <Link href={`/get-quote?type=${type.slug}`}>Get a {type.shortName.toLowerCase()} quote</Link>
-              </Button>
+              <FunnelCta
+                pageType="product"
+                pageSlug={type.slug}
+                funnelStage="mofu"
+                nextFunnelStage="bofu"
+                ctaName="product_hero_quote"
+                label={`Get a ${type.shortName.toLowerCase()} quote`}
+                href={`/get-quote?type=${type.slug}`}
+                destinationType="quote"
+                position="landing_hero"
+                variant="default"
+              />
               <Button asChild size="lg" variant="outline">
                 <Link href="#estimate">Estimate price</Link>
               </Button>

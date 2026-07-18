@@ -187,6 +187,41 @@ export type ClientLogo = {
   url?: string;
 };
 
+/**
+ * Internal marketing-funnel classification. Never shown to public visitors —
+ * used only for analytics dimensions and to pick the next-step CTA.
+ */
+export type FunnelStage = "tofu" | "mofu" | "bofu";
+
+/** What kind of page a blog CTA sends the reader to (drives analytics + styling). */
+export type CtaDestinationType =
+  | "article"
+  | "industry"
+  | "product"
+  | "consultation"
+  | "estimator"
+  | "quote"
+  | "whatsapp";
+
+/** Public-facing blog category shown as a listing filter (not the internal funnel stage). */
+export type BlogCategory =
+  | "Getting Started"
+  | "Packaging Costs"
+  | "Packaging Ideas"
+  | "Materials & Finishes"
+  | "Ordering Guides"
+  | "Sustainable Packaging";
+
+/** Contextual next-step CTA for an article. `href` must be a confirmed site route. */
+export type BlogCta = {
+  label: string;
+  href: string;
+  destinationType: CtaDestinationType;
+  /** Stable machine-readable name for analytics (snake_case). */
+  ctaName: string;
+  nextFunnelStage: FunnelStage;
+};
+
 export type BlogPost = {
   slug: string;
   title: string;
@@ -198,6 +233,20 @@ export type BlogPost = {
   body: string;
   cover?: string;
   seo?: Seo;
+
+  // --- Marketing funnel metadata (internal) ---
+  /** Internal funnel stage; not surfaced to visitors. */
+  funnelStage: FunnelStage;
+  /** Machine-readable content cluster, e.g. "startup-packaging". */
+  contentCluster: string;
+  /** Public-facing category used by the blog listing filter. */
+  category: BlogCategory;
+  /** Contextual primary CTA driving the reader to the next funnel step. */
+  primaryCta: BlogCta;
+  /** Slugs of related posts (validated at build; missing refs dropped at render). */
+  relatedPosts: string[];
+  /** Optional ISO date the article was last updated; falls back to `date`. */
+  updatedAt?: string;
 };
 
 // The estimator's pricing model lives in content/estimator-pricing.ts, typed there

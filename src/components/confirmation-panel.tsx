@@ -5,9 +5,10 @@ import Link from "next/link";
 import { CheckCircle2, AlertTriangle, Paperclip, Phone, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WhatsAppButton } from "@/components/whatsapp-button";
+import { CallLink } from "@/components/call-link";
+import { EmailLink } from "@/components/email-link";
 import { readRfqRaw, parseRfq, subscribeRfq } from "@/lib/rfq";
-import { site, telLink } from "@/lib/site";
-import { track } from "@/lib/track";
+import { site } from "@/lib/site";
 
 const NEXT_STEPS = [
   "Pack4U reviews your submitted specifications.",
@@ -144,21 +145,22 @@ export function ConfirmationPanel() {
             text={`Hi Pack4U, I've just submitted a packaging request${rfq.reference ? ` (${rfq.reference})` : ""}. Could you confirm you've received it?`}
             className="px-4 whitespace-nowrap"
           />
-          <a
-            href={telLink()}
-            onClick={() => track("call_click", { source: "quote-confirmation" })}
+          <CallLink
+            source="quote-confirmation"
+            pageType="quote_confirmation"
             className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full border border-brand px-4 py-3 text-sm font-semibold text-brand transition hover:bg-brand hover:text-white"
           >
             <Phone className="h-5 w-5 shrink-0" />
             {site.phoneDisplay}
-          </a>
-          <a
-            href={`mailto:${site.email}`}
+          </CallLink>
+          <EmailLink
+            clickLocation="quote-confirmation"
+            pageType="quote_confirmation"
             className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full border border-brand px-4 py-3 text-sm font-semibold text-brand transition hover:bg-brand hover:text-white"
           >
             <Mail className="h-5 w-5 shrink-0" />
             {site.email}
-          </a>
+          </EmailLink>
         </div>
       </div>
     </div>

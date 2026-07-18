@@ -5,6 +5,7 @@ import { WhatsAppButton } from "@/components/whatsapp-button";
 import { BreadcrumbJsonLd } from "@/components/json-ld";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { CallLink } from "@/components/call-link";
+import { EmailLink } from "@/components/email-link";
 import { site } from "@/lib/site";
 
 const crumbs = [{ name: "Home", url: "/" }, { name: "Contact", url: "/contact" }];
@@ -39,15 +40,15 @@ export default function ContactPage() {
           <dl className="mt-10 space-y-4 text-sm">
             <div className="flex items-center gap-3">
               <Phone className="h-5 w-5 text-brand" />
-              <CallLink source="contact-page" className="hover:text-brand">
+              <CallLink source="contact-page" pageType="contact" className="hover:text-brand">
                 {site.phoneDisplay}
               </CallLink>
             </div>
             <div className="flex items-center gap-3">
               <Mail className="h-5 w-5 text-brand" />
-              <a href={`mailto:${site.email}`} className="hover:text-brand">
+              <EmailLink clickLocation="contact-page" pageType="contact" className="hover:text-brand">
                 {site.email}
-              </a>
+              </EmailLink>
             </div>
             <div className="flex items-center gap-3">
               <MapPin className="h-5 w-5 text-brand" />

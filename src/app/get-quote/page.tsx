@@ -6,6 +6,7 @@ import { WhatsAppButton } from "@/components/whatsapp-button";
 import { BreadcrumbJsonLd } from "@/components/json-ld";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { CallLink } from "@/components/call-link";
+import { FunnelView } from "@/components/funnel/funnel-view";
 import { guarantees } from "@/lib/content";
 import { site } from "@/lib/site";
 
@@ -22,6 +23,7 @@ export default function GetQuotePage() {
   return (
     <>
       <BreadcrumbJsonLd items={crumbs} />
+      <FunnelView pageType="quote" pageSlug="get-quote" funnelStage="bofu" />
       <section className="border-b bg-gradient-to-b from-secondary/50 to-background">
         <div className="container-page py-12 sm:py-16">
           <Breadcrumbs items={crumbs} />

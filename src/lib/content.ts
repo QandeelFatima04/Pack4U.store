@@ -57,6 +57,51 @@ export const getBlogPosts = () =>
 export const getBlogPost = (slug: string) =>
   blogPosts.find((p) => p.slug === slug);
 
+/** Estimated reading time in whole minutes (≈200 wpm), floored at 1. */
+export const readingMinutes = (body: string) =>
+  Math.max(1, Math.round(body.trim().split(/\s+/).filter(Boolean).length / 200));
+
+/**
+ * Resolves a post's `relatedPosts` slugs to real posts. Invalid references are
+ * silently dropped so a bad slug can never render a broken link. Order preserved.
+ */
+export const getRelatedPosts = (slug: string) => {
+  const post = getBlogPost(slug);
+  if (!post) return [];
+  return post.relatedPosts
+    .map((s) => blogPosts.find((p) => p.slug === s))
+    .filter((p): p is NonNullable<typeof p> => Boolean(p));
+};
+
+/**
+ * Build/dev-time integrity check for blog funnel links. Runs once at module load
+ * on the server (blog pages are statically generated, so this executes during
+ * `next build`). Throws a single, actionable error listing every offence so a
+ * broken related-post reference fails the QA/build gate rather than shipping.
+ * Guarded off the browser so it never affects client bundles.
+ */
+function validateBlogPosts() {
+  if (typeof window !== "undefined") return;
+  const slugs = new Set(blogPosts.map((p) => p.slug));
+  const errors: string[] = [];
+  for (const post of blogPosts) {
+    const seen = new Set<string>();
+    for (const ref of post.relatedPosts) {
+      if (ref === post.slug)
+        errors.push(`"${post.slug}" lists itself in relatedPosts.`);
+      else if (!slugs.has(ref))
+        errors.push(`"${post.slug}" relatedPosts references unknown slug "${ref}".`);
+      if (seen.has(ref))
+        errors.push(`"${post.slug}" relatedPosts contains duplicate slug "${ref}".`);
+      seen.add(ref);
+    }
+  }
+  if (errors.length)
+    throw new Error(`Invalid blog relatedPosts:\n - ${errors.join("\n - ")}`);
+}
+
+validateBlogPosts();
+
 // All dynamic landing-page slugs (for the single root [slug] route)
 export type LandingKind = "industry" | "type" | "consultation";
 export function getAllLandingSlugs(): { slug: string; kind: LandingKind }[] {

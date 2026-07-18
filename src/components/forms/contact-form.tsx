@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { submitLead } from "@/lib/submit-lead";
+import { track } from "@/lib/track";
 import { WhatsAppButton } from "@/components/whatsapp-button";
 
 /**
@@ -51,6 +52,8 @@ export function ContactForm() {
     });
     setLoading(false);
     if (res.ok) {
+      // Canonical GA4 lead — only after the server confirms acceptance.
+      track("generate_lead", { lead_source: "contact_form", form_name: "contact" });
       setDone(true);
       toast.success("Thanks! We'll be in touch shortly.");
     } else {

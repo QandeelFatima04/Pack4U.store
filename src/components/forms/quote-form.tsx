@@ -156,7 +156,7 @@ export function QuoteForm() {
   function onFirstInput() {
     if (started) return;
     setStarted(true);
-    track("quote_started", { prefilled: Boolean(estimate) });
+    track("quote_form_start", { form_name: "quote", lead_source: "quote_form" });
   }
 
   // Only step 1 holds required fields, so this gate is really about it — but run
@@ -279,6 +279,15 @@ export function QuoteForm() {
       toast.error(res.error ?? "Something went wrong.");
       return;
     }
+
+    // Canonical GA4 lead — fired only after the server confirms acceptance.
+    // Params are slugs/enums only, never the buyer's free-text details.
+    track("generate_lead", {
+      lead_source: "quote_form",
+      form_name: "quote",
+      ...(industry ? { industry } : {}),
+      ...(projectType ? { packaging_type: projectType } : {}),
+    });
 
     const spec = ([
       ["Packaging", packaging],

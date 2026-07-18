@@ -7,6 +7,7 @@ import {
 } from "@/components/social-icons";
 import { Logo } from "@/components/logo";
 import { CallLink } from "@/components/call-link";
+import { EmailLink } from "@/components/email-link";
 import { footerNav } from "@/lib/nav";
 import { site } from "@/lib/site";
 
@@ -47,15 +48,16 @@ export function SiteFooter() {
             and inserts, from concept and material selection to finished production.
           </p>
           <div className="mt-5 space-y-2 text-sm text-muted-foreground">
-            <CallLink source="footer" className="flex items-center gap-2 hover:text-brand">
+            <CallLink source="footer" pageType="site_footer" className="flex items-center gap-2 hover:text-brand">
               <Phone className="h-4 w-4" /> {site.phoneDisplay}
             </CallLink>
-            <a
-              href={`mailto:${site.email}`}
+            <EmailLink
+              clickLocation="footer"
+              pageType="site_footer"
               className="flex items-center gap-2 hover:text-brand"
             >
               <Mail className="h-4 w-4" /> {site.email}
-            </a>
+            </EmailLink>
             <p className="flex items-center gap-2">
               <MapPin className="h-4 w-4" /> {site.country}
             </p>
