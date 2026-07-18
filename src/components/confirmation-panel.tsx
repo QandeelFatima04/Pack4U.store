@@ -2,7 +2,7 @@
 
 import { useMemo, useSyncExternalStore } from "react";
 import Link from "next/link";
-import { CheckCircle2, AlertTriangle, Paperclip, Phone, Mail } from "lucide-react";
+import { CheckCircle2, Paperclip, Phone, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WhatsAppButton } from "@/components/whatsapp-button";
 import { CallLink } from "@/components/call-link";
@@ -75,21 +75,20 @@ export function ConfirmationPanel() {
           </div>
         )}
 
-        {/* Delivery is best-effort: never claim an email was sent when it wasn't. */}
+        {/* Delivery is best-effort: never claim an email was sent when it wasn't.
+            When it wasn't, degrade gracefully — the request is still safely
+            captured under its reference; nudge WhatsApp without alarming copy. */}
         {rfq.delivered ? (
           <p className="mt-4 text-sm text-muted-foreground">
             We&apos;ve sent a confirmation
             {rfq.email ? ` to ${rfq.email}` : ""} and usually reply within one working day.
           </p>
         ) : (
-          <div className="mt-4 flex gap-2.5 rounded-lg border border-amber-500/40 bg-amber-500/10 p-4 text-sm">
-            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
-            <p>
-              We have your details, but we couldn&apos;t send your confirmation email just now.
-              Please message us on WhatsApp with your reference so we can pick this up straight
-              away.
-            </p>
-          </div>
+          <p className="mt-4 text-sm text-muted-foreground">
+            Your request is saved{rfq.reference ? ` under ${rfq.reference}` : ""} and we usually
+            reply within one working day. For the fastest response, message us on WhatsApp with
+            your reference and we&apos;ll pick it up straight away.
+          </p>
         )}
       </div>
 
