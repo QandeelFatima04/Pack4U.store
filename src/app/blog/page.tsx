@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { BreadcrumbJsonLd } from "@/components/json-ld";
-import { Breadcrumbs } from "@/components/breadcrumbs";
 import { BlogList, type BlogListItem } from "@/components/blog/blog-list";
 import { getBlogPosts, readingMinutes } from "@/lib/content";
 
@@ -29,8 +28,7 @@ export default function BlogPage() {
     <>
       <BreadcrumbJsonLd items={crumbs} />
       <section className="bg-gradient-to-b from-secondary/60 to-background">
-        <div className="container-page py-16 sm:py-20">
-          <Breadcrumbs items={crumbs} />
+        <div className="container-page pt-10 pb-6 sm:pt-12 sm:pb-8">
           <p className="eyebrow">Blog</p>
           <h1 className="mt-4 font-[family-name:var(--font-heading)] text-4xl font-bold sm:text-5xl">
             Custom packaging guides &amp; ideas

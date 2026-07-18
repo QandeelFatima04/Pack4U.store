@@ -56,7 +56,7 @@ export function BlogList({ posts }: { posts: BlogListItem[] }) {
   const filters: (BlogCategory | "all")[] = ["all", ...categories];
 
   return (
-    <section className="section">
+    <section className="section pt-6 sm:pt-8">
       <div className="container-page">
         {/* Category filters (public labels only — never the internal funnel stage). */}
         <div
