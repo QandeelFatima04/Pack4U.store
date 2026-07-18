@@ -3,6 +3,57 @@ import type { BlogPost } from "./types";
 // SEO seed posts (blueprint §11). Bodies are markdown-ish (rendered as paragraphs/headings).
 export const blogPosts: BlogPost[] = [
   {
+    slug: "discovery-box-packaging-for-sampler-sets",
+    title: "Discovery box packaging: how to present a sampler set",
+    excerpt:
+      "A discovery box turns a set of samples into a small gift. Here's how to structure one — insert, format and quantity — using a real fragrance sampler as the example.",
+    date: "2026-07-12",
+    author: "Pack4U",
+    tags: ["Cosmetics", "Ideas"],
+    cover: "/images/products/discovery-box/01.jpg",
+    body: `A discovery box is a compact sampler: one small package that presents several product samples together so a customer can try a range before committing to a full size. Done well, it doesn't feel like free samples in a bag — it reads as a gift.
+
+## What a discovery box is for
+
+Discovery boxes suit sampling and launch campaigns — letting customers try a scent range, a skincare line or a flavour set. The goal is to make trying the range feel considered, not cheap.
+
+## Structure it around the samples
+
+The sample sizes decide everything. A fitted insert that holds each vial or sachet in place stops rattling in transit and makes the box feel premium when opened. We built one recent discovery box on printed rigid board with a vial insert that presents six scent vials, held together with a wraparound.
+
+## Keep it slim
+
+A discovery box should be small enough to post easily but still open like a gift. A slim sampler box that holds the full range and reads as a gift on arrival does more for a brand than a padded envelope of loose samples.
+
+## Small quantities are fine
+
+You don't need a huge run. A discovery campaign can start in the hundreds — the sampler above ran at 500–1,000 units. Minimums vary by format, so check the quantity for your exact box.
+
+## Finish it like your main line
+
+Match the print, colours and finish to your core packaging so the discovery box feels like part of the brand, not a throwaway. See [custom gift packaging](/custom-gift-packaging) for formats, or [get a quote](/get-quote) with your sample sizes and quantity and we'll suggest an insert and box.`,
+    funnelStage: "mofu",
+    contentCluster: "cosmetic-packaging",
+    category: "Packaging Ideas",
+    primaryCta: {
+      label: "See custom gift packaging",
+      href: "/custom-gift-packaging",
+      destinationType: "industry",
+      ctaName: "see_custom_gift_packaging",
+      nextFunnelStage: "mofu",
+    },
+    relatedPosts: [
+      "packaging-ideas-for-skincare-brands",
+      "how-to-choose-packaging-for-a-new-product",
+    ],
+    seo: {
+      seoTitle: "Discovery Box Packaging: How to Present a Sampler Set",
+      metaDescription:
+        "How to structure a discovery box — insert, slim format and quantity — to present a sampler set that reads as a gift. From Pack4U.",
+      keywords: ["discovery box packaging", "sampler box", "sample set packaging"],
+    },
+  },
+  {
     slug: "how-to-choose-packaging-for-a-new-product",
     title: "How to choose packaging for a new product",
     excerpt:
