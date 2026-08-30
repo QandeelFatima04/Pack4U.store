@@ -9,8 +9,11 @@ import { cn } from "@/lib/utils";
 // Owns everything pinned to the bottom of the viewport, so the mobile CTA bar and
 // the WhatsApp FAB can't overlap each other.
 //
-// The bar is hidden where it would only duplicate the page's own primary CTA.
-const HIDE_BAR_ON = ["/estimate", "/get-quote"];
+// The bar is hidden where it would only duplicate the page's own primary CTA — and
+// on the homepage, whose hero carries both of these buttons in the flow and is the
+// first thing most visitors judge the business on. Pinning them there covered the
+// bottom of that hero rather than adding anything to it.
+const HIDE_BAR_ON = ["/", "/estimate", "/get-quote"];
 
 export function StickyActions() {
   const pathname = usePathname();

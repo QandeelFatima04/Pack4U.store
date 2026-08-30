@@ -25,14 +25,19 @@ import {
 } from "@/lib/content";
 import { site } from "@/lib/site";
 
-// Even 2x2. A row-span here forces a third grid row and leaves an empty cell,
-// which makes the hero taller than the copy beside it.
-const heroImages = [
-  { src: "/images/hero/hero-1.jpg", alt: "Custom printed cosmetic and perfume packaging" },
-  { src: "/images/hero/hero-3.jpg", alt: "Premium rigid corporate gift box" },
-  { src: "/images/hero/hero-2.jpg", alt: "Branded coffee and food packaging box" },
-  { src: "/images/hero/hero-4.jpg", alt: "Custom rigid retail box" },
-];
+// Hero backdrop. One range shot rather than a collage: it spans four of the
+// industries named in the hero copy, so the picture and the sentence say the same
+// thing. Decorative — the copy on top carries the meaning — hence empty alt.
+//
+// Two plates, art-directed rather than one image scaled. A phone crops a 16:9 plate
+// to a narrow slice that loses most of the lineup, so phones get a 9:16 plate with
+// the boxes sized and placed for the gap the mobile stack leaves them. Served via
+// <picture> so only the matching one is fetched — `hidden` on an <Image> would
+// still download it.
+const heroBanner = {
+  desktop: "/images/hero/hero-stage.jpg",
+  mobile: "/images/hero/hero-stage-mobile.jpg",
+};
 
 const steps = [
   {
@@ -76,70 +81,77 @@ export default function HomePage() {
 
   return (
     <>
-      {/* ── HERO (dark, with packaging collage) ── */}
-      <section className="relative -mt-16 overflow-hidden bg-primary text-primary-foreground">
-        <div className="container-page grid items-start gap-12 pt-24 pb-16 lg:grid-cols-2 lg:pt-28 lg:pb-20">
+      {/* ── HERO (full-viewport, copy stacked above and below the packaging shot) ── */}
+      <section className="relative -mt-16 flex min-h-svh flex-col overflow-hidden bg-background text-foreground">
+        {/* The shot is lit on a near-white studio backdrop and each plate places the
+            boxes in the hole its layout leaves for them — under the paragraph, above
+            the button row. Because the copy never crosses them, the photo runs
+            unscrimmed at every width and the copy is set in dark ink straight onto
+            the backdrop. */}
+        <div aria-hidden className="absolute inset-0">
+          <picture>
+            <source media="(min-width: 640px)" srcSet={heroBanner.desktop} />
+            <img
+              src={heroBanner.mobile}
+              alt=""
+              fetchPriority="high"
+              decoding="async"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          </picture>
+          {/* Transparent except on windows too short for the copy to clear the
+              boxes — see .hero-veil in globals.css. */}
+          <div className="hero-veil absolute inset-0" />
+        </div>
+
+        <div className="hero-stack container-page relative flex w-full flex-1 flex-col justify-between gap-y-12 pt-20 pb-14 sm:pb-16">
           <div>
-            <AnimatedLine delay={0.1}>
-              <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-semibold">
+            {/* Hidden on phones. It says what the headline directly below already
+                says, and its 46px is the difference between the boxes reading as a
+                strip and reading as the product shot the page is selling. */}
+            <AnimatedLine delay={0.1} className="hidden sm:block">
+              <span className="inline-flex items-center gap-2 rounded-full border border-border bg-background/70 px-4 py-1.5 text-xs font-semibold backdrop-blur-sm">
                 <Sparkles className="h-3.5 w-3.5 text-brand" />
                 Custom paper packaging for product brands
               </span>
             </AnimatedLine>
-            <h1 className="mt-6 font-[family-name:var(--font-heading)] text-4xl font-bold leading-[1.07] tracking-tight sm:text-5xl lg:text-6xl">
-              <AnimatedHeadline text="Custom Packaging" delay={0.2} />
-              <br />
-              <AnimatedHeadline text="for Product" delay={0.5} />{" "}
-              <AnimatedHeadline text="Brands" delay={0.7} className="text-brand" />
+            {/* Sized off the viewport so the whole line fits the container edge to
+                edge from md up; below that it wraps, since one line would leave the
+                type too small to lead with. */}
+            <h1 className="mt-6 font-[family-name:var(--font-heading)] text-[clamp(2rem,4.35vw,3.6rem)] font-bold leading-[1.07] tracking-tight md:whitespace-nowrap">
+              <AnimatedHeadline text="Custom Packaging for Product" delay={0.2} />
+              <AnimatedHeadline text="Brands" delay={0.6} className="text-brand-ink" />
             </h1>
-            <AnimatedLine delay={1} className="mt-6 max-w-xl text-lg text-white/75">
+            <AnimatedLine delay={1} className="hero-lede mt-6 max-w-2xl text-lg text-foreground/75">
               We design, develop and produce custom boxes, bags, tags, sleeves, inserts and branded paper packaging for retail, gifting, food, fashion, cosmetics and e-commerce.
             </AnimatedLine>
-            <AnimatedLine delay={1.15} className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button asChild size="lg" className="bg-white text-black hover:bg-white/90">
+          </div>
+
+          <div className="flex flex-wrap items-center gap-x-10 gap-y-6">
+            <AnimatedLine delay={1.15} className="flex flex-col gap-3 sm:flex-row">
+              <Button asChild size="lg" className="h-11 sm:h-12">
                 <Link href="/get-quote">Get a packaging quote</Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="border-white/30 bg-white/5 text-white hover:bg-white/15">
+              <Button asChild size="lg" variant="outline" className="h-11 bg-background/70 backdrop-blur-sm sm:h-12">
                 <Link href="/estimate"><Calculator className="h-4 w-4" /> Estimate a price</Link>
               </Button>
             </AnimatedLine>
             <AnimatedLine delay={1.3}>
-              <dl className="mt-12 flex flex-wrap gap-x-10 gap-y-5">
+              <dl className="flex flex-wrap items-baseline gap-x-7 gap-y-2 text-sm">
                 {[
                   { label: "MOQ from", value: "500 units" },
                   { label: "Lead time", value: "7–15 days" },
                   { label: "Industries", value: "6+ served" },
                   { label: "Made in", value: site.country },
                 ].map(({ label, value }) => (
-                  <div key={label}>
-                    <dt className="text-[11px] font-semibold uppercase tracking-widest text-white/45">{label}</dt>
-                    <dd className="mt-0.5 text-2xl font-bold">{value}</dd>
+                  <div key={label} className="flex items-baseline gap-1.5">
+                    <dt className="text-foreground/70">{label}</dt>
+                    <dd className="font-bold">{value}</dd>
                   </div>
                 ))}
               </dl>
             </AnimatedLine>
           </div>
-
-          {/* Collage */}
-          <FadeIn delay={0.3}>
-            <div className="grid grid-cols-2 gap-3 sm:gap-4">
-              {heroImages.map((img) => (
-                <div
-                  key={img.src}
-                  className="relative aspect-square overflow-hidden rounded-2xl border border-white/10"
-                >
-                  <Image
-                    src={img.src}
-                    alt={img.alt}
-                    fill
-                    priority
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 50vw, 25vw"
-                  />
-                </div>
-              ))}
-            </div>
-          </FadeIn>
         </div>
       </section>
 

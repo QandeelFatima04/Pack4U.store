@@ -94,21 +94,21 @@ export function SiteHeader() {
     };
   }, [openMenu]);
 
-  const isGlass = isHomepage && !scrolled;
-  const linkClass = isGlass
-    ? "text-white/90 hover:text-white"
-    : "text-foreground/80 hover:text-foreground";
+  // The homepage hero is a light photograph, so the header only drops its own
+  // background at the top of it — the ink stays dark throughout.
+  const isTransparent = isHomepage && !scrolled;
+  const linkClass = "text-foreground/80 hover:text-foreground";
 
   return (
     <header
       className={`sticky top-0 z-50 transition-all duration-500 ${
-        isGlass
+        isTransparent
           ? "border-transparent bg-transparent"
           : "border-b border-border/60 bg-background/90 backdrop-blur"
       }`}
     >
       <div className="container-page flex h-16 items-center justify-between gap-4">
-        <Logo variant={isGlass ? "light" : "dark"} />
+        <Logo variant="dark" />
 
         <nav ref={navRef} className="hidden items-center gap-3.5 lg:flex">
           {dropdowns.map((d) => {
@@ -182,18 +182,14 @@ export function SiteHeader() {
             asChild
             size="sm"
             variant="outline"
-            className={`hidden sm:inline-flex ${
-              isGlass ? "border-white/40 bg-white/10 text-white hover:bg-white/20" : ""
-            }`}
+            className="hidden sm:inline-flex"
           >
             <Link href="/estimate">Estimate price</Link>
           </Button>
           <Button
             asChild
             size="sm"
-            className={`hidden sm:inline-flex ${
-              isGlass ? "bg-white text-black hover:bg-white/90 border-0 shadow-none" : ""
-            }`}
+            className="hidden sm:inline-flex"
           >
             <Link href="/get-quote">Get a quote</Link>
           </Button>
@@ -201,9 +197,7 @@ export function SiteHeader() {
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger
               aria-label="Open menu"
-              className={`grid h-10 w-10 place-items-center rounded-full transition lg:hidden ${
-                isGlass ? "text-white hover:bg-white/15" : "hover:bg-muted"
-              }`}
+              className="grid h-10 w-10 place-items-center rounded-full transition hover:bg-muted lg:hidden"
             >
               <Menu className="h-5 w-5" />
             </SheetTrigger>

@@ -5,9 +5,10 @@ import { cn } from "@/lib/utils";
 /**
  * The wordmark lockup.
  *
- * `variant="light"` swaps in the reversed artwork for dark backgrounds — the
- * default lockup is navy and would disappear on the homepage hero. The header's
- * `[&_*]:!text-white` trick can't recolour an image, so the variant is explicit.
+ * `variant="light"` swaps in the reversed artwork for dark backgrounds, where the
+ * default navy lockup would disappear. Nothing ships it right now — the header and
+ * footer both sit on light surfaces — but it stays because a CSS colour override
+ * can't recolour an image, so any dark placement has to opt in explicitly.
  */
 export function Logo({
   className,

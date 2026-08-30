@@ -32,7 +32,7 @@ const DB = "Sabrina/wetransfer_for-noman_2024-11-20_1244/For Noman/Discovery Box
 // EXCLUDED ON PURPOSE — cannabis/THC, CBD and vape work, which sits outside the
 // industries this site sells to. Do not re-add without updating the industry copy:
 //   PackU/IMG_3065-3068  Delta-9 gummies, cannabis flower, pre-roll dispensers
-//   PackU/IMG_3072, 3077 range shots including a smoke-brand cube
+//   PackU/IMG_3077       Boxit mailer shot dominated by a smoke-brand cube
 //   EDit/IMG_3460        line-up including CBD capsules + a vape carton
 //   EDit/IMG_3472        CBD gel capsules
 //   EDit/IMG_3496        smoke-brand box
@@ -40,8 +40,48 @@ const DB = "Sabrina/wetransfer_for-noman_2024-11-20_1244/For Noman/Discovery Box
 // NOTE: public/images/process/* is not produced here — those four step photos are
 // not from the photoshoot and are committed already optimized.
 
-// target (relative to public/images) -> source (relative to SRC)
+// target (relative to public/images) -> source (relative to SRC), either as a
+// plain path or as { src, crop, extend, width } when the frame needs reworking.
+// `crop` is in SOURCE pixels and runs first; `width` then overrides the default
+// resize; `extend` finally pads the frame by replicating its edge pixels.
 const MAP = {
+  // Homepage hero stage. IMG_3072 is the mixed-industry range shot (supplement,
+  // coffee, e-commerce mailer, jewellery window box). The crop trims the dead space
+  // around the group; the padding then places the boxes where the hero leaves a hole
+  // for them — centred horizontally (32-68%) and sitting at 47-74% vertically, which
+  // is the band between the hero's paragraph and its button row. The boxes are sized
+  // to clear that band on a short laptop window too, where cover-scaling lifts them
+  // toward the copy. The padding
+  // replicates the studio backdrop's own edge pixels, so it reads as one sweep
+  // rather than a pasted-on panel — which matters because the hero shows this plate
+  // unscrimmed on desktop, with the copy set in dark ink straight onto the backdrop.
+  // 820 + 550 + 550 = 1920 wide, 547 + 354 + 179 = 1080 tall — a 16:9 plate that
+  // survives `object-cover` at any hero size.
+  //
+  // NB: renaming this file is how a geometry change reaches browsers. next/image
+  // caches optimised output against the URL, so overwriting it in place serves the
+  // old plate from both the build cache and visitors' browsers.
+  "hero/hero-stage.jpg": {
+    src: `${PK}/IMG_3072.JPG`,
+    crop: { left: 316, top: 389, width: 4600, height: 3067 },
+    width: 820,
+    extend: { top: 354, bottom: 179, left: 550, right: 550 },
+  },
+  // The phone plate. A 16:9 plate cover-cropped to a phone keeps only a narrow slice
+  // through the middle of the lineup, so phones get their own 1080x2400 frame. At
+  // 0.45 that is close enough to a modern handset's aspect that it is scaled rather
+  // than cropped, which is what lets the boxes run to 90% of the width — on a 375px
+  // screen the lineup is width-capped, so every percent of frame width is a percent
+  // of how large the product reads. The crop is tighter than the desktop plate's for
+  // the same reason: less studio margin, more box. They sit at 44-61% of the height,
+  // the band every phone size leaves clear between the paragraph and the button row.
+  // 1000 + 40 + 40 = 1080 wide, 468 + 1046 + 886 = 2400 tall.
+  "hero/hero-stage-mobile.jpg": {
+    src: `${PK}/IMG_3072.JPG`,
+    crop: { left: 600, top: 1160, width: 4040, height: 1890 },
+    width: 1000,
+    extend: { top: 1046, bottom: 886, left: 40, right: 40 },
+  },
   "hero/hero-1.jpg": `${PF}/Mumba with box.jpg`,
   "hero/hero-2.jpg": `${PK}/Coffee Box.JPG`,
   "hero/hero-3.jpg": `${CB}/_ALI6793.JPG`,
@@ -117,11 +157,16 @@ async function exists(p) {
   try { await access(p); return true; } catch { return false; }
 }
 
-async function resizeOne(srcRel, outAbs) {
+async function resizeOne(source, outAbs) {
+  const { src: srcRel, crop, extend, width } = typeof source === "string" ? { src: source } : source;
   const srcPath = path.join(SRC, srcRel);
   if (!(await exists(srcPath))) { console.warn(`MISSING: ${srcRel}`); return false; }
   await mkdir(path.dirname(outAbs), { recursive: true });
-  await sharp(srcPath).rotate().resize({ width: WIDTH, withoutEnlargement: true }).jpeg({ quality: QUALITY, mozjpeg: true }).toFile(outAbs);
+  let pipeline = sharp(srcPath).rotate();
+  if (crop) pipeline = pipeline.extract(crop);
+  pipeline = pipeline.resize({ width: width ?? WIDTH, withoutEnlargement: true });
+  if (extend) pipeline = pipeline.extend({ ...extend, extendWith: "copy" });
+  await pipeline.jpeg({ quality: QUALITY, mozjpeg: true }).toFile(outAbs);
   return true;
 }
 
